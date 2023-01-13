@@ -89,6 +89,14 @@ namespace HybridCMS.Controllers
             }
             return RedirectToAction("Login", "CMS");
         }
+        public ActionResult AdminDashboard()
+        {
+            if (Session["CMSName"] != null && Session["CMSId"] != null && Session["CMSRoleId"].Equals("2"))
+            {
+                return View();
+            }
+            return RedirectToAction("Login", "CMS");
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ChangePassword(CMSChangePasswordView obj)

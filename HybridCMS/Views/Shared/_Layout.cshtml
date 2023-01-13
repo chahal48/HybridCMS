@@ -68,7 +68,10 @@
                                 @Session["CMSName"].ToString().Trim()
                             </a>
                             <div class="dropdown-menu m-0">
-                                @*<a href="blog.html" class="dropdown-item">Update Profile</a>*@
+                                @if (Session["CMSRoleId"].Equals("2"))
+                                {
+                                    <a href="@Url.Action("AdminDashboard", "CMS")" class="dropdown-item @(@CurrentAction.Equals("admindashboard")?"active":"")">Admin Dashboard</a>
+                                }
                                 <a href="@Url.Action("ChangePassword", "CMS")" class="dropdown-item @(@CurrentAction.Equals("changepassword")?"active":"")">Change Password</a>
                                 <a href="@Url.Action("Logout", "CMS")" class="dropdown-item">Logout</a>
                             </div>
@@ -101,16 +104,15 @@
 
     <!-- Footer Start -->
     @*<div class="container-fluid bg-dark footer fixed-bottom">
-        <div class="container-fluid copyright">
-                <div class="row">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a href="#">HybridCMS</a>, All Right Reserved.
+            <div class="container-fluid copyright">
+                    <div class="row">
+                        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                            &copy; <a href="#">HybridCMS</a>, All Right Reserved.
+                        </div>
                     </div>
-                </div>
-        </div>
-    </div>*@
+            </div>
+        </div>*@
     <!-- Footer End -->
-
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
 
