@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace HybridCMS.Controllers
 {
@@ -23,7 +25,7 @@ namespace HybridCMS.Controllers
                     UserName = HybridCMS["CMSUserName"],
                     Password = HybridCMS["CMSPass"],
                     RemenberMe = Convert.ToBoolean(HybridCMS["RemenberMe"])
-                }; 
+                };
                 return View(cMSLoginView);
             }
             return View();
@@ -36,9 +38,7 @@ namespace HybridCMS.Controllers
             if (ModelState.IsValid)
             {
                 string encryptPass = userBll.EncryptPassword(model.Password);
-                var cmsEntity = userBll.LoginCMS(model.UserName , encryptPass);
-
-                //string decryptPass = adminBll.DecryptPassword(model.Password);
+                var cmsEntity = userBll.LoginCMS(model.UserName, encryptPass);
 
                 if (cmsEntity == null || cmsEntity.EmailId == null || encryptPass == null)
                 {
@@ -87,7 +87,8 @@ namespace HybridCMS.Controllers
             {
                 return View();
             }
-            return RedirectToAction("Login", "CMS");
+
+            return RedirectFromLogin();
         }
         public ActionResult AdminDashboard()
         {
@@ -95,7 +96,7 @@ namespace HybridCMS.Controllers
             {
                 return View();
             }
-            return RedirectToAction("Login", "CMS");
+            return RedirectFromLogin();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -118,7 +119,6 @@ namespace HybridCMS.Controllers
             }
             return View(obj);
         }
-
         public ActionResult Logout()
         {
             Session.Abandon();
@@ -131,6 +131,16 @@ namespace HybridCMS.Controllers
                 Response.Cookies.Add(HybridCMS);
             }
             return RedirectToAction("login");
+        }
+        public ActionResult RedirectFromLogin()
+        {
+            string returnurl = Request.RawUrl;
+
+            var routeValues = new RouteValueDictionary
+            {
+                { "returnurl", returnurl }
+            };
+            return RedirectToAction("Login", "CMS", routeValues);
         }
     }
 }
