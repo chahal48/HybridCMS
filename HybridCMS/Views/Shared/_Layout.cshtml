@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+    <title>@ViewBag.Title</title>
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="~/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="~/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Template Stylesheet -->
+    <link href="~/Content/style.css" rel="stylesheet" />
+</head>
+<body>
+    @{
+        string CurrentAction = @ViewContext.RouteData.Values["action"].ToString().ToLower();
+        string CurrentController = @ViewContext.RouteData.Values["controller"].ToString().ToLower();
+    }
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" role="status"></div>
+    </div>
+    <!-- Spinner End -->
+    <!-- Navbar Start -->
+    <div class="container-fluid fixed-top px-0 wow fadeIn" data-wow-delay="0.1s">
+        <div class="top-bar row gx-0 align-items-center d-none d-lg-flex">
+            <div class="col-lg-7 px-5 text-start">
+                <small><i class="fa fa-map-marker-alt me-2"></i><strong>Anthem Infotech Pvt. Ltd.</strong> 11<sup>th</sup> Floor, Sushma Infinium, Zirakpur</small>
+            </div>
+            <div class="col-lg-5 px-5 text-end">
+                <small class="ms-4"><i class="fa fa-envelope me-2"></i>sachin.c@antheminfotech.com</small>
+            </div>
+        </div>
+
+        <nav class="navbar navbar-expand-lg navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
+            @*<a href="index.html" class="navbar-brand ms-4 ms-lg-0">*@
+            @{Html.RenderPartial("_logoView");}
+            @*<h1 class="fw-bold text-primary m-0">Hybrid<span class="text-secondary">CMS</span></h1>*@
+            @*</a>*@
+            <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto p-4 p-lg-0">
+                    <a href="@Url.Action("Index", "Home")" class="nav-item nav-link">Home</a>
+                    <a href="@Url.Action("ContactUs", "Home")" class="nav-item nav-link@(CurrentAction.Equals("ContactUs")&& CurrentController.Equals("home")?"active":"")">Contact Us</a>
+                    @*<a href="product.html" class="nav-item nav-link">Products</a>*@
+                    <div class="nav-item dropdown">
+                        @if (Session["CMSName"] != null)
+                        {
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                                <small class="fa fa-user text-body"></small>
+                                @Session["CMSName"].ToString().Trim()
+                            </a>
+                            <div class="dropdown-menu m-0">
+                                @*<a href="blog.html" class="dropdown-item">Update Profile</a>*@
+                                <a href="@Url.Action("ChangePassword", "CMS")" class="dropdown-item @(@CurrentAction.Equals("changepassword")?"active":"")">Change Password</a>
+                                <a href="@Url.Action("Logout", "CMS")" class="dropdown-item">Logout</a>
+                            </div>
+                        }
+                    </div>
+                    @if (Session["CMSName"] == null)
+                    {
+                        <a href="@Url.Action("Login", "CMS")" class="nav-item nav-link"><small class="fa fa-user text-body"></small>&nbsp;Sign In</a>
+                    }
+                </div>
+                <!--<div class="d-none d-lg-flex ms-2">-->
+                @*<a class="btn-sm-square bg-white rounded-circle ms-3" href="">
+                        <small class="fa fa-search text-body"></small>
+                    </a>*@
+                @*<a class="btn-sm-square bg-white rounded-circle ms-3" href="~/CMS/Login">
+                        <small class="fa fa-user text-body"></small>
+                    </a>*@
+                @*<a class="btn-sm-square bg-white rounded-circle ms-3" href="">
+                        <small class="fa fa-shopping-bag text-body"></small>
+                    </a>*@
+                <!--</div>-->
+            </div>
+        </nav>
+    </div>
+    <!-- Navbar End -->
+
+    <div>
+        @RenderBody()
+    </div>
+
+    <!-- Footer Start -->
+    @*<div class="container-fluid bg-dark footer fixed-bottom">
+        <div class="container-fluid copyright">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <a href="#">HybridCMS</a>, All Right Reserved.
+                    </div>
+                </div>
+        </div>
+    </div>*@
+    <!-- Footer End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/wow/wow.min.js"></script>
+    <script src="~/lib/easing/easing.min.js"></script>
+    <script src="~/lib/waypoints/waypoints.min.js"></script>
+    <script src="~/lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="~/Scripts/main.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
