@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace HybridCMSEntities
 {
-    public class DashboardViewModel
+    public class DashboardView
     {
+        
     }
 }
