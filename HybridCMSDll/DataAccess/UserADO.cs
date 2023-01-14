@@ -66,14 +66,14 @@ namespace HybridCMSDll.DataAccess
         }
         #endregion
 
-        public bool ChangePassword(CMSChangePasswordView obj, Int64 id)
+        public bool ChangePassword(string CurrentPassword, string NewPassword, Int64 id)
         {
             using (ADOExecution exec = new ADOExecution(GetConnectionString()))
             {
                 int Result = exec.ExecuteNonQuery(CommandType.StoredProcedure, "usp_ChangeUserPassword",
                     new SqlParameter("@UserId", id),
-                    new SqlParameter("@CurrentPassword", EncryptPassword(obj.CurrentPassword)),
-                    new SqlParameter("@NewPassword", EncryptPassword(obj.NewPassword))
+                    new SqlParameter("@CurrentPassword", EncryptPassword(CurrentPassword)),
+                    new SqlParameter("@NewPassword", EncryptPassword(NewPassword))
                     );
 
                 return ReturnBool(Result);
@@ -101,6 +101,63 @@ namespace HybridCMSDll.DataAccess
                     }
                     return loginEntity;
                 }
+            }
+        }
+        public string CheckEmailorUsernameExists(string EmailorUsername)
+        {
+            string EnailAddress = string.Empty;
+            using (ADOExecution exec = new ADOExecution(GetConnectionString()))
+            {
+                using (IDataReader dr = exec.ExecuteReader(CommandType.StoredProcedure, "usp_CheckEmailorUsernameExists",
+                    new SqlParameter("@EmailorUsername", EmailorUsername)
+                    ))
+                {
+                    while (dr.Read())
+                    {
+                        EnailAddress = Convert.ToString(dr["EmailAddress"]);
+                    }
+                    return EnailAddress;
+                }
+            }
+        }
+        public bool CheckValidToken(string Token)
+        {
+            int Result = 0;
+            using (ADOExecution exec = new ADOExecution(GetConnectionString()))
+            {
+                var obj = exec.ExecuteScalar(CommandType.StoredProcedure, "usp_CheckValidToken",
+                    new SqlParameter("@Token", Token));
+
+                if (obj != null)
+                {
+                    Result = Convert.ToInt32(obj);
+                }
+
+                return ReturnBool(Result);
+            }
+        }
+        public bool GenerateTokenForResetPassword(string EmailorUsername, string TokenId)
+        {
+            using (ADOExecution exec = new ADOExecution(GetConnectionString()))
+            {
+                int Result = exec.ExecuteNonQuery(CommandType.StoredProcedure, "usp_GenerateTokenForResetPassword",
+                    new SqlParameter("@EmailorUsername", EmailorUsername),
+                    new SqlParameter("@Token", TokenId)
+                    );
+
+                return ReturnBool(Result);
+            }
+        }
+        public bool ChangeUserPasswordByToken(string Password, string TokenId)
+        {
+            using (ADOExecution exec = new ADOExecution(GetConnectionString()))
+            {
+                int Result = exec.ExecuteNonQuery(CommandType.StoredProcedure, "usp_ChangeUserPasswordByToken",
+                    new SqlParameter("@Password", EncryptPassword(Password)),
+                    new SqlParameter("@Token", TokenId)
+                    );
+
+                return ReturnBool(Result);
             }
         }
     }

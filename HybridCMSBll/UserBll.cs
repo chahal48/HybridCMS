@@ -28,9 +28,26 @@ namespace HybridCMSBll
         {
             return iUser.DecryptPassword(encryptpass);
         }
-        public bool ChangePassword(CMSChangePasswordView obj, Int64 id)
+        public string CheckEmailorUsernameExists(string EmailorUsername)
         {
-            return iUser.ChangePassword(obj, id);
+            return iUser.CheckEmailorUsernameExists(EmailorUsername);
         }
+        public bool ChangePassword(string CurrentPassword,string NewPassword, Int64 id)
+        {
+            return iUser.ChangePassword(CurrentPassword: CurrentPassword,NewPassword: NewPassword, id);
+        }
+        public bool GenerateTokenForResetPassword(string EmailorUsername, string TokenId)
+        {
+            return iUser.GenerateTokenForResetPassword(EmailorUsername: EmailorUsername, TokenId: TokenId);
+        }
+        public bool CheckValidToken(string Token)
+        {
+            return iUser.CheckValidToken(Token);
+        }
+        public bool ChangeUserPasswordByToken(string Password, string TokenId)
+        {
+            return iUser.ChangeUserPasswordByToken(Password: Password,TokenId: TokenId);
+        }
+
     }
 }
