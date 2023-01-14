@@ -9,9 +9,13 @@ namespace HybridCMSDll.Interface
 {
     public interface IUser
     {
-        bool ChangePassword(CMSChangePasswordView obj, Int64 id);
+        string CheckEmailorUsernameExists(string EmailorUsername);
+        bool ChangePassword(string CurrentPassword, string NewPassword, Int64 id);
         LoginEntity LoginCMS(string Username, string EnctypePassword);
         string EncryptPassword(string password);
         string DecryptPassword(string encryptpass);
+        bool GenerateTokenForResetPassword(string EmailorUsername, string TokenId);
+        bool CheckValidToken(string Token);
+        bool ChangeUserPasswordByToken(string Password, string TokenId);
     }
 }

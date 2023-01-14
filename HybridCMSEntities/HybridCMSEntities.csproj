@@ -42,7 +42,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CMSLoginView.cs" />
     <Compile Include="DashboardView.cs" />
     <Compile Include="LoginEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
