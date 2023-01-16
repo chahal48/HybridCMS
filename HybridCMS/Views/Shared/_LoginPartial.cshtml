@@ -1,0 +1,26 @@
+﻿@{ 
+    string CurrentAction = @ViewContext.RouteData.Values["action"].ToString().ToLower();
+    string CurrentController = @ViewContext.RouteData.Values["controller"].ToString().ToLower();
+}
+
+<div class="nav-item dropdown">
+    @if (Session["CMSName"] != null)
+    {
+        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+            <small class="fa fa-user text-body"></small>
+            @Session["CMSName"].ToString().Trim()
+        </a>
+        <div class="dropdown-menu m-0">
+            @if (Session["CMSRoleId"].Equals("2"))
+            {
+                <a href="@Url.Action("AdminDashboard", "CMS")" class="dropdown-item @(@CurrentAction.Equals("admindashboard")?"active":"")">Admin Dashboard</a>
+            }
+            <a href="@Url.Action("ChangePassword", "CMS")" class="dropdown-item @(@CurrentAction.Equals("changepassword")?"active":"")">Change Password</a>
+            <a href="@Url.Action("Logout", "CMS")" class="dropdown-item">Logout</a>
+        </div>
+    }
+</div>
+@if (Session["CMSName"] == null)
+{
+    <a href="@Url.Action("Login", "CMS")" class="nav-item nav-link"><small class="fa fa-user text-body"></small>&nbsp;Sign In</a>
+}
