@@ -16,9 +16,9 @@ namespace HybridCMSBll
         {
             iUser = new SQLUser();
         }
-        public LoginEntity LoginCMS(string Username, string EnctypePassword)
+        public LoginEntity LoginCMS(string EmailorUsername, string EnctypePassword)
         {
-            return iUser.LoginCMS(Username, EnctypePassword);
+            return iUser.LoginCMS(EmailorUsername: EmailorUsername, EnctypePassword: EnctypePassword);
         }
         public string EncryptPassword(string password)
         {

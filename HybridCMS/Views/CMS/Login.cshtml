@@ -25,13 +25,13 @@
                             }
                         </div>
                         <div class="form-floating mb-3">
-                            @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", placeholder = "Username" } })
-                            @Html.LabelFor(model => model.UserName)
-                            @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                            @Html.EditorFor(model => model.EmailorUsername, new { htmlAttributes = new { @class = "form-control", placeholder = "Email or Username", onkeypress = "return AvoidSpace()" } })
+                            @Html.LabelFor(model => model.EmailorUsername)
+                            @Html.ValidationMessageFor(model => model.EmailorUsername, "", new { @class = "text-danger" })
                         </div>
 
                         <div class="form-floating mb-3">
-                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Username" } })
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Password" } })
                             @Html.LabelFor(model => model.Password)
                             @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                         </div>
@@ -64,6 +64,12 @@
                 x.type = "text";
             } else {
                 x.type = "password";
+            }
+        }
+        function AvoidSpace() {
+            if (event.keyCode == 32) {
+                event.returnValue = false;
+                return false;
             }
         }
         $(document).ready(function () {
