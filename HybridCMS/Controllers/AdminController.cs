@@ -9,9 +9,14 @@ namespace HybridCMS.Controllers
 {
     public class AdminController : Controller
     {
-        // GET: Admin
-        public ActionResult Page()
+        public AdminController()
         {
+            SessionHelper.InitializeSession();
+        }
+        // GET: Admin
+        public ActionResult AddPage()
+        {
+            
             if (Session["CMSName"] != null && Session["CMSId"] != null && Session["CMSRoleId"].Equals("2"))
             {
                 return View();

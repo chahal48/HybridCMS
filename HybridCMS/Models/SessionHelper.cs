@@ -21,6 +21,19 @@ namespace HybridCMS.Models
         #endregion
 
         #region Public Static Methods
+        public static void InitializeSession()
+        {
+            if (HttpContext.Current.Session["CMSName"] == null && HttpContext.Current.Request.Cookies["HybridCMS"] != null)
+            {
+                HttpCookie HybridCMS = HttpContext.Current.Request.Cookies["HybridCMS"];
+
+                cmsId = HybridCMS["CMSId"];
+                cmsRoleId = HybridCMS["CMSRoleId"];
+                cmsEmail = HybridCMS["CMSEmail"];
+                cmsName = HybridCMS["CMSName"];
+                cmsPhoto = HybridCMS["CMSPhoto"];
+            }
+        }
         /// <summary>
         /// Clears Session
         /// </summary>

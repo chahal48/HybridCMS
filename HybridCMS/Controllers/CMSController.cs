@@ -22,6 +22,10 @@ namespace HybridCMS.Controllers
     public class CMSController : Controller
     {
         UserBll userBll = new UserBll();
+        public CMSController()
+        {
+            SessionHelper.InitializeSession();
+        }
         public ActionResult Login(string returnurl)
         {
             if (Request.Cookies["HybridCMS"] == null && Session["CMSName"]==null)

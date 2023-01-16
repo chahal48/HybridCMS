@@ -144,6 +144,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AssetViewModel.cs" />
     <Compile Include="Models\CMSChangePasswordViewModel.cs" />
     <Compile Include="Models\CMSLoginViewModel.cs" />
     <Compile Include="Models\ContactViewModel.cs" />
@@ -252,6 +253,8 @@
     <Content Include="Views\CMS\AdminDashboard.cshtml" />
     <Content Include="Views\CMS\ForgotPassword.cshtml" />
     <Content Include="Views\CMS\ResetPassword.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Admin\AddPage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -261,7 +264,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Admin\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HybridCMSBll\HybridCMSBll.csproj">
