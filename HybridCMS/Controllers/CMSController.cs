@@ -24,19 +24,11 @@ namespace HybridCMS.Controllers
         UserBll userBll = new UserBll();
         public ActionResult Login(string returnurl)
         {
-            if (Request.Cookies["HybridCMS"] != null)
+            if (Request.Cookies["HybridCMS"] == null && Session["CMSName"]==null)
             {
-                HttpCookie HybridCMS = Request.Cookies["HybridCMS"];
-
-                CMSLoginViewModel cMSLoginView = new CMSLoginViewModel
-                {
-                    UserName = HybridCMS["CMSUserName"],
-                    Password = HybridCMS["CMSPass"],
-                    RemenberMe = Convert.ToBoolean(HybridCMS["RemenberMe"])
-                };
-                return View(cMSLoginView);
+                return View();
             }
-            return View();
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
@@ -46,11 +38,11 @@ namespace HybridCMS.Controllers
             if (ModelState.IsValid)
             {
                 string encryptPass = userBll.EncryptPassword(model.Password);
-                var cmsEntity = userBll.LoginCMS(model.UserName, encryptPass);
+                var cmsEntity = userBll.LoginCMS(EmailorUsername: model.EmailorUsername,EnctypePassword: encryptPass);
 
-                if (cmsEntity == null || cmsEntity.EmailId == null || encryptPass == null)
+                if (cmsEntity == null || cmsEntity.EmailId == null || cmsEntity.Name == null)
                 {
-                    ModelState.AddModelError("", "Your username or password is incorrect.");
+                    ModelState.AddModelError("", "Your email/username or password is incorrect.");
                 }
                 else
                 {
@@ -59,7 +51,6 @@ namespace HybridCMS.Controllers
                         HttpCookie HybridCMS = new HttpCookie("HybridCMS");
 
                         HybridCMS["CMSName"] = cmsEntity.Name;
-                        HybridCMS["CMSUserName"] = model.UserName;
                         HybridCMS["CMSId"] = Convert.ToString(cmsEntity.Id);
                         HybridCMS["CMSEmail"] = cmsEntity.EmailId;
                         HybridCMS["CMSPass"] = encryptPass;
@@ -69,8 +60,9 @@ namespace HybridCMS.Controllers
 
                         HybridCMS.Expires = DateTime.Now.AddDays(30);
                         Response.Cookies.Add(HybridCMS);
-
                     }
+                    //SessionHelper.cmsId = Convert.ToString(cmsEntity.RoleId);
+                    //SessionHelper.cmsName = cmsEntity.Name;
                     Session["CMSName"] = cmsEntity.Name;
                     Session["CMSId"] = Convert.ToString(cmsEntity.Id);
                     Session["CMSEmail"] = cmsEntity.EmailId;
@@ -125,19 +117,15 @@ namespace HybridCMS.Controllers
             {
                 return View();
             }
-            return RedirectFromLogin();
+            else
+            {
+                SessionHelper.ClearHybridCMS();
+            }
+            return RedirectToAction("login");
         }
         public ActionResult Logout()
         {
-            Session.Abandon();
-            Session.Clear();
-            Response.Cookies.Clear();
-            if (Request.Cookies["HybridCMS"] != null)
-            {
-                HttpCookie HybridCMS = new HttpCookie("HybridCMS");
-                HybridCMS.Expires = DateTime.Now.AddDays(-30);
-                Response.Cookies.Add(HybridCMS);
-            }
+            SessionHelper.ClearHybridCMS();
             return RedirectToAction("login");
         }
         public ActionResult RedirectFromLogin()
@@ -233,6 +221,5 @@ namespace HybridCMS.Controllers
             }
             return View(obj);
         }
-
     }
 }
