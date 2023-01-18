@@ -65,5 +65,35 @@ namespace HybridCMSDll.DataAccess
             }
             return AdminPageList;
         }
+        public bool AddPost(Int64 AssetId, string Heading, string Description, string EncodedHtml, string Photo)
+        {
+            using (ADOExecution exec = new ADOExecution(GetConnectionString()))
+            {
+                int Result = exec.ExecuteNonQuery(CommandType.StoredProcedure, "usp_AddPost",
+                    new SqlParameter("@AssetId", AssetId),
+                    new SqlParameter("@PostHeading", Heading),
+                    new SqlParameter("@PostDescription", Description),
+                    new SqlParameter("@EncodedHtml", EncodedHtml),
+                    new SqlParameter("@ImageName", Photo));
+
+                return ReturnBool(Result);
+            }
+        }
+        public bool CheckValidURL(string URL)
+        {
+            int Result = 0;
+            using (ADOExecution exec = new ADOExecution(GetConnectionString()))
+            {
+                var obj = exec.ExecuteScalar(CommandType.StoredProcedure, "usp_CheckValidURL",
+                    new SqlParameter("@URL", URL));
+
+                if (obj != null)
+                {
+                    Result = Convert.ToInt32(obj);
+                }
+
+                return ReturnBool(Result);
+            }
+        }
     }
 }

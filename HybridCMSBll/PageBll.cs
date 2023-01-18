@@ -17,6 +17,10 @@ namespace HybridCMSBll
         {
             iPage = new SQLPage();
         }
+        public bool CheckValidURL(string URL)
+        {
+            return iPage.CheckValidURL(URL);
+        }
         public bool CheckUrlAlreadyExists(string url)
         {
             return iPage.CheckUrlAlreadyExists(url);
@@ -28,6 +32,10 @@ namespace HybridCMSBll
         public List<AdminPageListView> GetAllPageByUserId(Int64 UserId)
         {
             return iPage.GetAllPageByUserId(UserId);
+        }
+        public bool AddPost(Int64 AssetId, string Heading, string Description, string EncodedHtml, string Photo)
+        {
+            return iPage.AddPost(AssetId:AssetId,Heading:Heading,Description:Description,EncodedHtml:EncodedHtml,Photo:Photo);
         }
     }
 }
