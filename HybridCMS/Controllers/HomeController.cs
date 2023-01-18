@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HybridCMS.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,6 +9,10 @@ namespace HybridCMS.Controllers
 {
     public class HomeController : Controller
     {
+        public HomeController()
+        {
+            SessionHelper.InitializeSession();
+        }
         // GET: Home
         public ActionResult Index()
         {

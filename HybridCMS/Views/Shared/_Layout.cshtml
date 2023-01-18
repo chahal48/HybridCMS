@@ -27,19 +27,6 @@
     <link href="~/Content/style.css" rel="stylesheet" />
 </head>
 <body>
-
-    @*@{
-        if (Session["CMSName"] == null && Request.Cookies["HybridCMS"] != null)
-        {
-            HttpCookie HybridCMS = Request.Cookies["HybridCMS"];
-
-            Session["CMSName"] = HybridCMS["CMSName"];
-            Session["CMSId"] = Convert.ToString(HybridCMS["CMSId"]);
-            Session["CMSEmail"] = HybridCMS["CMSEmail"];
-            Session["CMSPhoto"] = HybridCMS["CMSPhoto"];
-            Session["CMSRoleId"] = Convert.ToString(HybridCMS["CMSRoleId"]);
-        }
-    }*@
     <!-- Spinner Start -->
     <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" role="status"></div>
@@ -63,8 +50,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto p-4 p-lg-0">
-                    <a href="@Url.Action("Index", "Home")" class="nav-item nav-link">Home</a>
-                    <a href="@Url.Action("ContactUs", "Home")" class="nav-item nav-link">Contact Us</a>
+
                     @{Html.RenderPartial("_LoginPartial");}
                 </div>
             </div>
@@ -93,6 +79,7 @@
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    @{Html.RenderPartial("_ValidationScriptsPartial");}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/wow/wow.min.js"></script>
     <script src="~/lib/easing/easing.min.js"></script>
@@ -101,6 +88,16 @@
 
     <!-- Template Javascript -->
     <script src="~/Scripts/main.js"></script>
+    <script>
+        $(".modal").on("hidden.bs.modal", function () {
+            $("#guest_form input[type='text'],input[type='password']").each(function () {
+                $(this).removeClass('form-control input-validation-error');
+                $(this).addClass("form-control");
+            });
+            $(".field-validation-error").text('');
+            $(this).find('form').trigger('reset');
+        });
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

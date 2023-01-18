@@ -128,11 +128,12 @@
     <Content Include="lib\owlcarousel\assets\owl.video.play.png" />
     <Content Include="lib\owlcarousel\owl.carousel.js" />
     <Content Include="lib\owlcarousel\owl.carousel.min.js" />
+    <Content Include="lib\sweetalert\sweetalert.min.js" />
     <Content Include="lib\waypoints\waypoints.min.js" />
     <Content Include="lib\wow\wow.js" />
     <Content Include="lib\wow\wow.min.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jquery-validate\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\main.js" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -158,6 +159,7 @@
     <Content Include="Views\web.config" />
     <Content Include="lib\owlcarousel\LICENSE" />
     <Content Include="lib\waypoints\links.php" />
+    <Content Include="libman.json" />
     <None Include="packages.config" />
     <Content Include="scss\bootstrap.scss" />
     <Content Include="scss\bootstrap\scss\bootstrap-grid.scss" />
@@ -254,7 +256,9 @@
     <Content Include="Views\CMS\ForgotPassword.cshtml" />
     <Content Include="Views\CMS\ResetPassword.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Admin\AddPage.cshtml" />
+    <Content Include="Views\Shared\_AddPagePartial.cshtml" />
+    <Content Include="Views\Shared\_AdminPageListPartial.cshtml" />
+    <Content Include="Views\Shared\_ShowPagePartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -264,6 +268,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Admin\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HybridCMSBll\HybridCMSBll.csproj">
