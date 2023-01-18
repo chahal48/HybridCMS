@@ -31,14 +31,6 @@
                         @Html.LabelFor(model => model.Description)
                         @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                     </div>
-                    <div class="form-floating mb-3">
-                        @if (@ViewBag.AlertMsg != null)
-                        {
-                            <div class="alert alert-success" role="alert">
-                                @ViewBag.AlertMsg
-                            </div>
-                        }
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -55,36 +47,5 @@
             return false;
         }
     }
-
-    //function AddBtnClick() {
-    //    var name = $("#Name").val();
-    //    var url = $("#URL").val();
-    //    var description = $("#Description").val();
-
-    //    var obj = {
-    //        Name: name,
-    //        URL: url,
-    //        Description: description
-    //    }
-    //    AddPage(obj);
-    //}
-    //function AddPage(obj) {
-    //    $.ajax({
-    //        url: "/Admin/AddPage",
-    //        method: "POST",
-    //        data: obj,
-    //        success: function (data) {
-    //            alert(data);
-    //            //data = JSON.parse(data);
-    //            //console.log(data);
-    //        },
-    //        error: function (err) {
-    //            console.erorr(err);
-    //        }
-    //    })
-    //}
 </script>
-@section Scripts{
-    
-}
 

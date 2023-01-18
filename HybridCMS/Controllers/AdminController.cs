@@ -4,8 +4,10 @@ using HybridCMSEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace HybridCMS.Controllers
 {
@@ -73,16 +75,14 @@ namespace HybridCMS.Controllers
             }
             return PartialView("_AdminPageListPartial", List);
         }
-        //[HttpGet]
-        //[Route("{URL}")]
-        //public ActionResult PageView(string URL)
-        //{
-        //    List<AdminPageListView> List = new List<AdminPageListView>();
-        //    if (Session["CMSId"] != null)
-        //    {
-        //        List = pageBll.GetAllPageByUserId(Convert.ToInt64(Session["CMSId"]));
-        //    }
-        //    return PartialView("_AdminPageListPartial", List);
-        //}
+        [Route("{URL}", Name = "PageView")]
+        public ActionResult AdminPageView(string URL)
+        {
+            if (!string.IsNullOrEmpty(URL) && pageBll.CheckValidURL(URL))
+            {
+                return View();
+            }
+            return new ViewResult() { ViewName = "PageNotFound" };
+        }
     }
 }
