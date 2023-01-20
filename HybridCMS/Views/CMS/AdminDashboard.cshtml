@@ -7,15 +7,17 @@
 <!-- Admin Dashboard Start -->
 <div class="container-xxl py-6">
     <div class="container">
-        <div class="section-header text-center mx-auto mb-5" style="max-width: 500px;">
-            <h1 class="display-5 mb-3">@(Convert.ToString(Session["CMSName"] + " " + "Dashboard") )</h1>
+        <div class="section-header text-center mx-auto mb-3" style="max-width: 500px;">
+            <h1 class="display-5">@(Convert.ToString(Session["CMSName"] + " " + "Assets") )</h1>
         </div>
         <div class="row g-5 justify-content-center">
-            <div class="col-lg-7 col-md-12">
-
+            <div class="col-lg-12 col-md-12">
+                @{
+                    Html.RenderAction("AdminAssetList", "Asset");
+                }
             </div>
         </div>
     </div>
 </div>
 <!-- Admin Dashboard End -->
-@{Html.RenderPartial("_AddPagePartial");}
+@{Html.RenderPartial("_AddAssetPartial");}

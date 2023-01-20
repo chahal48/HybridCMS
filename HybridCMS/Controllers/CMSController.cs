@@ -22,13 +22,15 @@ namespace HybridCMS.Controllers
     public class CMSController : Controller
     {
         UserBll userBll = new UserBll();
+        LoginEntity _User;
         public CMSController()
         {
             SessionHelper.InitializeSession();
+            _User = SessionHelper.authenticateUser();
         }
         public ActionResult Login(string returnurl)
         {
-            if (Request.Cookies["HybridCMS"] == null && Session["CMSName"]==null)
+            if (Request.Cookies["HybridCMS"] == null && _User.Id<=0)
             {
                 return View();
             }
@@ -41,37 +43,21 @@ namespace HybridCMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                string encryptPass = userBll.EncryptPassword(model.Password);
-                var cmsEntity = userBll.LoginCMS(EmailorUsername: model.EmailorUsername,EnctypePassword: encryptPass);
+                var cmsEntity = userBll.LoginCMS(EmailorUsername: model.EmailorUsername,Password: model.Password);
 
-                if (cmsEntity == null || cmsEntity.EmailId == null || cmsEntity.Name == null)
+                if (cmsEntity == null || cmsEntity.EmailId == null || cmsEntity.Id <= 0)
                 {
                     ModelState.AddModelError("", "Your email/username or password is incorrect.");
                 }
                 else
                 {
-                    if (model.RemenberMe == true)
+                    SessionHelper.EmailorUsername = model.EmailorUsername;
+                    SessionHelper.Password        = model.Password;
+
+                    if (model.RemenberMe)
                     {
-                        HttpCookie HybridCMS = new HttpCookie("HybridCMS");
-
-                        HybridCMS["CMSName"] = cmsEntity.Name;
-                        HybridCMS["CMSId"] = Convert.ToString(cmsEntity.Id);
-                        HybridCMS["CMSEmail"] = cmsEntity.EmailId;
-                        HybridCMS["CMSPass"] = encryptPass;
-                        HybridCMS["CMSPhoto"] = cmsEntity.Photo;
-                        HybridCMS["CMSRoleId"] = Convert.ToString(cmsEntity.RoleId);
-                        HybridCMS["RemenberMe"] = Convert.ToString(model.RemenberMe);
-
-                        HybridCMS.Expires = DateTime.Now.AddDays(30);
-                        Response.Cookies.Add(HybridCMS);
+                        SessionHelper.SaveHybridCMS(keyName: model.EmailorUsername, keyPass: model.Password);
                     }
-                    //SessionHelper.cmsId = Convert.ToString(cmsEntity.RoleId);
-                    //SessionHelper.cmsName = cmsEntity.Name;
-                    Session["CMSName"] = cmsEntity.Name;
-                    Session["CMSId"] = Convert.ToString(cmsEntity.Id);
-                    Session["CMSEmail"] = cmsEntity.EmailId;
-                    Session["CMSPhoto"] = cmsEntity.Photo;
-                    Session["CMSRoleId"] = Convert.ToString(cmsEntity.RoleId);
 
                     if (!string.IsNullOrEmpty(returnurl) && Url.IsLocalUrl(returnurl))
                     {
@@ -85,24 +71,35 @@ namespace HybridCMS.Controllers
             }
             return View();
         }
+        [HttpGet]
+        [ChildActionOnly]
+        public ActionResult LoginPartial()
+        {
+            LoginEntity loginEntity = SessionHelper.authenticateUser();
+
+            if (loginEntity == null || loginEntity.Id <= 0)
+            {
+                SessionHelper.ClearHybridCMS();
+            }
+            return PartialView("_LoginPartial", loginEntity);
+        }
         public ActionResult ChangePassword()
         {
-            if (Session["CMSName"] != null && Session["CMSId"] != null)
+            if (_User.Id > 0)
             {
                 return View();
             }
-
-            return RedirectFromLogin();
+            return new ViewResult() { ViewName = "PageNotFound" };
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ChangePassword(CMSChangePasswordViewModel obj)
         {
-            if (ModelState.IsValid && Session["CMSId"] != null)
+            if (ModelState.IsValid && _User.Id > 0)
             {
                 try
                 {
-                    if (userBll.ChangePassword(CurrentPassword: obj.CurrentPassword, NewPassword: obj.NewPassword, Convert.ToInt64(Session["CMSId"])))
+                    if (userBll.ChangePassword(CurrentPassword: obj.CurrentPassword, NewPassword: obj.NewPassword,id: _User.Id))
                     {
                         ViewBag.AlertMsg = "Password updated successfully.";
                     }
@@ -117,7 +114,7 @@ namespace HybridCMS.Controllers
         }
         public ActionResult AdminDashboard()
         {
-            if (Session["CMSName"] != null && Session["CMSId"] != null && Session["CMSRoleId"].Equals("2"))
+            if (_User.Id > 0)
             {
                 return View();
             }

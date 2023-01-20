@@ -1,46 +1,34 @@
-﻿@{
+﻿@model HybridCMSEntities.LoginEntity
+
+@{
     string CurrentAction = @ViewContext.RouteData.Values["action"].ToString().ToLower();
     string CurrentController = @ViewContext.RouteData.Values["controller"].ToString().ToLower();
 }
 <a href="@Url.Action("Index", "Home")" class="nav-item nav-link">Home</a>
-<div class="nav-item dropdown">
-    @if (@CurrentAction.Equals("admindashboard") && Session["CMSRoleId"].Equals("2"))
-    {
-        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-            <small class="bi bi-newspaper"></small>
-            Pages
-        </a>
-        <div class="dropdown-menu m-0">
-            <a href="" data-bs-toggle="modal" data-bs-target="#addPageModal" class="dropdown-item">
-                <small class="bi bi-pencil-square"></small>&nbsp; Add Page
-            </a>
-            @{
-                Html.RenderAction("AdminPageList", "Admin");
-            }
-            @*<a href="@Url.Action("ChangePassword", "CMS")" class="dropdown-item @(@CurrentAction.Equals("changepassword")?"active":"")">Change Password</a>
-        <a href="@Url.Action("Logout", "CMS")" class="dropdown-item">Logout</a>*@
-        </div>
-    }
-</div>
+
+@if (@CurrentAction.Equals("admindashboard") && Model.RoleId == 2)
+{
+    <a href="" data-bs-toggle="modal" data-bs-target="#addAssetModal" class="nav-item nav-link">Add Asset</a>
+}
 <a href="@Url.Action("ContactUs", "Home")" class="nav-item nav-link">Contact Us</a>
 <div class="nav-item dropdown">
-    @if (Session["CMSName"] != null)
+    @if (!string.IsNullOrEmpty(Model.Name))
     {
         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
             <small class="fa fa-user text-body"></small>
-            @Session["CMSName"].ToString().Trim()
+            @Model.Name
         </a>
         <div class="dropdown-menu m-0">
-            @if (Session["CMSRoleId"].Equals("2"))
+            @if (Model.RoleId == 2)
             {
                 <a href="@Url.Action("AdminDashboard", "CMS")" class="dropdown-item @(@CurrentAction.Equals("admindashboard")?"active":"")">Admin Dashboard</a>
             }
             <a href="@Url.Action("ChangePassword", "CMS")" class="dropdown-item @(@CurrentAction.Equals("changepassword")?"active":"")">Change Password</a>
-            <a href="@Url.Action("Logout", "CMS")" class="dropdown-item">Logout</a>
+            <a href="@Url.Action("Logout", "CMS")" class="dropdown-item">Logout &nbsp;<strong class="bi bi-box-arrow-right"></strong> </a>
         </div>
     }
 </div>
-@if (Session["CMSName"] == null)
+@if (Model.Id <= 0)
 {
-    <a href="@Url.Action("Login", "CMS")" class="nav-item nav-link"><small class="fa fa-user text-body"></small>&nbsp;Sign In</a>
+    <a href="@Url.Action("Login", "CMS")" class="nav-item nav-link">Sign In&nbsp;<strong class="bi bi-box-arrow-in-left"></strong></a>
 }

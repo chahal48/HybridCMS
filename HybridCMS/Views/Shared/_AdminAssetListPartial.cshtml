@@ -1,0 +1,67 @@
+﻿@model IEnumerable<HybridCMSEntities.AssetEntity>
+
+<style>
+    select.form-select {
+        display: inline;
+        width: 200px;
+        margin-left: 25px;
+    }
+</style>
+<hr />
+<div class="container">
+    <div class="category-filter">
+        <select id="categoryFilter" class="form-select">
+            <option value="">Show All</option>
+            <option value="Page">Page</option>
+            <option value="Group">Group</option>
+        </select>
+    </div>
+
+    <table class="display" id="filterTable">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.URL)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AssetTypeId)
+                </th>
+                <th class="text-center">Manage</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                @Html.HiddenFor(model => item.AssetId)
+                @Html.HiddenFor(model => item.UserId)
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.URL)
+                    </td>
+                    <td>
+                        @if (item.AssetTypeId.Equals(HybridCMSEntities.AssetType.Page))
+                        {
+                            <span style="color:darkblue;"><b>@Html.DisplayFor(modelItem => item.AssetTypeId)</b></span>
+                        }
+                        else
+                        {
+                            <span style="color:crimson;"><b>@Html.DisplayFor(modelItem => item.AssetTypeId)</b></span>
+                        }
+                    </td>
+                    <td align="center" colspan="2">
+                        @Html.ActionLink(" ", "EditAsset", "Asset", new { AssetId = Convert.ToString(item.AssetId)}, new { @class = "btn btn-outline-primary rounded-pill bi bi-pencil-square" }) &nbsp;
+                        @Html.ActionLink(" ", "AssetView", "Asset", new { URL = item.URL }, new { @class = "btn btn-outline-info rounded-pill bi bi-eye-fill" }) &nbsp;
+                        @Html.ActionLink(" ", "DeleteAsset", "Asset", new { AssetId = Convert.ToString(item.AssetId)}, new { onclick = "return confirm('Are you sure you want to delete?');", @class = "btn btn-outline-secondary rounded-pill bi bi-trash-fill" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

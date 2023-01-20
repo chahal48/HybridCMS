@@ -80,13 +80,13 @@ namespace HybridCMSDll.DataAccess
             }
         }
 
-        public LoginEntity LoginCMS(string EmailorUsername, string EnctypePassword)
+        public LoginEntity LoginCMS(string EmailorUsername, string Password)
         {
             LoginEntity loginEntity = new LoginEntity();
             using (ADOExecution exec = new ADOExecution(GetConnectionString()))
             {
                 using (IDataReader dr = exec.ExecuteReader(CommandType.StoredProcedure, "usp_CMSLogin",
-                    new SqlParameter("@EmailorUsername", EmailorUsername), new SqlParameter("@Password", EnctypePassword)
+                    new SqlParameter("@EmailorUsername", EmailorUsername), new SqlParameter("@Password", EncryptPassword(Password))
                     ))
                 {
                     while (dr.Read())

@@ -1,7 +1,11 @@
-﻿using System;
+﻿using HybridCMSBll;
+using HybridCMSEntities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
+using System.Xml;
 
 namespace HybridCMS.Models
 {
@@ -11,27 +15,20 @@ namespace HybridCMS.Models
     public static class SessionHelper
     {
         #region Private Constants
-        private const string CMSId = "CMSId";
-        private const string CMSRoleId = "CMSRoleId";
-        private const string CMSUserName = "CMSUserName";
-        private const string CMSName = "CMSName";
-        private const string CMSEmail = "CMSEmail";
-        private const string CMSPass = "CMSPass";
-        private const string CMSPhoto = "CMSPhoto";
+        private const string _EmailorUsername = "EmailorUsername";
+        private const string _Password = "Password";
         #endregion
 
         #region Public Static Methods
         public static void InitializeSession()
         {
-            if (HttpContext.Current.Session["CMSName"] == null && HttpContext.Current.Request.Cookies["HybridCMS"] != null)
+            if ((HttpContext.Current.Session[_EmailorUsername] == null || HttpContext.Current.Session[_Password] == null) && HttpContext.Current.Request.Cookies["HybridCMS"] != null)
             {
                 HttpCookie HybridCMS = HttpContext.Current.Request.Cookies["HybridCMS"];
 
-                cmsId = HybridCMS["CMSId"];
-                cmsRoleId = HybridCMS["CMSRoleId"];
-                cmsEmail = HybridCMS["CMSEmail"];
-                cmsName = HybridCMS["CMSName"];
-                cmsPhoto = HybridCMS["CMSPhoto"];
+                EmailorUsername = HybridCMS[_EmailorUsername];
+                Password = HybridCMS[_Password];
+
             }
         }
         /// <summary>
@@ -60,109 +57,59 @@ namespace HybridCMS.Models
                 HttpContext.Current.Response.Cookies.Add(HybridCMS);
             }
         }
-        /// <summary>
-        /// Set value to session based on it`s key
-        /// </summary>
-        /// <param name="sessionName"></param>
-        /// <param name="value"></param>
-        private static void assignSessionValue(string sessionName, string value)
+        public static void SaveHybridCMS(string keyName, string keyPass)
         {
-            HttpContext.Current.Session[sessionName] = value;
+            HttpCookie HybridCMS = new HttpCookie("HybridCMS");
+
+            HybridCMS[_EmailorUsername] = keyName;
+            HybridCMS[_Password] = keyPass;
+
+            HybridCMS.Expires = DateTime.Now.AddDays(30);
+            HttpContext.Current.Response.Cookies.Add(HybridCMS);
         }
-        /// <summary>
-        /// Get value from session based on it`s key
-        /// </summary>
-        /// <param name="sessionName"></param>
-        /// <returns></returns>
-        private static string getSessionValue(string sessionName)
+        public static LoginEntity authenticateUser()
         {
-            return Convert.ToString(HttpContext.Current.Session[sessionName]);
+            UserBll userBll = new UserBll();
+            LoginEntity loginEntity = new LoginEntity();
+            try
+            {
+                loginEntity = userBll.LoginCMS(EmailorUsername: EmailorUsername, Password: Password);
+            }
+            catch { }
+
+            return loginEntity;
         }
         #endregion
 
         #region Public Static Properties
         /// <summary>
-        /// Gets/Sets Session for CMSId
+        /// Gets/Sets Session for EmailOrUserName
         /// </summary>
-        public static string cmsId
+        public static string EmailorUsername
         {
             get
             {
-                return getSessionValue(CMSId) ?? string.Empty;
+                return Convert.ToString(HttpContext.Current.Session["EmailorUsername"]);
             }
-            set { assignSessionValue(CMSId, value); }
+            set
+            {
+                HttpContext.Current.Session["EmailorUsername"] = value;
+            }
         }
         /// <summary>
-        /// Gets/Sets Session for CMSRoleId
+        /// Gets/Sets Session for Password
         /// </summary>
-        public static string cmsRoleId
+        public static string Password
         {
             get
             {
-                return getSessionValue(CMSRoleId) ?? string.Empty;
+                return Convert.ToString(HttpContext.Current.Session["Password"]);
             }
-            set { assignSessionValue(CMSRoleId, value); }
-        }
-        /// <summary>
-        /// Gets/Sets Session for CMSUserName
-        /// </summary>
-        public static string cmsUserName
-        {
-            get
+            set
             {
-                return getSessionValue(CMSUserName) ?? string.Empty;
+                HttpContext.Current.Session["Password"] = value;
             }
-            set { assignSessionValue(CMSUserName, value); }
-        }
-        /// <summary>
-        /// Gets/Sets Session for CMSName
-        /// </summary>
-        public static string cmsName
-        {
-            get
-            {
-                return getSessionValue(CMSName) ?? string.Empty;
-            }
-            set { assignSessionValue(CMSName, value); }
-        }
-        /// <summary>
-        /// Gets/Sets Session for CMSEmail
-        /// </summary>
-        public static string cmsEmail
-        {
-            get
-            {
-                return getSessionValue(CMSEmail) ?? string.Empty;
-            }
-            set { assignSessionValue(CMSEmail, value); }
-        }
-        /// <summary>
-        /// Gets/Sets Session for CMSPass
-        /// </summary>
-        public static string cmsPass
-        {
-            get
-            {
-                return getSessionValue(CMSPass) ?? string.Empty;
-            }
-            set { assignSessionValue(CMSPass, value); }
-        }
-        /// <summary>
-        /// Gets/Sets Session for CMSPhoto
-        /// </summary>
-        public static string cmsPhoto
-        {
-            get
-            {
-                return getSessionValue(CMSPhoto) ?? string.Empty;
-            }
-            set { assignSessionValue(CMSPhoto, value); }
         }
         #endregion
-
-        
     }
-    //Use as: SessionHelper.UserId="user1";
-    //        string user=SessionHelper.UserId;
-    //        SessionHelper.Abandon();
 }
