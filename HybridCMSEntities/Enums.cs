@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace HybridCMSEntities
 {
-    public class AdminPageListView
+    public enum AssetType
     {
-        public Int64 PageId { get; set; }
-        public string Name { get; set; }
-        public string URL { get; set; }
+        Page = 1,
+        Group = 2
     }
 }

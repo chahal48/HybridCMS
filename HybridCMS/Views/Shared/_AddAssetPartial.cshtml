@@ -1,14 +1,14 @@
 ﻿@model HybridCMS.Models.AssetViewModel
 
 <!-- Modal -->
-<div class="modal fade" id="addPageModal" tabindex="-1" aria-labelledby="addPageModalLabel" aria-hidden="true">
+<div class="modal fade" id="addAssetModal" tabindex="-1" aria-labelledby="addAssetModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addPageModalLabel">Add Page</h5>
+                <h5 class="modal-title" id="addAssetModalLabel">Add Asset</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            @using (Html.BeginForm("AddPage", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            @using (Html.BeginForm("AddAsset", "Asset", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 <div class="modal-body">
 
@@ -26,15 +26,22 @@
                         @Html.LabelFor(model => model.URL)
                         @Html.ValidationMessageFor(model => model.URL, "", new { @class = "text-danger" })
                     </div>
-                    <div class="form-floating mb-2">
+                    <div class="form-floating mb-3">
                         @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", type = "text", placeholder = "Description" } })
                         @Html.LabelFor(model => model.Description)
                         @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                     </div>
+                    <div class="mb-2">
+                        @Html.Label("Type :")
+                        @Html.RadioButtonFor(model => model.AssetTypeId, HybridCMSEntities.AssetType.Page, new { @checked = "checked" })
+                        @Html.Label(HybridCMSEntities.AssetType.Page.ToString(), new { @class = "control-label" }) &nbsp;
+                        @Html.RadioButtonFor(model => model.AssetTypeId, HybridCMSEntities.AssetType.Group)
+                        @Html.Label(HybridCMSEntities.AssetType.Group.ToString(), new { @class = "control-label" })
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary" @*onclick="AddBtnClick()"*@>Add</button>
+                    <button type="button" class="btn btn-outline-secondary border-2 py-2 px-4 rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill">Add</button>
                 </div>
             }
         </div>
@@ -48,4 +55,3 @@
         }
     }
 </script>
-

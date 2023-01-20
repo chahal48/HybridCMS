@@ -116,6 +116,13 @@
     <Content Include="img\testimonial-4.jpg" />
     <Content Include="lib\animate\animate.css" />
     <Content Include="lib\animate\animate.min.css" />
+    <Content Include="lib\datatables\css\jquery.dataTables.min.css" />
+    <Content Include="lib\datatables\images\sort_asc.png" />
+    <Content Include="lib\datatables\images\sort_asc_disabled.png" />
+    <Content Include="lib\datatables\images\sort_both.png" />
+    <Content Include="lib\datatables\images\sort_desc.png" />
+    <Content Include="lib\datatables\images\sort_desc_disabled.png" />
+    <Content Include="lib\datatables\js\jquery.dataTables.min.js" />
     <Content Include="lib\easing\easing.js" />
     <Content Include="lib\easing\easing.min.js" />
     <Content Include="lib\jQuery-TE_v.1.4.0\jquery-te-1.4.0.css" />
@@ -143,6 +150,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AssetController.cs" />
     <Compile Include="Controllers\CMSController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -260,12 +268,12 @@
     <Content Include="Views\CMS\ForgotPassword.cshtml" />
     <Content Include="Views\CMS\ResetPassword.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Shared\_AddPagePartial.cshtml" />
-    <Content Include="Views\Shared\_AdminPageListPartial.cshtml" />
-    <Content Include="Views\Shared\_ShowPagePartial.cshtml" />
     <Content Include="Views\Shared\_AddPostPartial.cshtml" />
-    <Content Include="Views\Admin\AdminPageView.cshtml" />
     <Content Include="Views\Shared\PageNotFound.cshtml" />
+    <Content Include="Views\Shared\_AddAssetPartial.cshtml" />
+    <Content Include="Views\Shared\_AdminAssetListPartial.cshtml" />
+    <Content Include="Views\Asset\AssetView.cshtml" />
+    <Content Include="Views\Asset\EditAsset.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -275,6 +283,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Admin\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HybridCMSBll\HybridCMSBll.csproj">

@@ -11,7 +11,7 @@ namespace HybridCMSDll.Interface
     {
         string CheckEmailorUsernameExists(string EmailorUsername);
         bool ChangePassword(string CurrentPassword, string NewPassword, Int64 id);
-        LoginEntity LoginCMS(string EmailorUsername, string EnctypePassword);
+        LoginEntity LoginCMS(string EmailorUsername, string Password);
         string EncryptPassword(string password);
         string DecryptPassword(string encryptpass);
         bool GenerateTokenForResetPassword(string EmailorUsername, string TokenId);

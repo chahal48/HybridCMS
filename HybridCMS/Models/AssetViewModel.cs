@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HybridCMSEntities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -16,7 +17,11 @@ namespace HybridCMS.Models
         [StringLength(20, MinimumLength = 3, ErrorMessage = "Name character length should be in between 3 to 20.")]
         public string Name { get; set; }
         public Int64 UserId { get; set; }
-        public int AssetTypeId { get; set; }
+
+        [DisplayName("Type :")]
+        [Required(ErrorMessage = "Sorry, Type is not selected.")]
+        public AssetType AssetTypeId { get; set; }
+
         [DisplayName("Display URL")]
         [Required(ErrorMessage ="URL is Required!!")]
         [StringLength(20, MinimumLength = 5, ErrorMessage = "URL character length should be in between 5 to 20.")]

@@ -22,6 +22,22 @@
       "files": [
         "sweetalert.min.js"
       ]
+    },
+    {
+      "library": "bootstrap@5.2.3",
+      "destination": "lib/bootstrap/",
+      "files": [
+        "js/bootstrap.min.js",
+        "css/bootstrap.min.css"
+      ]
+    },
+    {
+      "library": "datatables@1.10.21",
+      "destination": "lib/datatables/",
+      "files": [
+        "js/jquery.dataTables.min.js",
+        "css/jquery.dataTables_themeroller.min.css"
+      ]
     }
   ]
 }
