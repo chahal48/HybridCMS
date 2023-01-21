@@ -149,10 +149,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AssetController.cs" />
     <Compile Include="Controllers\CMSController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PostController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -256,24 +256,26 @@
     <Content Include="scss\bootstrap\scss\_utilities.scss" />
     <Content Include="scss\bootstrap\scss\_variables.scss" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_logoView.cshtml" />
     <Content Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
     <Content Include="Views\Shared\_CMSLoginLayout.cshtml" />
     <Content Include="Views\CMS\Login.cshtml" />
-    <Content Include="Views\Home\ContactUs.cshtml" />
-    <Content Include="Views\CMS\ChangePassword.cshtml" />
-    <Content Include="Views\CMS\AdminDashboard.cshtml" />
     <Content Include="Views\CMS\ForgotPassword.cshtml" />
     <Content Include="Views\CMS\ResetPassword.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_AddPostPartial.cshtml" />
-    <Content Include="Views\Shared\PageNotFound.cshtml" />
     <Content Include="Views\Shared\_AddAssetPartial.cshtml" />
     <Content Include="Views\Shared\_AdminAssetListPartial.cshtml" />
-    <Content Include="Views\Asset\AssetView.cshtml" />
+    <Content Include="Views\Shared\_CMSLayout.cshtml" />
+    <Content Include="Views\CMS\AdminDashboard.cshtml" />
+    <Content Include="Views\CMS\ChangePassword.cshtml" />
     <Content Include="Views\Asset\EditAsset.cshtml" />
+    <Content Include="Views\Asset\AssetView.cshtml" />
+    <Content Include="Views\Home\ContactUs.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\PageNotFound.cshtml" />
+    <Content Include="Views\Shared\_BlankPartialView.cshtml" />
+    <Content Include="Views\Shared\_AddPostBtnPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -283,7 +285,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Admin\" />
+    <Folder Include="Views\Post\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HybridCMSBll\HybridCMSBll.csproj">

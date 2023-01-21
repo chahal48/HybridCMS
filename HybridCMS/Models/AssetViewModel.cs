@@ -25,7 +25,7 @@ namespace HybridCMS.Models
         [DisplayName("Display URL")]
         [Required(ErrorMessage ="URL is Required!!")]
         [StringLength(20, MinimumLength = 5, ErrorMessage = "URL character length should be in between 5 to 20.")]
-        [Remote("IsUrlAvailable", "Admin", HttpMethod = "Post", ErrorMessage = "URL already exist.", AdditionalFields = "initialURL")]
+        [Remote("IsUrlAvailable", "Asset", HttpMethod = "Post", ErrorMessage = "URL already exist.", AdditionalFields = "initialURL")]
         public string URL { get; set; }
         [StringLength(100, ErrorMessage = "Description character length should be less than 100.")]
         public string Description { get; set; }

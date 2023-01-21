@@ -84,7 +84,9 @@
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    
     @{Html.RenderPartial("_ValidationScriptsPartial");}
+
     <script src="~/lib/jQuery-TE_v.1.4.0/jquery-te-1.4.0.min.js"></script>
     <script>
         $(document).ready(function () {
@@ -103,55 +105,7 @@
 
     <!-- Template Javascript -->
     <script src="~/Scripts/main.js"></script>
-    <script>
-        $(".modal").on("hidden.bs.modal", function () {
-            $("#guest_form input[type='text'],input[type='password']").each(function () {
-                $(this).removeClass('form-control input-validation-error');
-                $(this).addClass("form-control");
-            });
-            $(".field-validation-error").text('');
-            $(this).find('form').trigger('reset');
-        });
-    </script>
-    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
 
-    <script>
-        $("document").ready(function () {
-            $("#filterTable").dataTable({
-                "searching": true,
-                //order: [[3, 'desc']],  for shorting specific column
-                order: [], // for disable initial shorting
-                pageLength: 10, // for start page length
-                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, 'All']] // for giving specific row count
-            });
-            //Get a reference to the new datatable
-            var table = $('#filterTable').DataTable();
-            //Take the category filter drop down and append it to the datatables_filter div.
-            //You can use this same idea to move the filter anywhere withing the datatable that you want.
-            $("#filterTable_filter.dataTables_filter").append($("#categoryFilter"));
-            //Get the column index for the Category column to be used in the method below ($.fn.dataTable.ext.search.push)
-            //This tells datatables what column to filter on when a user selects a value from the dropdown.
-            //It's important that the text used here (Category) is the same for used in the header of the column to filter
-            var categoryIndex = 2; // Index of field to Filter
-            //Use the built in datatables API to filter the existing rows by the Category column
-            $.fn.dataTable.ext.search.push(
-                function (settings, data, dataIndex) {
-                    var selectedItem = $('#categoryFilter').val()
-                    var category = data[categoryIndex];
-                    if (selectedItem === "" || category.includes(selectedItem)) {
-                        return true;
-                    }
-                    return false;
-                }
-            );
-            //Set the change event for the Category Filter dropdown to redraw the datatable each time
-            //a user selects a new filter.
-            $("#categoryFilter").change(function (e) {
-                table.draw();
-            });
-            table.draw();
-        });
-    </script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

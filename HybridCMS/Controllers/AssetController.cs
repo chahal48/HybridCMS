@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace HybridCMS.Controllers
 {
@@ -19,7 +20,7 @@ namespace HybridCMS.Controllers
             _User = SessionHelper.authenticateUser();
         }
 
-        [HttpGet]
+        [AcceptVerbs("Get", "Post")]
         [ChildActionOnly]
         public ActionResult AdminAssetList()
         {
@@ -31,6 +32,7 @@ namespace HybridCMS.Controllers
             }
             return PartialView("_AdminAssetListPartial", List);
         }
+        [AcceptVerbs("Get", "Post")]
         [Route("{URL}", Name = "PageView")]
         public ActionResult AssetView(string URL)
         {
@@ -42,6 +44,12 @@ namespace HybridCMS.Controllers
             }
             return new ViewResult() { ViewName = "PageNotFound" };
         }
+        [AcceptVerbs("Get", "Post")]
+        [ChildActionOnly]
+        public ActionResult AddAssetPartial()
+        {
+            return PartialView("_AddAssetPartial");
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddAsset(AssetViewModel obj)
@@ -50,7 +58,7 @@ namespace HybridCMS.Controllers
             {
                 if (ModelState.IsValid && _User.Id > 0)
                 {
-                    bool result = assetBll.AddAsset(Name: obj.Name,assetType:obj.AssetTypeId, UserId: _User.Id, URL: obj.URL, Description: obj.Description, Photo: obj.ProfilePicture);
+                    bool result = assetBll.AddAsset(Name: obj.Name, assetType: obj.AssetTypeId, UserId: _User.Id, URL: obj.URL, Description: obj.Description, Photo: obj.ProfilePicture);
                     if (result)
                     {
                         TempData["SuccessMsg"] = "Asset added successfully.";
@@ -64,6 +72,7 @@ namespace HybridCMS.Controllers
             catch { }
             return RedirectToAction("AdminDashboard", "CMS");
         }
+        [Route("Asset/DeleteAsset/{AssetId}")]
         public ActionResult DeleteAsset(string AssetId)
         {
             bool result = assetBll.CheckValidUserIdandAssetId(_User.Id, AssetId);
@@ -73,6 +82,7 @@ namespace HybridCMS.Controllers
                 if (assetBll.DeleteAsset(long.Parse(AssetId)))
                 {
                     ViewBag.AlertMsg = "Asset deleted successfully";
+                    return RedirectToAction("AdminDashboard", "CMS");
                 }
             }
             return new ViewResult() { ViewName = "PageNotFound" };
@@ -95,6 +105,7 @@ namespace HybridCMS.Controllers
             return Json(JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
+        [Route("Asset/EditAsset/{AssetId}")]
         public ActionResult EditAsset(string AssetId)
         {
             AssetViewModel assetViewModel = new AssetViewModel();
@@ -120,7 +131,8 @@ namespace HybridCMS.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditAsset(AssetViewModel obj)
+        [Route("Asset/EditAsset/{AssetId}")]
+        public ActionResult EditAsset(string AssetId, AssetViewModel obj)
         {
             try
             {
@@ -146,6 +158,32 @@ namespace HybridCMS.Controllers
             }
             catch { }
             return RedirectToAction("AdminDashboard", "CMS");
+        }
+        [AcceptVerbs("Get", "Post")]
+        [ChildActionOnly]
+        public ActionResult AddPostButtonPartialView(string AssetId)
+        {
+            if (assetBll.CheckValidUserIdandAssetId(_User.Id, AssetId))
+            {
+                var Asset = new RouteValueDictionary
+                {
+                    { "AssetId", long.Parse(AssetId) }
+                };
+                return PartialView("_AddPostBtnPartial",Asset);
+            }
+            return PartialView("_BlankPartialView");
+        }
+        [AcceptVerbs("Get", "Post")]
+        [ChildActionOnly]
+        public ActionResult PartialAddPostView(string AssetId)
+        {
+            if (assetBll.CheckValidUserIdandAssetId(_User.Id, AssetId))
+            {
+                AddPostViewModal obj = new AddPostViewModal();
+                obj.AssetId = long.Parse(AssetId);
+                return PartialView("_AddPostPartial", obj);
+            }
+            return PartialView("_BlankPartialView"); 
         }
     }
 }

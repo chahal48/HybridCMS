@@ -22,7 +22,7 @@ namespace HybridCMS.Controllers
     public class CMSController : Controller
     {
         UserBll userBll = new UserBll();
-        LoginEntity _User;
+        LoginEntity _User = new LoginEntity();
         public CMSController()
         {
             SessionHelper.InitializeSession();
@@ -71,17 +71,15 @@ namespace HybridCMS.Controllers
             }
             return View();
         }
-        [HttpGet]
+        [AcceptVerbs("Get", "Post")]
         [ChildActionOnly]
         public ActionResult LoginPartial()
         {
-            LoginEntity loginEntity = SessionHelper.authenticateUser();
-
-            if (loginEntity == null || loginEntity.Id <= 0)
+            if (_User.Id <= 0)
             {
                 SessionHelper.ClearHybridCMS();
             }
-            return PartialView("_LoginPartial", loginEntity);
+            return PartialView("_LoginPartial", _User);
         }
         public ActionResult ChangePassword()
         {
@@ -110,13 +108,13 @@ namespace HybridCMS.Controllers
                 }
                 catch { }
             }
-            return View(obj);
+            return View();
         }
         public ActionResult AdminDashboard()
         {
             if (_User.Id > 0)
             {
-                return View();
+                return View(_User);
             }
             else
             {

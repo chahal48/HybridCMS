@@ -44,14 +44,14 @@
   <ItemGroup>
     <Compile Include="ADO\ADOExecution.cs" />
     <Compile Include="DataAccess\AssetADO.cs" />
-    <Compile Include="DataAccess\PageADO.cs" />
+    <Compile Include="DataAccess\PostADO.cs" />
     <Compile Include="DataAccess\SQLAsset.cs" />
-    <Compile Include="DataAccess\SQLPage.cs" />
+    <Compile Include="DataAccess\SQLPost.cs" />
     <Compile Include="DataAccess\UserADO.cs" />
     <Compile Include="DataAccess\SQLBase.cs" />
     <Compile Include="DataAccess\SQLUser.cs" />
     <Compile Include="Interface\IAsset.cs" />
-    <Compile Include="Interface\IPage.cs" />
+    <Compile Include="Interface\IPost.cs" />
     <Compile Include="Interface\IUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

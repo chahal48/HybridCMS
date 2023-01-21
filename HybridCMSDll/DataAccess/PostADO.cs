@@ -1,7 +1,6 @@
 ﻿using HybridCMSDll.ADO;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Data.SqlClient;
 using System.Data;
 using System.Linq;
@@ -11,18 +10,18 @@ using HybridCMSEntities;
 
 namespace HybridCMSDll.DataAccess
 {
-    public partial class SQLPage
+    public partial class SQLPost
     {
-        public bool AddPost(Int64 AssetId, string Heading, string Description, string EncodedHtml, string Photo)
+        public bool AddPost(PostEntity obj)
         {
             using (ADOExecution exec = new ADOExecution(GetConnectionString()))
             {
                 int Result = exec.ExecuteNonQuery(CommandType.StoredProcedure, "usp_AddPost",
-                    new SqlParameter("@AssetId", AssetId),
-                    new SqlParameter("@PostHeading", Heading),
-                    new SqlParameter("@PostDescription", Description),
-                    new SqlParameter("@EncodedHtml", EncodedHtml),
-                    new SqlParameter("@ImageName", Photo));
+                    new SqlParameter("@AssetId", obj.AssetId),
+                    new SqlParameter("@PostHeading", obj.PostHeading),
+                    new SqlParameter("@PostDescription", obj.PostDescription),
+                    new SqlParameter("@EncodedHtml", obj.EncodedHtml),
+                    new SqlParameter("@ImageName", obj.ImageName));
 
                 return ReturnBool(Result);
             }

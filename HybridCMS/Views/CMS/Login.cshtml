@@ -25,7 +25,7 @@
                             }
                         </div>
                         <div class="form-floating mb-3">
-                            @Html.EditorFor(model => model.EmailorUsername, new { htmlAttributes = new { @class = "form-control", placeholder = "Email or Username", onkeypress = "return AvoidSpace()" } })
+                            @Html.EditorFor(model => model.EmailorUsername, new { htmlAttributes = new { @class = "form-control", placeholder = "Email or Username" } })
                             @Html.LabelFor(model => model.EmailorUsername)
                             @Html.ValidationMessageFor(model => model.EmailorUsername, "", new { @class = "text-danger" })
                         </div>
@@ -45,9 +45,9 @@
                         <div class="form-check mb-3">
                             <input type="submit" value="Sign in" class="btn btn-primary btn-login text-uppercase fw-bold float-end" />
                         </div>
-                        <br/>
+                        <br />
                         <div class="form-check mb-3">
-                            @Html.ActionLink("Forgot Password", "ForgotPassword", "CMS","", new { @class = "text-uppercase float-end" })
+                            @Html.ActionLink("Forgot Password", "ForgotPassword", "CMS", new { }, new { @class = "text-uppercase float-end" })
                         </div>
                     }
                 </div>
@@ -66,17 +66,25 @@
                 x.type = "password";
             }
         }
-        function AvoidSpace() {
-            if (event.keyCode == 32) {
-                event.returnValue = false;
-                return false;
-            }
-        }
         $(document).ready(function () {
             // show the alert
             setTimeout(function () {
                 $(".alert").alert('close');
             }, 1500);
         });
+    </script>
+    <script>
+        var text = document.getElementById('EmailorUsername');
+        text.addEventListener('input', function (e) {
+            var keyCode = e.keyCode ? e.keyCode : e.which;
+            this.value = this.value.replace(/\s/g, '')
+            if (keyCode === 32) return;
+        })
+        var text = document.getElementById('Password');
+        text.addEventListener('input', function (e) {
+            var keyCode = e.keyCode ? e.keyCode : e.which;
+            this.value = this.value.replace(/\s/g, '')
+            if (keyCode === 32) return;
+        })
     </script>
 }

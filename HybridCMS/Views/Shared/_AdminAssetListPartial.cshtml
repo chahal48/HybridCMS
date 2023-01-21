@@ -1,6 +1,11 @@
 ﻿@model IEnumerable<HybridCMSEntities.AssetEntity>
 
 <style>
+    #btnAddAsset {
+        display: inline;
+        margin-left: 25px;
+    }
+
     select.form-select {
         display: inline;
         width: 200px;
@@ -13,9 +18,10 @@
         <select id="categoryFilter" class="form-select">
             <option value="">Show All</option>
             <option value="Page">Page</option>
-            <option value="Group">Group</option>
+            <option value="Blog">Blog</option>
         </select>
     </div>
+    <a href="" id="btnAddAsset" data-bs-toggle="modal" data-bs-target="#addAssetModal" class="btn btn-outline-info border-2 py-2 px-4 rounded-pill">Add Asset</a>
 
     <table class="display" id="filterTable">
         <thead>
@@ -55,9 +61,9 @@
                         }
                     </td>
                     <td align="center" colspan="2">
-                        @Html.ActionLink(" ", "EditAsset", "Asset", new { AssetId = Convert.ToString(item.AssetId)}, new { @class = "btn btn-outline-primary rounded-pill bi bi-pencil-square" }) &nbsp;
+                        @Html.ActionLink(" ", "EditAsset", "Asset", new { AssetId = Convert.ToString(item.AssetId) }, new { @class = "btn btn-outline-primary rounded-pill bi bi-pencil-square" }) &nbsp;
                         @Html.ActionLink(" ", "AssetView", "Asset", new { URL = item.URL }, new { @class = "btn btn-outline-info rounded-pill bi bi-eye-fill" }) &nbsp;
-                        @Html.ActionLink(" ", "DeleteAsset", "Asset", new { AssetId = Convert.ToString(item.AssetId)}, new { onclick = "return confirm('Are you sure you want to delete?');", @class = "btn btn-outline-secondary rounded-pill bi bi-trash-fill" })
+                        @Html.ActionLink(" ", "DeleteAsset", "Asset", new { AssetId = Convert.ToString(item.AssetId) }, new { onclick = "return confirm('Are you sure you want to delete?');", @class = "btn btn-outline-secondary rounded-pill bi bi-trash-fill" })
                     </td>
                 </tr>
             }

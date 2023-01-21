@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace HybridCMSDll.DataAccess
 {
-    public partial class SQLPage : SQLBase, IPage
+    public partial class SQLPost : SQLBase, IPost
     {
-        public SQLPage() : base() { }
-    }
+        public SQLPost() : base() { }
+}
 }

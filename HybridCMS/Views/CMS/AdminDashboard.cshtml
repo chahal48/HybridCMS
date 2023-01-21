@@ -1,23 +1,78 @@
-﻿
+﻿@model HybridCMSEntities.LoginEntity
 @{
     ViewBag.Title = "AdminDashboard";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_CMSLayout.cshtml";
+    string DashboardName = Model.Name is null ? string.Empty : (Model.Name + " Assets");
 }
 
 <!-- Admin Dashboard Start -->
 <div class="container-xxl py-6">
     <div class="container">
         <div class="section-header text-center mx-auto mb-3" style="max-width: 500px;">
-            <h1 class="display-5">@(Convert.ToString(Session["CMSName"] + " " + "Assets") )</h1>
+            <h1 class="display-5">@DashboardName </h1>
         </div>
         <div class="row g-5 justify-content-center">
             <div class="col-lg-12 col-md-12">
+
+
                 @{
                     Html.RenderAction("AdminAssetList", "Asset");
+
+                    Html.RenderAction("AddAssetPartial", "Asset");
                 }
             </div>
         </div>
     </div>
 </div>
 <!-- Admin Dashboard End -->
-@{Html.RenderPartial("_AddAssetPartial");}
+
+@section scripts{
+    <script>
+        var text = document.getElementById('URL');
+        text.addEventListener('input', function (e) {
+            var keyCode = e.keyCode ? e.keyCode : e.which;
+            this.value = this.value.replace(/\s/g, '')
+            if (keyCode === 32) return;
+        })
+    </script>
+    <script>
+        $(".modal").on("hidden.bs.modal", function () {
+            $("#guest_form input[type='text'],input[type='password']").each(function () {
+                $(this).removeClass('form-control input-validation-error');
+                $(this).addClass("form-control");
+            });
+            $(".field-validation-error").text('');
+            $(this).find('form').trigger('reset');
+        });
+    </script>
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <script>
+        $("document").ready(function () {
+            $("#filterTable").dataTable({
+                "searching": true,
+                order: [],
+                pageLength: 10,
+                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, 'All']]
+            });
+            var table = $('#filterTable').DataTable();
+            $("#filterTable_filter.dataTables_filter").append($("#categoryFilter"));
+            $("#filterTable_filter.dataTables_filter").append($("#btnAddAsset"));
+            var categoryIndex = 2;
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var selectedItem = $('#categoryFilter').val()
+                    var category = data[categoryIndex];
+                    if (selectedItem === "" || category.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+            $("#categoryFilter").change(function (e) {
+                table.draw();
+            });
+            table.draw();
+        });
+    </script>
+
+}
