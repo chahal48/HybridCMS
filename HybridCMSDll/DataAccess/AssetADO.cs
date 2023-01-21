@@ -106,6 +106,7 @@ namespace HybridCMSDll.DataAccess
                     while (dr.Read())
                     {
                         assetEntity.AssetId = Convert.ToInt64(dr["AssetId"]);
+                        assetEntity.Name = Convert.ToString(dr["Name"]);
                         assetEntity.UserId = Convert.ToInt64(dr["UserId"]);
                         assetEntity.AssetTypeId = (AssetType)(dr["AssetTypeId"]);
                         assetEntity.Description = Convert.ToString(dr["Description"]);

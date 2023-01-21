@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace HybridCMSDll.Interface
 {
-    public interface IPage
+    public interface IPost
     {
-        bool AddPost(Int64 AssetId, string Heading, string Description, string EncodedHtml, string Photo);
+        bool AddPost(PostEntity obj);
     }
 }

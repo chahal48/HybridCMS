@@ -5,11 +5,6 @@
     string CurrentController = @ViewContext.RouteData.Values["controller"].ToString().ToLower();
 }
 <a href="@Url.Action("Index", "Home")" class="nav-item nav-link">Home</a>
-
-@if (@CurrentAction.Equals("admindashboard") && Model.RoleId == 2)
-{
-    <a href="" data-bs-toggle="modal" data-bs-target="#addAssetModal" class="nav-item nav-link">Add Asset</a>
-}
 <a href="@Url.Action("ContactUs", "Home")" class="nav-item nav-link">Contact Us</a>
 <div class="nav-item dropdown">
     @if (!string.IsNullOrEmpty(Model.Name))
