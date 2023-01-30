@@ -21,10 +21,6 @@ namespace HybridCMSBll
         {
             return iAsset.GetAllAssetByUserId(userId);
         }
-        public bool AddAsset(string Name, AssetType assetType, Int64 UserId, string URL, string Description, string Photo)
-        {
-            return iAsset.AddAsset(Name: Name,assetType:assetType,UserId:UserId,URL:URL,Description:Description,Photo:Photo);
-        }
         public bool CheckUrlAlreadyExists(string url)
         {
             return iAsset.CheckUrlAlreadyExists(url);
@@ -41,13 +37,25 @@ namespace HybridCMSBll
         {
             return iAsset.GetAssetByAssetId(AssetId);
         }
-        public bool UpdateAsset(string Name, Int64 AssetId, Int64 UserId, string URL, string Description, string Photo)
+        public bool AddAsset(AssetEntity obj)
         {
-            return iAsset.UpdateAsset(Name:Name,AssetId:AssetId,UserId:UserId,URL:URL,Description:Description,Photo:Photo);
+            return iAsset.AddAsset(obj);
+        }
+        public bool UpdateAsset(AssetEntity obj)
+        {
+            return iAsset.UpdateAsset(obj);
         }
         public bool CheckValidUserIdandAssetId(Int64 UserId, string AssetId)
         {
             return iAsset.CheckValidUserIdandAssetId(UserId: UserId, AssetId: AssetId);
+        }
+        public List<AssetMap> GetAllAsset()
+        {
+            return iAsset.GetAllAsset();
+        }
+        public List<AssetMap> GetAllAssetBySearch(string Search)
+        {
+            return iAsset.GetAllAssetBySearch(Search);
         }
     }
 }

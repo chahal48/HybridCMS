@@ -18,7 +18,7 @@
 
     // Fixed Navbar
     $(window).scroll(function () {
-        if ($(window).width() < 992) {
+        if ($(window).width() > 992) {
             if ($(this).scrollTop() > 45) {
                 $('.fixed-top').addClass('bg-white shadow');
             } else {

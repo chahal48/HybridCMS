@@ -30,7 +30,8 @@ namespace HybridCMSDll.DataAccess
                             UserId = Convert.ToInt64(dr["UserId"]),
                             AssetTypeId = (AssetType)dr["AssetTypeId"],
                             Name = Convert.ToString(dr["Name"]),
-                            URL = Convert.ToString(dr["URL"])
+                            URL = Convert.ToString(dr["URL"]),
+                            TotalPost = Convert.ToInt64(dr["PostCount"])
                         });
                     }
                 }
@@ -63,17 +64,17 @@ namespace HybridCMSDll.DataAccess
             }
             return asset;
         }
-        public bool AddAsset(string Name, AssetType assetType, Int64 UserId, string URL, string Description, string Photo)
+        public bool AddAsset(AssetEntity obj)
         {
             using (ADOExecution exec = new ADOExecution(GetConnectionString()))
             {
                 int Result = exec.ExecuteNonQuery(CommandType.StoredProcedure, "usp_AddAsset",
-                    new SqlParameter("@Name", Name),
-                    new SqlParameter("@UserId", UserId),
-                    new SqlParameter("@AssetTypeId", assetType),
-                    new SqlParameter("@URL", URL),
-                    new SqlParameter("@Description", Description),
-                    new SqlParameter("@ProfilePicture", Photo));
+                    new SqlParameter("@Name", obj.Name),
+                    new SqlParameter("@UserId", obj.UserId),
+                    new SqlParameter("@AssetTypeId", obj.AssetTypeId),
+                    new SqlParameter("@URL", obj.URL),
+                    new SqlParameter("@Description", obj.Description),
+                    new SqlParameter("@ProfilePicture", obj.ProfilePicture));
 
                 return ReturnBool(Result);
             }
@@ -127,17 +128,17 @@ namespace HybridCMSDll.DataAccess
                 return ReturnBool(Result);
             }
         }
-        public bool UpdateAsset(string Name, Int64 AssetId, Int64 UserId, string URL, string Description, string Photo)
+        public bool UpdateAsset(AssetEntity obj)
         {
             using (ADOExecution exec = new ADOExecution(GetConnectionString()))
             {
                 int Result = exec.ExecuteNonQuery(CommandType.StoredProcedure, "usp_UpdateAsset",
-                    new SqlParameter("@AssetId", AssetId),
-                    new SqlParameter("@Name", Name),
-                    new SqlParameter("@UserId", UserId),
-                    new SqlParameter("@URL", URL),
-                    new SqlParameter("@Description", Description),
-                    new SqlParameter("@ProfilePicture", Photo));
+                    new SqlParameter("@AssetId", obj.AssetId),
+                    new SqlParameter("@Name", obj.Name),
+                    new SqlParameter("@UserId", obj.UserId),
+                    new SqlParameter("@URL", obj.URL),
+                    new SqlParameter("@Description", obj.Description),
+                    new SqlParameter("@ProfilePicture", obj.ProfilePicture));
 
                 return ReturnBool(Result);
             }
@@ -165,6 +166,62 @@ namespace HybridCMSDll.DataAccess
                 }
             }
             return ReturnBool(Result);
+        }
+        public List<AssetMap> GetAllAsset()
+        {
+            List<AssetMap> assetMaps= new List<AssetMap>();
+            using (ADOExecution exec = new ADOExecution(GetConnectionString()))
+            {
+                using (IDataReader dr = exec.ExecuteReader(CommandType.StoredProcedure, "usp_GetAllAsset"))
+                {
+                    while (dr.Read())
+                    {
+                        assetMaps.Add(new AssetMap()
+                        {
+                            AssetId = Convert.ToInt64(dr["AssetId"]),
+                            AssetTypeId = (AssetType)dr["AssetTypeId"],
+                            AssetName = Convert.ToString(dr["AssetName"]),
+                            AssetUrl = Convert.ToString(dr["AssetUrl"]),
+                            PostCount = Convert.ToInt64(dr["PostCount"]),
+                            AuthorName = Convert.ToString(dr["AuthorName"]),
+                            AuthorUserName = Convert.ToString(dr["AuthorUserName"]),
+                            AssetPhoto = Convert.ToString(dr["AssetPhoto"]),
+                            AssetDescription = Convert.ToString(dr["AssetDescription"]),
+                            CreatedOn = Convert.ToDateTime(dr["CreatedOn"])
+                        });
+                    }
+                }
+            }
+            return assetMaps;
+        }
+        public List<AssetMap> GetAllAssetBySearch(string Search)
+        {
+            List<AssetMap> assetMaps = new List<AssetMap>();
+            using (ADOExecution exec = new ADOExecution(GetConnectionString()))
+            {
+                using (IDataReader dr = exec.ExecuteReader(CommandType.StoredProcedure, "usp_GetAllAssetBySearch",
+                    new SqlParameter("@Search", Search)
+                    ))
+                {
+                    while (dr.Read())
+                    {
+                        assetMaps.Add(new AssetMap()
+                        {
+                            AssetId = Convert.ToInt64(dr["AssetId"]),
+                            AssetTypeId = (AssetType)dr["AssetTypeId"],
+                            AssetName = Convert.ToString(dr["AssetName"]),
+                            AssetUrl = Convert.ToString(dr["AssetUrl"]),
+                            PostCount = Convert.ToInt64(dr["PostCount"]),
+                            AuthorName = Convert.ToString(dr["AuthorName"]),
+                            AuthorUserName = Convert.ToString(dr["AuthorUserName"]),
+                            AssetPhoto = Convert.ToString(dr["AssetPhoto"]),
+                            AssetDescription = Convert.ToString(dr["AssetDescription"]),
+                            CreatedOn = Convert.ToDateTime(dr["CreatedOn"])
+                        });
+                    }
+                }
+            }
+            return assetMaps;
         }
     }
 }

@@ -4,6 +4,9 @@ using HybridCMSEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -20,6 +23,7 @@ namespace HybridCMS.Controllers
             _User = SessionHelper.authenticateUser();
         }
 
+        #region Child Action Method
         [AcceptVerbs("Get", "Post")]
         [ChildActionOnly]
         public ActionResult AdminAssetList()
@@ -32,45 +36,45 @@ namespace HybridCMS.Controllers
             }
             return PartialView("_AdminAssetListPartial", List);
         }
+        //[AcceptVerbs("Get", "Post")]
+        //[ChildActionOnly]
+        //public ActionResult AddPostButtonPartialView(string AssetId)
+        //{
+        //    if (assetBll.CheckValidUserIdandAssetId(_User.Id, AssetId))
+        //    {
+        //        return PartialView("_AddPostBtnPartial");
+        //    }
+        //    return PartialView("_BlankPartialView");
+        //}
+        //[AcceptVerbs("Get", "Post")]
+        //[ChildActionOnly]
+        //public ActionResult PartialAddPostView(string AssetId)
+        //{
+        //    if (assetBll.CheckValidUserIdandAssetId(_User.Id, AssetId))
+        //    {
+        //        AddPostViewModal obj = new AddPostViewModal();
+        //        obj.AssetId = long.Parse(AssetId);
+        //        return PartialView("_AddPostPartial", obj);
+        //    }
+        //    return PartialView("_BlankPartialView");
+        //}
+        #endregion
+
         [AcceptVerbs("Get", "Post")]
-        [Route("{URL}", Name = "PageView")]
+        [Route("@{URL}")]
         public ActionResult AssetView(string URL)
         {
-            AssetEntity asset = assetBll.CheckValidURL(URL);
-
-            if (!string.IsNullOrEmpty(URL) && asset.AssetId > 0 && !string.IsNullOrEmpty(asset.URL))
-            {
-                return View(asset);
-            }
-            return new ViewResult() { ViewName = "PageNotFound" };
-        }
-        [AcceptVerbs("Get", "Post")]
-        [ChildActionOnly]
-        public ActionResult AddAssetPartial()
-        {
-            return PartialView("_AddAssetPartial");
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AddAsset(AssetViewModel obj)
-        {
+            AssetEntity asset = new AssetEntity();
             try
             {
-                if (ModelState.IsValid && _User.Id > 0)
+                asset = assetBll.CheckValidURL(URL);
+                if (!string.IsNullOrEmpty(URL) && asset.AssetId > 0 && !string.IsNullOrEmpty(asset.URL))
                 {
-                    bool result = assetBll.AddAsset(Name: obj.Name, assetType: obj.AssetTypeId, UserId: _User.Id, URL: obj.URL, Description: obj.Description, Photo: obj.ProfilePicture);
-                    if (result)
-                    {
-                        TempData["SuccessMsg"] = "Asset added successfully.";
-                    }
-                }
-                else
-                {
-                    TempData["ErrorMsg"] = "Error adding asset.";
+                    return View(asset);
                 }
             }
             catch { }
-            return RedirectToAction("AdminDashboard", "CMS");
+            return new ViewResult() { ViewName = "PageNotFound" };
         }
         [Route("Asset/DeleteAsset/{AssetId}")]
         public ActionResult DeleteAsset(string AssetId)
@@ -87,103 +91,43 @@ namespace HybridCMS.Controllers
             }
             return new ViewResult() { ViewName = "PageNotFound" };
         }
-        [AcceptVerbs("Get", "Post")]
-        public ActionResult IsUrlAvailable([Bind(Prefix = "URL")] string URL, string initialURL)
+        [Route("Asset/UpdateAsset/{AssetId}")]
+        public ActionResult UpdateAsset(string AssetId)
         {
-            if (initialURL != "" && initialURL != null)
-            {
-                if (URL.ToLower() == initialURL.ToLower())
-                {
-                    return Json(true, JsonRequestBehavior.AllowGet);
-                }
-            }
-            bool result = assetBll.CheckUrlAlreadyExists(URL);
+            bool result = assetBll.CheckValidUserIdandAssetId(_User.Id, AssetId);
+
             if (result)
             {
-                return Json(true, JsonRequestBehavior.AllowGet);
-            }
-            return Json(JsonRequestBehavior.AllowGet);
-        }
-        [HttpGet]
-        [Route("Asset/EditAsset/{AssetId}")]
-        public ActionResult EditAsset(string AssetId)
-        {
-            AssetViewModel assetViewModel = new AssetViewModel();
-            if (assetBll.CheckValidUserIdandAssetId(_User.Id, AssetId))
-            {
                 var asset = assetBll.GetAssetByAssetId(long.Parse(AssetId));
-                if (asset.UserId == _User.Id)
+                if (asset.UserId == _User.Id && asset.AssetTypeId == AssetType.Blog)
                 {
-                    assetViewModel = new AssetViewModel()
-                    {
-                        AssetId = asset.AssetId,
-                        UserId = asset.UserId,
-                        AssetTypeId = asset.AssetTypeId,
-                        URL = asset.URL,
-                        Name = asset.Name,
-                        Description = asset.Description,
-                        ProfilePicture = asset.ProfilePicture
-                    };
-                    return View(assetViewModel);
+                    return RedirectToAction("Update", "Blog", new { AssetId = AssetId });
+                }
+                else if(asset.UserId == _User.Id && asset.AssetTypeId == AssetType.Page)
+                {
+                    return RedirectToAction("Update", "Page", new { AssetId = AssetId });
                 }
             }
             return new ViewResult() { ViewName = "PageNotFound" };
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Route("Asset/EditAsset/{AssetId}")]
-        public ActionResult EditAsset(string AssetId, AssetViewModel obj)
-        {
-            try
-            {
-                if (ModelState.IsValid && _User.Id > 0)
-                {
-                    if (_User.Id != obj.UserId)
-                    {
-                        ModelState.AddModelError("", "you can`t change other user data!");
-                    }
-                    else
-                    {
-                        bool result = assetBll.UpdateAsset(Name: obj.Name, AssetId: obj.AssetId, UserId: obj.UserId, URL: obj.URL, Description: obj.Description, Photo: obj.ProfilePicture);
-                        if (result)
-                        {
-                            TempData["SuccessMsg"] = "Asset added successfully.";
-                        }
-                    }
-                }
-                else
-                {
-                    TempData["ErrorMsg"] = "Error adding asset.";
-                }
-            }
-            catch { }
-            return RedirectToAction("AdminDashboard", "CMS");
-        }
-        [AcceptVerbs("Get", "Post")]
-        [ChildActionOnly]
-        public ActionResult AddPostButtonPartialView(string AssetId)
-        {
-            if (assetBll.CheckValidUserIdandAssetId(_User.Id, AssetId))
-            {
-                var Asset = new RouteValueDictionary
-                {
-                    { "AssetId", long.Parse(AssetId) }
-                };
-                return PartialView("_AddPostBtnPartial",Asset);
-            }
-            return PartialView("_BlankPartialView");
-        }
-        [AcceptVerbs("Get", "Post")]
-        [ChildActionOnly]
-        public ActionResult PartialAddPostView(string AssetId)
-        {
-            if (assetBll.CheckValidUserIdandAssetId(_User.Id, AssetId))
-            {
-                AddPostViewModal obj = new AddPostViewModal();
-                obj.AssetId = long.Parse(AssetId);
-                return PartialView("_AddPostPartial", obj);
-            }
-            return PartialView("_BlankPartialView"); 
-        }
+        //[Route("Asset/{AssetId}")]
+        //public ActionResult AssetDetails(string AssetId)
+        //{
+        //    bool result = assetBll.CheckValidUserIdandAssetId(_User.Id, AssetId);
+
+        //    if (result)
+        //    {
+        //        var asset = assetBll.GetAssetByAssetId(long.Parse(AssetId));
+        //        if (asset.UserId == _User.Id && asset.AssetTypeId == AssetType.Blog)
+        //        {
+        //            return RedirectToAction("Update", "Blog", new { AssetId = AssetId });
+        //        }
+        //        else if (asset.UserId == _User.Id && asset.AssetTypeId == AssetType.Page)
+        //        {
+        //            return RedirectToAction("Update", "Page", new { AssetId = AssetId });
+        //        }
+        //    }
+        //    return new ViewResult() { ViewName = "PageNotFound" };
+        //}
     }
 }

@@ -1,0 +1,53 @@
+﻿@model HybridCMSEntities.PostMap
+@{
+    ViewBag.Title = "DetailPost";
+    Layout = "~/Views/Shared/_CMSLayout.cshtml";
+}
+<!-- Detail Post Start -->
+<div class="container-fluid bg-light bg-icon py-6 min-vh-100" style="padding-bottom:0 !important;">
+    <div class="container">
+        <div class="section-header text-center mx-auto wow fadeInUp mb-3" data-wow-delay="0.1s" style="max-width: 500px;">
+        </div>
+        <div class="text-center mb-3">
+            <h2>
+                @Model.PostHeading
+            </h2>
+        </div>
+        @*<div class="col-lg-12 col-md-12 wow fadeInUp" data-wow-delay="0.1s">*@
+        <div class="row g-3">
+            <div class="col-md-1">
+                <img class="rounded-circle" style="height:80px" src="~/img/5.png" alt="">
+            </div>
+            <div class="col-md-2">
+                <br />
+                <h5>Author</h5>
+                <p>@Model.AuthorName</p>
+            </div>
+            <div class="col-md-5">
+            </div>
+            <div class="col-md-2">
+                <br />
+                <h5>Asset</h5>
+                <p>@Model.AssetName</p>
+            </div>
+            <div class="col-md-2">
+                <br />
+                <h5>Posted</h5>
+                <p>@Model.PostedDate</p>
+            </div>
+        </div>
+        <hr />
+        <div class="col-lg-12 col-md-12 mb-5 wow fadeInUp" data-wow-delay="0.1s">
+            @if (!string.IsNullOrEmpty(Model.PostDescription))
+            {
+                <h5 class="mb-5">
+                    @Model.PostDescription
+                </h5>
+            }
+            @if (!string.IsNullOrEmpty(Model.EncodedHtml))
+            {
+                @Html.Raw(@Model.EncodedHtml)
+            }
+        </div>
+    </div>
+</div>

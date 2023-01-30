@@ -30,11 +30,18 @@ namespace HybridCMS.Controllers
         }
         public ActionResult Login(string returnurl)
         {
-            if (Request.Cookies["HybridCMS"] == null && _User.Id<=0)
+            if (Request.Cookies["HybridCMS"] == null && _User.Id <= 0)
             {
                 return View();
             }
-            return RedirectToAction("Index", "Home");
+            else
+            {
+                if (_User.RoleId == 2)
+                {
+                    return RedirectToAction("AdminDashboard", "CMS");
+                }
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpPost]
@@ -43,7 +50,7 @@ namespace HybridCMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                var cmsEntity = userBll.LoginCMS(EmailorUsername: model.EmailorUsername,Password: model.Password);
+                var cmsEntity = userBll.LoginCMS(EmailorUsername: model.EmailorUsername, Password: model.Password);
 
                 if (cmsEntity == null || cmsEntity.EmailId == null || cmsEntity.Id <= 0)
                 {
@@ -52,7 +59,7 @@ namespace HybridCMS.Controllers
                 else
                 {
                     SessionHelper.EmailorUsername = model.EmailorUsername;
-                    SessionHelper.Password        = model.Password;
+                    SessionHelper.Password = model.Password;
 
                     if (model.RemenberMe)
                     {
@@ -65,6 +72,10 @@ namespace HybridCMS.Controllers
                     }
                     else
                     {
+                        if (cmsEntity.RoleId == 2)
+                        {
+                            return RedirectToAction("AdminDashboard", "CMS");
+                        }
                         return RedirectToAction("Index", "Home");
                     }
                 }
@@ -75,10 +86,6 @@ namespace HybridCMS.Controllers
         [ChildActionOnly]
         public ActionResult LoginPartial()
         {
-            if (_User.Id <= 0)
-            {
-                SessionHelper.ClearHybridCMS();
-            }
             return PartialView("_LoginPartial", _User);
         }
         public ActionResult ChangePassword()
@@ -97,7 +104,7 @@ namespace HybridCMS.Controllers
             {
                 try
                 {
-                    if (userBll.ChangePassword(CurrentPassword: obj.CurrentPassword, NewPassword: obj.NewPassword,id: _User.Id))
+                    if (userBll.ChangePassword(CurrentPassword: obj.CurrentPassword, NewPassword: obj.NewPassword, id: _User.Id))
                     {
                         ViewBag.AlertMsg = "Password updated successfully.";
                     }
@@ -112,7 +119,7 @@ namespace HybridCMS.Controllers
         }
         public ActionResult AdminDashboard()
         {
-            if (_User.Id > 0)
+            if (_User.Id > 0 && _User.RoleId == 2)
             {
                 return View(_User);
             }
@@ -121,6 +128,25 @@ namespace HybridCMS.Controllers
                 SessionHelper.ClearHybridCMS();
             }
             return RedirectToAction("login");
+        }
+        [AcceptVerbs("Get", "Post")]
+        [Route("User/{Username}")]
+        public ActionResult UserProfile(string Username)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(Username))
+                {
+                    LoginEntity loginEntity = new LoginEntity();
+                    loginEntity = userBll.UserDetails(Username);
+                    if (loginEntity != null && loginEntity.Id > 0)
+                    {
+                        return View(loginEntity);
+                    }
+                }
+            }
+            catch { }
+            return new ViewResult() { ViewName = "PageNotFound" };
         }
         public ActionResult Logout()
         {
@@ -169,7 +195,7 @@ namespace HybridCMS.Controllers
                                         "<br/>If you have any comments or questions don’t hesitate to reach us at " +
                                         "sachin.c@antheminfotech.com ." + //email address
                                         "<br/>Please feel free to respond to this email.It was sent from a monitored email address, and we would love to hear from you.";
-                    
+
                     try
                     {
                         if (userBll.GenerateTokenForResetPassword(EmailorUsername: obj.EmailorUsername, TokenId: TokenId))
@@ -208,11 +234,11 @@ namespace HybridCMS.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ResetPassword(ResetPasswordViewModel obj,string url)
+        public ActionResult ResetPassword(ResetPasswordViewModel obj, string url)
         {
             if (ModelState.IsValid)
             {
-                if (userBll.ChangeUserPasswordByToken(Password: obj.NewPassword,TokenId: url))
+                if (userBll.ChangeUserPasswordByToken(Password: obj.NewPassword, TokenId: url))
                 {
                     TempData["AlertMsg"] = "Password updated successfully.";
                     return RedirectToAction("Login", "CMS");

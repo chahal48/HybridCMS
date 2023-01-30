@@ -1,50 +1,26 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Contact Us";
     Layout = "~/Views/Shared/_CMSLayout.cshtml";
 }
-
-<!-- Page Header Start -->
-<div class="container-fluid page-header wow fadeIn" data-wow-delay="0.1s">
-    <div class="container">
-        <h1 class="display-3 mb-3 animated slideInDown">Contact Us</h1>
-        <nav aria-label="breadcrumb animated slideInDown">
-            <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item"><a class="text-body" href="@Url.Action("Index", "Home")">Home</a></li>
-                @*<li class="breadcrumb-item"><a class="text-body" href="@Url.Action("Index", "Home")">Pages</a></li>*@
-                <li class="breadcrumb-item text-dark active" aria-current="page">Contact Us</li>
-            </ol>
-        </nav>
-    </div>
-</div>
-<!-- Page Header End -->
 <!-- Contact Start -->
-<div class="container-xxl py-6">
+<div class="container-xxl py-6" style="padding-bottom:0 !important;">
     <div class="container">
-        <div class="section-header text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
-            <h1 class="display-5 mb-3">Contact Us</h1>
+        <div class="section-header text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+            <h1 class="display-5">Contact Us</h1>
             <p>For all enquiries, please email us using the form below</p>
         </div>
         <div class="row g-5 justify-content-center">
             <div class="col-lg-5 col-md-12 wow fadeInUp" data-wow-delay="0.1s">
                 <div class="bg-primary text-white d-flex flex-column justify-content-center h-100 p-5">
                     <h5 class="text-white">Call Us</h5>
-                    <p class="mb-5"><i class="fa fa-phone-alt me-3"></i>+91 999 144 0448</p>
+                    <p class="mb-3"><i class="fa fa-phone-alt me-3"></i>+91 999 144 0448</p>
                     <h5 class="text-white">Email Us</h5>
-                    <p class="mb-5"><i class="fa fa-envelope me-3"></i>sachin.c@antheminfotech.com</p>
+                    <p class="mb-3"><i class="fa fa-envelope me-3"></i>sachin.c@antheminfotech.com</p>
                     <h5 class="text-white">Office Address</h5>
-                    <p class="mb-5"><i class="fa fa-map-marker-alt me-3"></i><strong>Anthem Infotech Pvt. Ltd.</strong> 11<sup>th</sup> Floor, Sushma Infinium, Zirakpur</p>
-                    <h5 class="text-white">Follow Us</h5>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-square btn-outline-light rounded-circle me-1" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-square btn-outline-light rounded-circle me-1" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-square btn-outline-light rounded-circle me-1" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-square btn-outline-light rounded-circle me-0" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
+                    <p><i class="fa fa-map-marker-alt me-3"></i><strong>Anthem Infotech Pvt. Ltd.</strong> 11<sup>th</sup> Floor, Sushma Infinium, Zirakpur</p>
                 </div>
             </div>
             <div class="col-lg-7 col-md-12 wow fadeInUp" data-wow-delay="0.5s">
-                <p class="mb-4">Please get in touch and our expert support team will answer all you questions.</p>
                 <form>
                     <div class="row g-3">
                         <div class="col-md-6">
@@ -67,7 +43,7 @@
                         </div>
                         <div class="col-12">
                             <div class="form-floating">
-                                <textarea class="form-control" placeholder="Leave a message here" id="message" style="height: 200px"></textarea>
+                                <textarea class="form-control" placeholder="Leave a message here" id="message" style="height: 100px; max-height: 180px;"></textarea>
                                 <label for="message">Message</label>
                             </div>
                         </div>
@@ -81,3 +57,10 @@
     </div>
 </div>
 <!-- Contact End -->
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#liContact').addClass('active');
+        });
+    </script>
+}

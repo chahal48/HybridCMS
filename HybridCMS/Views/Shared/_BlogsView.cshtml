@@ -1,0 +1,35 @@
+﻿@model IEnumerable<HybridCMSEntities.AssetMap>
+
+<!-- Blog Start -->
+<div class="container-xxl py-6">
+    <div class="container">
+        <div class="section-header text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+            <h1 class="display-5 mb-3">Blogs</h1>
+        </div>
+        <div class="row g-4">
+            @if (Model.Count() > 0)
+            {
+                foreach (var item in Model)
+                {
+                    <div class="col-lg-4 col-md-6  wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="bg-light p-4">
+                            <a onclick="fnRedirectAsset('@item.AssetUrl')" class="d-block h5 lh-base mb-4" onmouseover="this.style.cursor='pointer'">
+                                @item.AssetName
+                            </a>
+                            <div class="text-muted border-top pt-4">
+                                <a href="@Url.Action("UserProfile", "CMS", new {Username = item.AuthorUserName})" class="me-3"><i class="fa fa-user text-primary me-2"></i>@item.AuthorName</a>
+                                <small class="me-3">
+                                    <i class="fa fa-calendar text-primary me-2"></i>@item.CreatedOn.ToString("ddd, dd MMM yyy")
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            @*<div class="col-12 text-center wow fadeInUp" data-wow-delay="0.1s">
+                    <a class="btn btn-primary rounded-pill py-3 px-5" href="">Load More</a>
+                </div>*@
+        </div>
+    </div>
+</div>
+<!-- Blog End -->

@@ -16,9 +16,33 @@ namespace HybridCMSBll
         {
             iPost = new SQLPost();
         }
+        public List<PostMap> GetLatestPost()
+        {
+            return iPost.GetLatestPost();
+        }
         public bool AddPost(PostEntity obj)
         {
             return iPost.AddPost(obj);
+        }
+        public bool EditPost(PostEntity obj)
+        {
+            return iPost.EditPost(obj);
+        }
+        public List<PostEntity> GetAllAssetByUserId(Int64 AssetId)
+        {
+            return iPost.GetAllAssetByUserId(AssetId);
+        }
+        public bool CheckValidUserIdandPostId(Int64 UserId, string PostId)
+        {
+            return iPost.CheckValidUserIdandPostId(UserId: UserId, PostId: PostId);
+        }
+        public PostMap GetPostByPostId(Int64 PostId)
+        {
+            return iPost.GetPostByPostId(PostId);
+        }
+        public bool DeletePost(Int64 PostId)
+        {
+            return iPost.DeletePost(PostId);
         }
     }
 }
