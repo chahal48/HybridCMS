@@ -160,5 +160,26 @@ namespace HybridCMSDll.DataAccess
                 return ReturnBool(Result);
             }
         }
+        public LoginEntity UserDetails(string Username)
+        {
+            LoginEntity loginEntity = new LoginEntity();
+            using (ADOExecution exec = new ADOExecution(GetConnectionString()))
+            {
+                using (IDataReader dr = exec.ExecuteReader(CommandType.StoredProcedure, "usp_UserDetail",
+                    new SqlParameter("@Username", Username)
+                    ))
+                {
+                    while (dr.Read())
+                    {
+                        loginEntity.Id = Convert.ToInt32(dr["Id"]);
+                        loginEntity.Name = dr["Name"].ToString();
+                        loginEntity.EmailId = dr["EmailId"].ToString();
+                        loginEntity.Photo = dr["Photo"].ToString();
+                        loginEntity.IsDeleted = Convert.ToBoolean(dr["IsDeleted"]);
+                    }
+                    return loginEntity;
+                }
+            }
+        }
     }
 }

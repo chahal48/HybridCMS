@@ -48,6 +48,10 @@ namespace HybridCMSBll
         {
             return iUser.ChangeUserPasswordByToken(Password: Password,TokenId: TokenId);
         }
+        public LoginEntity UserDetails(string Username)
+        {
+            return iUser.UserDetails(Username);
+        }
 
     }
 }

@@ -1,0 +1,26 @@
+﻿@model HybridCMSEntities.PostMap
+
+@Html.ActionLink(" ", "EditPost", "Post",
+    new
+    {
+        PostId = Convert.ToString(@Model.PostId)
+    },
+    new
+    {
+        @class = "btn btn-outline-primary rounded-pill bi bi-pencil-square"
+    }) &nbsp;
+
+<button onclick="fnRedirect('@Model.URL','@Model.PostId')"
+        class="btn btn-outline-info rounded-pill bi bi-eye-fill">
+</button> &nbsp;
+
+@Html.ActionLink(" ", "DeletePost", "Post",
+    new
+    {
+        PostId = Convert.ToString(@Model.PostId)
+    },
+    new
+    {
+        onclick = "return confirm('Are you sure you want to delete?');",
+        @class = "btn btn-outline-secondary rounded-pill bi bi-trash-fill"
+    })

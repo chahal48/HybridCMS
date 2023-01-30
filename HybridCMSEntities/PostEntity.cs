@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace HybridCMSEntities
 {
@@ -14,7 +11,8 @@ namespace HybridCMSEntities
         public string PostDescription { get; set; }
         public string EncodedHtml { get; set; }
         public string ImageName { get; set; }
-        public string CreatedOn { get; set; }
-        public string ViewsCount { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+        public DateTime CreatedOn { get; set; }
     }
 }

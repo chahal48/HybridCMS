@@ -42,12 +42,9 @@
                             <input id="showpass" type="checkbox" onclick="showPassword()">
                             <label class="form-check-label" for="showpass">Show password</label>
                         </div>
-                        <div class="form-check mb-3">
+                        <div class="form-floating mb-3 ">
+                            @Html.ActionLink("Forgot Password?", "ForgotPassword", "CMS", new { }, new { @class = "form-label" })
                             <input type="submit" value="Sign in" class="btn btn-primary btn-login text-uppercase fw-bold float-end" />
-                        </div>
-                        <br />
-                        <div class="form-check mb-3">
-                            @Html.ActionLink("Forgot Password", "ForgotPassword", "CMS", new { }, new { @class = "text-uppercase float-end" })
                         </div>
                     }
                 </div>

@@ -1,11 +1,6 @@
 ﻿@model IEnumerable<HybridCMSEntities.AssetEntity>
 
 <style>
-    #btnAddAsset {
-        display: inline;
-        margin-left: 25px;
-    }
-
     select.form-select {
         display: inline;
         width: 200px;
@@ -21,9 +16,7 @@
             <option value="Blog">Blog</option>
         </select>
     </div>
-    <a href="" id="btnAddAsset" data-bs-toggle="modal" data-bs-target="#addAssetModal" class="btn btn-outline-info border-2 py-2 px-4 rounded-pill">Add Asset</a>
-
-    <table class="display" id="filterTable">
+    <table class="table" id="filterTable">
         <thead>
             <tr>
                 <th>
@@ -34,6 +27,9 @@
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.AssetTypeId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalPost)
                 </th>
                 <th class="text-center">Manage</th>
             </tr>
@@ -60,9 +56,17 @@
                             <span style="color:crimson;"><b>@Html.DisplayFor(modelItem => item.AssetTypeId)</b></span>
                         }
                     </td>
+                    <td>
+                        @if (item.TotalPost > 0)
+                        {
+                            @Html.DisplayFor(modelItem => item.TotalPost)
+                        }
+                    </td>
                     <td align="center" colspan="2">
-                        @Html.ActionLink(" ", "EditAsset", "Asset", new { AssetId = Convert.ToString(item.AssetId) }, new { @class = "btn btn-outline-primary rounded-pill bi bi-pencil-square" }) &nbsp;
-                        @Html.ActionLink(" ", "AssetView", "Asset", new { URL = item.URL }, new { @class = "btn btn-outline-info rounded-pill bi bi-eye-fill" }) &nbsp;
+                        @Html.ActionLink(" ", "UpdateAsset", "Asset", new { AssetId = Convert.ToString(item.AssetId) }, new { @class = "btn btn-outline-primary rounded-pill bi bi-pencil-square" })
+                        
+                        @*@Html.ActionLink(" ", "EditAsset", "Asset", new { AssetId = Convert.ToString(item.AssetId) }, new { @class = "btn btn-outline-primary rounded-pill bi bi-pencil-square" }) &nbsp;
+                            <button onclick="fnRedirect('@item.URL')" class="btn btn-outline-info rounded-pill bi bi-eye-fill"></button> &nbsp;*@
                         @Html.ActionLink(" ", "DeleteAsset", "Asset", new { AssetId = Convert.ToString(item.AssetId) }, new { onclick = "return confirm('Are you sure you want to delete?');", @class = "btn btn-outline-secondary rounded-pill bi bi-trash-fill" })
                     </td>
                 </tr>
@@ -70,4 +74,9 @@
         </tbody>
     </table>
 </div>
-
+<script>
+    function fnRedirect(url) {
+        window.location.pathname = encodeURI("@@" + url);
+    }
+    
+</script>
