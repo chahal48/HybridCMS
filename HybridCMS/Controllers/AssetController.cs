@@ -3,6 +3,7 @@ using HybridCMSBll;
 using HybridCMSEntities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.InteropServices;
@@ -75,6 +76,26 @@ namespace HybridCMS.Controllers
             }
             catch { }
             return new ViewResult() { ViewName = "PageNotFound" };
+        }
+        [AcceptVerbs("Get", "Post")]
+        [ChildActionOnly]
+        public ActionResult AssetBlogPartial(AssetEntity asset)
+        {
+            if (string.IsNullOrEmpty(asset.ProfilePicture) || !System.IO.File.Exists(Server.MapPath("/Upload/" + asset.ProfilePicture)))
+            {
+                asset.ProfilePicture = null;
+            }
+            return PartialView("_AssetBlogPartial",asset);
+        }
+        [AcceptVerbs("Get", "Post")]
+        [ChildActionOnly]
+        public ActionResult AssetPagePartial(AssetEntity asset)
+        {
+            if (string.IsNullOrEmpty(asset.ProfilePicture) || !System.IO.File.Exists(Server.MapPath("/Upload/" + asset.ProfilePicture)))
+            {
+                asset.ProfilePicture = null;
+            }
+            return PartialView("_AssetPagePartial", asset);
         }
         [Route("Asset/DeleteAsset/{AssetId}")]
         public ActionResult DeleteAsset(string AssetId)

@@ -66,7 +66,9 @@
 @{
     Html.RenderAction("Blogs", "Home");
 }
-
+@{
+    Html.RenderAction("Pages", "Home");
+}
 
 @section Scripts {
     <script>
@@ -78,10 +80,5 @@
         function fnRedirectAsset(u) {
             window.location.pathname = encodeURI("@@" + u);
         }
-    </script>
-    <script>
-        $(document).ready(function () {
-            window.history.replaceState('', '', window.location.href)
-        });
     </script>
 }

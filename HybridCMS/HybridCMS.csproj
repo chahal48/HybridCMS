@@ -138,7 +138,10 @@
     <Content Include="Scripts\jquery-validate\jquery.validate.min.js" />
     <Content Include="Scripts\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\main.js" />
+    <Content Include="Upload\949ba0da-8547-4d25-b96d-2b7d3aa0c3ec.jpg" />
+    <Content Include="Upload\b0849525-3d83-4aae-82ae-e7e2b3477490.jpg" />
     <Content Include="Upload\blog-1.jpg" />
+    <Content Include="Upload\e6562668-49d5-429c-b7d1-8f706014f6d5.jpg" />
     <Content Include="Upload\NoImage.png" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -281,8 +284,11 @@
     <Content Include="Views\Blog\Update.cshtml" />
     <Content Include="Views\Page\Create.cshtml" />
     <Content Include="Views\Page\Update.cshtml" />
-    <Content Include="Views\Shared\_BlogsView.cshtml" />
     <Content Include="Views\CMS\UserProfile.cshtml" />
+    <Content Include="Views\Shared\_AssetBlogPartial.cshtml" />
+    <Content Include="Views\Shared\_AssetPagePartial.cshtml" />
+    <Content Include="Views\Shared\_AllPagePartial.cshtml" />
+    <Content Include="Views\Shared\_AllBlogPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
