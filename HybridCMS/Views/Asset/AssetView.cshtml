@@ -3,28 +3,22 @@
     ViewBag.Title = Model.Name ?? "Page Not Found";
     Layout = "~/Views/Shared/_CMSLayout.cshtml";
 }
-@Html.HiddenFor(m=>m.URL)
-@*@{
-    Html.RenderAction("PartialAddPostView", "Asset", new RouteValueDictionary { { "AssetId", Convert.ToString(Model.AssetId) } });
-}*@
-<!-- Feature Start -->
-<div class="container-fluid bg-light bg-icon py-6 min-vh-100">
-    <div class="container">
-        <div class="section-header text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
-            <h1 class="display-5 mb-3">@Model.Name</h1>
-            @if (!string.IsNullOrEmpty(Model.Description))
-            {
-                <p>@Model.Description</p>
-            }
-            @*@{
-                Html.RenderAction("AddPostButtonPartialView", "Asset", new RouteValueDictionary { { "AssetId", Convert.ToString(Model.AssetId) } });
-            }*@
-        </div>
-        <div class="row g-4">
-            @{
-                Html.RenderAction("PostListPartialView", "Post", new RouteValueDictionary { { "AssetId", Convert.ToString(Model.AssetId) } });
-            }
-        </div>
-    </div>
-</div>
-<!-- Feature End -->
+@section styles{
+    <style>
+        .for-page-header {
+            padding-top: 12rem;
+            padding-bottom: 6rem;
+            background: url(Upload/@Model.ProfilePicture) top right no-repeat !important;
+            background-size: cover !important;
+        }
+    </style>
+}
+
+@if (Model.AssetTypeId == HybridCMSEntities.AssetType.Blog)
+{
+    Html.RenderAction("AssetBlogPartial", "Asset", Model);
+}
+else if (Model.AssetTypeId == HybridCMSEntities.AssetType.Page)
+{
+    Html.RenderAction("AssetPagePartial", "Asset", Model);
+}

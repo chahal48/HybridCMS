@@ -76,8 +76,27 @@ namespace HybridCMS.Controllers
                 }
             }
             catch { }
-            return PartialView("_BlogsView", assetMaps.Where(a => a.AssetTypeId == AssetType.Blog));
+            return PartialView("_AllBlogPartial", assetMaps.Where(a => a.AssetTypeId == AssetType.Blog));
         }
-        
+        [AcceptVerbs("Get", "Post")]
+        [ChildActionOnly]
+        public ActionResult Pages(string search)
+        {
+            List<AssetMap> assetMaps = new List<AssetMap>();
+            try
+            {
+                if (!string.IsNullOrEmpty(search))
+                {
+                    assetMaps = assetBll.GetAllAssetBySearch(search);
+                }
+                else
+                {
+                    assetMaps = assetBll.GetAllAsset();
+                }
+            }
+            catch { }
+            return PartialView("_AllPagePartial", assetMaps.Where(a => a.AssetTypeId == AssetType.Page));
+        }
+
     }
 }

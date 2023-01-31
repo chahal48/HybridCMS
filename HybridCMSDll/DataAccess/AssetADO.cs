@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Common;
+using HybridCMSDll.Interface;
 
 namespace HybridCMSDll.DataAccess
 {
@@ -54,10 +55,14 @@ namespace HybridCMSDll.DataAccess
                             AssetId = Convert.ToInt64(dr["AssetId"]),
                             UserId = Convert.ToInt64(dr["UserId"]),
                             AssetTypeId = (AssetType)dr["AssetTypeId"],
-                            Name = Convert.ToString(dr["Name"]),
+                            Name = Convert.ToString(dr["AssetName"]),
+                            AuthorName = Convert.ToString(dr["AuthorName"]),
+                            AuthorUserName = Convert.ToString(dr["AuthorUserName"]),
+                            TotalPost = Convert.ToInt64(dr["PostCount"]),
                             URL = Convert.ToString(dr["URL"]),
                             Description = Convert.ToString(dr["Description"]),
-                            ProfilePicture = Convert.ToString(dr["ProfilePicture"])
+                            ProfilePicture = Convert.ToString(dr["AssetPhoto"]),
+                            CreatedOn = Convert.ToDateTime(dr["CreatedOn"])
                         };
                     }
                 }
@@ -106,13 +111,20 @@ namespace HybridCMSDll.DataAccess
                 {
                     while (dr.Read())
                     {
-                        assetEntity.AssetId = Convert.ToInt64(dr["AssetId"]);
-                        assetEntity.Name = Convert.ToString(dr["Name"]);
-                        assetEntity.UserId = Convert.ToInt64(dr["UserId"]);
-                        assetEntity.AssetTypeId = (AssetType)(dr["AssetTypeId"]);
-                        assetEntity.Description = Convert.ToString(dr["Description"]);
-                        assetEntity.URL = Convert.ToString(dr["URL"]);
-                        assetEntity.ProfilePicture = Convert.ToString(dr["Photo"]);
+                        assetEntity = new AssetEntity()
+                        {
+                            AssetId = Convert.ToInt64(dr["AssetId"]),
+                            UserId = Convert.ToInt64(dr["UserId"]),
+                            AssetTypeId = (AssetType)dr["AssetTypeId"],
+                            Name = Convert.ToString(dr["AssetName"]),
+                            AuthorName = Convert.ToString(dr["AuthorName"]),
+                            AuthorUserName = Convert.ToString(dr["AuthorUserName"]),
+                            TotalPost = Convert.ToInt64(dr["PostCount"]),
+                            URL = Convert.ToString(dr["URL"]),
+                            Description = Convert.ToString(dr["Description"]),
+                            ProfilePicture = Convert.ToString(dr["AssetPhoto"]),
+                            CreatedOn = Convert.ToDateTime(dr["CreatedOn"])
+                        };
                     }
                     return assetEntity;
                 }

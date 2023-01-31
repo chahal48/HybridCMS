@@ -56,6 +56,7 @@ namespace HybridCMS.Controllers
                         UserId = _User.Id,
                         URL = obj.URL,
                         Name = obj.PageTitle,
+                        AssetTypeId = AssetType.Page,
                         Description = obj.Description,
                         ProfilePicture = obj.Picture
                     };
