@@ -27,9 +27,6 @@
                         @Html.LabelFor(model => model.Description)
                         @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                     </div>
-                    <div class="form-floating mb-3">
-                        @Html.TextAreaFor(model => model.EncodedHtml, new { htmlAttributes = new { @class = "form-control", type = "text", placeholder = "Description" } })
-                    </div>
                     <div class="form-check float-end">
                         @Html.ActionLink("Cancel", "AdminDashboard", "CMS", new { }, new { @class = "btn btn-outline-secondary border-2 py-2 px-4 rounded-pill fw-bold " }) &nbsp;
                         <button type="submit" class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill fw-bold">Update</button>

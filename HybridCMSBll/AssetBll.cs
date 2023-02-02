@@ -49,11 +49,11 @@ namespace HybridCMSBll
         {
             return iAsset.CheckValidUserIdandAssetId(UserId: UserId, AssetId: AssetId);
         }
-        public List<AssetMap> GetAllAsset()
+        public List<AssetEntity> GetAllAsset()
         {
             return iAsset.GetAllAsset();
         }
-        public List<AssetMap> GetAllAssetBySearch(string Search)
+        public List<AssetEntity> GetAllAssetBySearch(string Search)
         {
             return iAsset.GetAllAssetBySearch(Search);
         }

@@ -1,4 +1,4 @@
-﻿@model HybridCMSEntities.PostMap
+﻿@model HybridCMSEntities.PostEntity
 
 @Html.ActionLink(" ", "EditPost", "Post",
     new
@@ -10,7 +10,7 @@
         @class = "btn btn-outline-primary rounded-pill bi bi-pencil-square"
     }) &nbsp;
 
-<button onclick="fnRedirect('@Model.URL','@Model.PostId')"
+<button onclick="fnRedirect('@Model.AssetUrl','@Model.PostId')"
         class="btn btn-outline-info rounded-pill bi bi-eye-fill">
 </button> &nbsp;
 

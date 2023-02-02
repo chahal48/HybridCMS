@@ -9,8 +9,8 @@ namespace HybridCMSDll.Interface
 {
     public interface IAsset
     {
-        List<AssetMap> GetAllAsset();
-        List<AssetMap> GetAllAssetBySearch(string Search);
+        List<AssetEntity> GetAllAsset();
+        List<AssetEntity> GetAllAssetBySearch(string Search);
         bool CheckValidUserIdandAssetId(Int64 UserId, string AssetId);
         AssetEntity GetAssetByAssetId(Int64 AssetId);
         bool UpdateAsset(AssetEntity obj);

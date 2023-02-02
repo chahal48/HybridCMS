@@ -11,10 +11,10 @@ namespace HybridCMSDll.Interface
     {
         bool AddPost(PostEntity obj);
         bool EditPost(PostEntity obj);
-        List<PostMap> GetLatestPost();
-        List<PostEntity> GetAllAssetByUserId(Int64 AssetId);
+        List<PostEntity> GetLatestPost();
+        List<PostEntity> GetAllPostByAssetId(Int64 AssetId);
         bool CheckValidUserIdandPostId(Int64 UserId, string PostId);
-        PostMap GetPostByPostId(Int64 PostId);
+        PostEntity GetPostByPostId(Int64 PostId);
         bool DeletePost(Int64 PostId);
     }
 }

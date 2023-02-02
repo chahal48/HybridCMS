@@ -21,7 +21,6 @@ namespace HybridCMS.Models
         [Required(ErrorMessage = "Sorry, Page title is required!!")]
         [Remote("IsPageTitleValid", "Page", HttpMethod = "Post")]
         public string PageTitle { get; set; }
-        [AllowHtml]
         public string Description { get; set; }
         public string Picture { get; set; }
         public HttpPostedFileBase Image { get; set; }

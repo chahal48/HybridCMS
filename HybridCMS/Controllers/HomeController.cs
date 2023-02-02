@@ -23,20 +23,20 @@ namespace HybridCMS.Controllers
         [AcceptVerbs("Get", "Post")]
         public ActionResult Index(string search)
         {
-            List<AssetMap> assetMaps = new List<AssetMap>();
+            List<AssetEntity> assetEntity = new List<AssetEntity>();
             try
             {
                 if(!string.IsNullOrEmpty(search))
                 {
-                    assetMaps = assetBll.GetAllAssetBySearch(search);
+                    assetEntity = assetBll.GetAllAssetBySearch(search);
                 }
                 else
                 {
-                    assetMaps = assetBll.GetAllAsset();
+                    assetEntity = assetBll.GetAllAsset();
                 }
             }
             catch { }
-            return View(assetMaps);
+            return View(assetEntity);
         }
         // GET: ContactUs
         public ActionResult ContactUs()
@@ -47,15 +47,15 @@ namespace HybridCMS.Controllers
         [ChildActionOnly]
         public ActionResult LatestPostView()
         {
-            List<PostMap> postMap = new List<PostMap>();
+            List<PostEntity> postEntity = new List<PostEntity>();
             try
             {
-                postMap = postBll.GetLatestPost();
+                postEntity = postBll.GetLatestPost();
             }
             catch { }
-            if (postMap.Count > 3)
+            if (postEntity.Count > 3)
             {
-                return PartialView("_LatestPostView", postMap);
+                return PartialView("_LatestPostView", postEntity);
             }
             return PartialView("_BlankPartialView");
         }
@@ -63,39 +63,39 @@ namespace HybridCMS.Controllers
         [ChildActionOnly]
         public ActionResult Blogs(string search)
         {
-            List<AssetMap> assetMaps = new List<AssetMap>();
+            List<AssetEntity> assetEntity = new List<AssetEntity>();
             try
             {
                 if (!string.IsNullOrEmpty(search))
                 {
-                    assetMaps = assetBll.GetAllAssetBySearch(search);
+                    assetEntity = assetBll.GetAllAssetBySearch(search);
                 }
                 else
                 {
-                    assetMaps = assetBll.GetAllAsset();
+                    assetEntity = assetBll.GetAllAsset();
                 }
             }
             catch { }
-            return PartialView("_AllBlogPartial", assetMaps.Where(a => a.AssetTypeId == AssetType.Blog));
+            return PartialView("_AllBlogPartial", assetEntity.Where(a => a.AssetTypeId == AssetType.Blog));
         }
         [AcceptVerbs("Get", "Post")]
         [ChildActionOnly]
         public ActionResult Pages(string search)
         {
-            List<AssetMap> assetMaps = new List<AssetMap>();
+            List<AssetEntity> assetEntity = new List<AssetEntity>();
             try
             {
                 if (!string.IsNullOrEmpty(search))
                 {
-                    assetMaps = assetBll.GetAllAssetBySearch(search);
+                    assetEntity = assetBll.GetAllAssetBySearch(search);
                 }
                 else
                 {
-                    assetMaps = assetBll.GetAllAsset();
+                    assetEntity = assetBll.GetAllAsset();
                 }
             }
             catch { }
-            return PartialView("_AllPagePartial", assetMaps.Where(a => a.AssetTypeId == AssetType.Page));
+            return PartialView("_AllPagePartial", assetEntity.Where(a => a.AssetTypeId == AssetType.Page));
         }
 
     }

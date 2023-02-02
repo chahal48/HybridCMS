@@ -1,4 +1,4 @@
-﻿@model IEnumerable<HybridCMSEntities.AssetMap>
+﻿@model IEnumerable<HybridCMSEntities.AssetEntity>
 @{
     ViewBag.Title = "Home";
     Layout = "~/Views/Shared/_CMSLayout.cshtml";
@@ -76,9 +76,5 @@
             $('#liHome').addClass('active');
         });
     </script>
-    <script>
-        function fnRedirectAsset(u) {
-            window.location.pathname = encodeURI("@@" + u);
-        }
-    </script>
+    <script src="~/Scripts/fnRedirectWithParameterURL.js"></script>
 }

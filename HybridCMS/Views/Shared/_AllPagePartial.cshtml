@@ -1,4 +1,4 @@
-﻿@model IEnumerable<HybridCMSEntities.AssetMap>
+﻿@model IEnumerable<HybridCMSEntities.AssetEntity>
 
 <!-- Page Start -->
 <div class="container-xxl py-6">
@@ -13,7 +13,8 @@
                 {
                     <div class="col-lg-4 col-md-6  wow fadeInUp" data-wow-delay="0.1s">
                         <div class="bg-light p-4">
-                            <a onclick="fnRedirectAsset('@item.AssetUrl')" class="d-block h5 lh-base mb-4" onmouseover="this.style.cursor='pointer'">
+                            <a onclick="fnRedirect('@item.AssetUrl')" class="d-block h5 lh-base mb-4" 
+                               onmouseover="this.style.cursor='pointer'">
                                 @item.AssetName
                             </a>
                             <div class="text-muted border-top pt-4">
