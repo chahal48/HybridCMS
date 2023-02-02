@@ -54,11 +54,11 @@ namespace HybridCMS.Controllers
                     blogEntity = new AssetEntity()
                     {
                         UserId = _User.Id,
-                        URL = obj.URL,
-                        Name = obj.BlogTitle,
+                        AssetUrl = obj.URL,
+                        AssetName = obj.BlogTitle,
                         AssetTypeId = AssetType.Blog,
                         Description = obj.Description,
-                        ProfilePicture = obj.Picture
+                        AssetPhoto = obj.Picture
                     };
                     bool result = _assetBll.AddAsset(blogEntity);
                     if (result)
@@ -91,10 +91,10 @@ namespace HybridCMS.Controllers
                             AssetId = asset.AssetId,
                             UserId = asset.UserId,
                             AssetTypeId = asset.AssetTypeId,
-                            URL = asset.URL,
-                            BlogTitle = asset.Name,
+                            URL = asset.AssetUrl,
+                            BlogTitle = asset.AssetName,
                             Description = asset.Description,
-                            Picture = asset.ProfilePicture
+                            Picture = asset.AssetPhoto
                         };
                         return View(blogViewModel);
                     }
@@ -135,10 +135,10 @@ namespace HybridCMS.Controllers
                         {
                             AssetId = obj.AssetId,
                             UserId = _User.Id,
-                            URL = obj.URL,
-                            Name = obj.BlogTitle,
+                            AssetUrl = obj.URL,
+                            AssetName = obj.BlogTitle,
                             Description = obj.Description,
-                            ProfilePicture = obj.Picture,
+                            AssetPhoto = obj.Picture,
                         };
                         bool result = _assetBll.UpdateAsset(blogEntity);
                         if (result)

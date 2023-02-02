@@ -20,13 +20,12 @@ namespace HybridCMSDll.DataAccess
                     new SqlParameter("@AssetId", obj.AssetId),
                     new SqlParameter("@PostHeading", obj.PostHeading),
                     new SqlParameter("@PostDescription", obj.PostDescription),
-                    new SqlParameter("@EncodedHtml", obj.EncodedHtml),
-                    new SqlParameter("@ImageName", obj.ImageName));
+                    new SqlParameter("@ImageName", obj.PostImage));
 
                 return ReturnBool(Result);
             }
         }
-        public List<PostEntity> GetAllAssetByUserId(Int64 AssetId)
+        public List<PostEntity> GetAllPostByAssetId(Int64 AssetId)
         {
             List<PostEntity> list = new List<PostEntity>();
             using (ADOExecution exec = new ADOExecution(GetConnectionString()))
@@ -41,10 +40,10 @@ namespace HybridCMSDll.DataAccess
                         {
                             PostId = Convert.ToInt64(dr["PostId"]),
                             AssetId = Convert.ToInt64(dr["AssetId"]),
+                            AssetUrl = Convert.ToString(dr["AssetUrl"]),
                             PostHeading = Convert.ToString(dr["PostHeading"]),
                             PostDescription = Convert.ToString(dr["PostDescription"]),
-                            EncodedHtml = Convert.ToString(dr["EncodedHtml"]),
-                            ImageName = Convert.ToString(dr["ImageName"]),
+                            PostImage = Convert.ToString(dr["ImageName"]),
                             CreatedOn = Convert.ToDateTime(dr["CreatedOn"])
                         });
                     }
@@ -76,9 +75,9 @@ namespace HybridCMSDll.DataAccess
             }
             return ReturnBool(Result);
         }
-        public PostMap GetPostByPostId(Int64 PostId)
+        public PostEntity GetPostByPostId(Int64 PostId)
         {
-            PostMap postMap = new PostMap();
+            PostEntity postEntity = new PostEntity();
             using (ADOExecution exec = new ADOExecution(GetConnectionString()))
             {
                 using (IDataReader dr = exec.ExecuteReader(CommandType.StoredProcedure, "usp_GetPostByPostId",
@@ -87,24 +86,23 @@ namespace HybridCMSDll.DataAccess
                 {
                     while (dr.Read())
                     {
-                        postMap = new PostMap()
+                        postEntity = new PostEntity()
                         {
                             PostId = Convert.ToInt64(dr["PostId"]),
                             AssetId = Convert.ToInt64(dr["AssetId"]),
-                            URL = Convert.ToString(dr["URL"]),
+                            AssetUrl = Convert.ToString(dr["URL"]),
                             PostHeading = Convert.ToString(dr["PostHeading"]),
                             PostDescription = Convert.ToString(dr["PostDescription"]),
-                            EncodedHtml = Convert.ToString(dr["EncodedHtml"]),
                             AuthorName = Convert.ToString(dr["AuthorName"]),
                             AssetName = Convert.ToString(dr["AssetName"]),
-                            PostPhoto = Convert.ToString(dr["PostPhoto"]),
+                            PostImage = Convert.ToString(dr["PostPhoto"]),
                             AuthorPhoto = Convert.ToString(dr["AuthorPhoto"]),
-                            PostedDate = Convert.ToDateTime(dr["PostedDate"])
+                            CreatedOn = Convert.ToDateTime(dr["PostedDate"])
                         };
                     }
                 }
             }
-            return postMap;
+            return postEntity;
         }
         public bool EditPost(PostEntity obj)
         {
@@ -114,8 +112,7 @@ namespace HybridCMSDll.DataAccess
                     new SqlParameter("@PostId", obj.PostId),
                     new SqlParameter("@PostHeading", obj.PostHeading),
                     new SqlParameter("@PostDescription", obj.PostDescription),
-                    new SqlParameter("@EncodedHtml", obj.EncodedHtml),
-                    new SqlParameter("@ImageName", obj.ImageName));
+                    new SqlParameter("@ImageName", obj.PostImage));
 
                 return ReturnBool(Result);
             }
@@ -130,28 +127,27 @@ namespace HybridCMSDll.DataAccess
                 return ReturnBool(Result);
             }
         }
-        public List<PostMap> GetLatestPost()
+        public List<PostEntity> GetLatestPost()
         {
-            List<PostMap> list = new List<PostMap>();
+            List<PostEntity> list = new List<PostEntity>();
             using (ADOExecution exec = new ADOExecution(GetConnectionString()))
             {
                 using (IDataReader dr = exec.ExecuteReader(CommandType.StoredProcedure, "usp_GetLatestPost"))
                 {
                     while (dr.Read())
                     {
-                        list.Add(new PostMap()
+                        list.Add(new PostEntity()
                         {
                             PostId = Convert.ToInt64(dr["PostId"]),
                             AssetId = Convert.ToInt64(dr["AssetId"]),
-                            URL = Convert.ToString(dr["URL"]),
+                            AssetUrl = Convert.ToString(dr["URL"]),
                             PostHeading = Convert.ToString(dr["PostHeading"]),
                             PostDescription = Convert.ToString(dr["PostDescription"]),
-                            EncodedHtml = Convert.ToString(dr["EncodedHtml"]),
                             AuthorName = Convert.ToString(dr["AuthorName"]),
                             AssetName = Convert.ToString(dr["AssetName"]),
-                            PostPhoto = Convert.ToString(dr["PostPhoto"]),
+                            PostImage = Convert.ToString(dr["PostPhoto"]),
                             AuthorPhoto = Convert.ToString(dr["AuthorPhoto"]),
-                            PostedDate = Convert.ToDateTime(dr["PostedDate"])
+                            CreatedOn = Convert.ToDateTime(dr["PostedDate"])
                         });
                     }
                 }

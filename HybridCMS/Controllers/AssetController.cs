@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
@@ -65,11 +66,11 @@ namespace HybridCMS.Controllers
         [Route("@{URL}")]
         public ActionResult AssetView(string URL)
         {
-            AssetEntity asset = new AssetEntity();
             try
             {
+                AssetEntity asset = new AssetEntity();
                 asset = assetBll.CheckValidURL(URL);
-                if (!string.IsNullOrEmpty(URL) && asset.AssetId > 0 && !string.IsNullOrEmpty(asset.URL))
+                if (!string.IsNullOrEmpty(URL) && asset.AssetId > 0 && !string.IsNullOrEmpty(asset.AssetUrl))
                 {
                     return View(asset);
                 }
@@ -81,9 +82,9 @@ namespace HybridCMS.Controllers
         [ChildActionOnly]
         public ActionResult AssetBlogPartial(AssetEntity asset)
         {
-            if (string.IsNullOrEmpty(asset.ProfilePicture) || !System.IO.File.Exists(Server.MapPath("/Upload/" + asset.ProfilePicture)))
+            if (string.IsNullOrEmpty(asset.AssetPhoto) || !System.IO.File.Exists(Server.MapPath("/Upload/" + asset.AssetPhoto)))
             {
-                asset.ProfilePicture = null;
+                asset.AssetPhoto = null;
             }
             return PartialView("_AssetBlogPartial",asset);
         }
@@ -91,9 +92,9 @@ namespace HybridCMS.Controllers
         [ChildActionOnly]
         public ActionResult AssetPagePartial(AssetEntity asset)
         {
-            if (string.IsNullOrEmpty(asset.ProfilePicture) || !System.IO.File.Exists(Server.MapPath("/Upload/" + asset.ProfilePicture)))
+            if (string.IsNullOrEmpty(asset.AssetPhoto) || !System.IO.File.Exists(Server.MapPath("/Upload/" + asset.AssetPhoto)))
             {
-                asset.ProfilePicture = null;
+                asset.AssetPhoto = null;
             }
             return PartialView("_AssetPagePartial", asset);
         }

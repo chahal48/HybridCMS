@@ -1,4 +1,4 @@
-﻿@model IEnumerable<HybridCMSEntities.AssetMap>
+﻿@model IEnumerable<HybridCMSEntities.AssetEntity>
 
 <!-- Blog Start -->
 <div class="container-xxl py-6" style="padding-bottom:0 !important;">
@@ -13,11 +13,12 @@
                 {
                     <div class="col-lg-4 col-md-6  wow fadeInUp" data-wow-delay="0.1s">
                         <div class="bg-light p-4">
-                            <a onclick="fnRedirectAsset('@item.AssetUrl')" class="d-block h5 lh-base mb-4" onmouseover="this.style.cursor='pointer'">
+                            <a onclick="fnRedirect('@item.AssetUrl')" class="d-block h5 lh-base mb-4" onmouseover="this.style.cursor='pointer'">
                                 @item.AssetName
                             </a>
                             <div class="text-muted border-top pt-4">
-                                <a href="@Url.Action("UserProfile", "CMS", new {Username = item.AuthorUserName})" class="me-3"><i class="fa fa-user text-primary me-2"></i>@item.AuthorName</a>
+                                <a href="@Url.Action("UserProfile", "CMS", new {Username = item.AuthorUserName})" 
+                                   class="me-3"><i class="fa fa-user text-primary me-2"></i>@item.AuthorName</a>
                                 <small class="me-3">
                                     <i class="fa fa-calendar text-primary me-2"></i>@item.CreatedOn.ToString("ddd, dd MMM yyy")
                                 </small>

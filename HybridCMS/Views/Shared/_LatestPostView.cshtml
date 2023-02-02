@@ -1,4 +1,4 @@
-﻿@model IEnumerable<HybridCMSEntities.PostMap>
+﻿@model IEnumerable<HybridCMSEntities.PostEntity>
 
 <!-- Testimonial Start -->
 <div class="container-fluid bg-light bg-icon">
@@ -10,7 +10,7 @@
         <div class="owl-carousel testimonial-carousel">
             @foreach (var item in Model)
             {
-                <div class="testimonial-item position-relative bg-white p-5 mt-4 btn" onclick="fnRedirectLatest('@item.URL','@item.PostId')">
+                <div class="testimonial-item position-relative bg-white p-5 mt-4 btn" onclick="fnRedirectLatest('@item.AssetUrl','@item.PostId')">
                     <i class="fa fa-quote-left fa-3x text-primary position-absolute top-0 start-0 mt-n4 ms-5"></i>
                     <p class="mb-4">@item.PostHeading</p>
                     <div class="d-flex align-items-center">

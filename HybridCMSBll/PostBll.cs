@@ -16,7 +16,7 @@ namespace HybridCMSBll
         {
             iPost = new SQLPost();
         }
-        public List<PostMap> GetLatestPost()
+        public List<PostEntity> GetLatestPost()
         {
             return iPost.GetLatestPost();
         }
@@ -28,15 +28,15 @@ namespace HybridCMSBll
         {
             return iPost.EditPost(obj);
         }
-        public List<PostEntity> GetAllAssetByUserId(Int64 AssetId)
+        public List<PostEntity> GetAllPostByAssetId(Int64 AssetId)
         {
-            return iPost.GetAllAssetByUserId(AssetId);
+            return iPost.GetAllPostByAssetId(AssetId);
         }
         public bool CheckValidUserIdandPostId(Int64 UserId, string PostId)
         {
             return iPost.CheckValidUserIdandPostId(UserId: UserId, PostId: PostId);
         }
-        public PostMap GetPostByPostId(Int64 PostId)
+        public PostEntity GetPostByPostId(Int64 PostId)
         {
             return iPost.GetPostByPostId(PostId);
         }

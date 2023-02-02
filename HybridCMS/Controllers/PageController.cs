@@ -54,11 +54,11 @@ namespace HybridCMS.Controllers
                     pageEntity = new AssetEntity()
                     {
                         UserId = _User.Id,
-                        URL = obj.URL,
-                        Name = obj.PageTitle,
+                        AssetUrl = obj.URL,
+                        AssetName = obj.PageTitle,
                         AssetTypeId = AssetType.Page,
                         Description = obj.Description,
-                        ProfilePicture = obj.Picture
+                        AssetPhoto = obj.Picture
                     };
                     bool result = _assetBll.AddAsset(pageEntity);
                     if (result)
@@ -91,10 +91,10 @@ namespace HybridCMS.Controllers
                             AssetId = asset.AssetId,
                             UserId = asset.UserId,
                             AssetTypeId = asset.AssetTypeId,
-                            URL = asset.URL,
-                            PageTitle = asset.Name,
+                            URL = asset.AssetUrl,
+                            PageTitle = asset.AssetName,
                             Description = asset.Description,
-                            Picture = asset.ProfilePicture
+                            Picture = asset.AssetPhoto
                         };
                         return View(pageViewModel);
                     }
@@ -135,10 +135,10 @@ namespace HybridCMS.Controllers
                         {
                             AssetId = obj.AssetId,
                             UserId = _User.Id,
-                            URL = obj.URL,
-                            Name = obj.PageTitle,
+                            AssetUrl = obj.URL,
+                            AssetName = obj.PageTitle,
                             Description = obj.Description,
-                            ProfilePicture = obj.Picture,
+                            AssetPhoto = obj.Picture,
                         };
                         bool result = _assetBll.UpdateAsset(pageEntity);
                         if (result)
