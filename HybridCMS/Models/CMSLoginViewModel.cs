@@ -19,5 +19,7 @@ namespace HybridCMS.Models
         public string Password { get; set; }
         [Display(Name = "Remember me")]
         public bool RemenberMe { get; set; }
+        [Display(Name = "Show Password")]
+        public bool ShowPassword { get; set; }
     }
 }

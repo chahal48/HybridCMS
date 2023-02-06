@@ -19,5 +19,6 @@ namespace HybridCMSDll.Interface
         List<AssetEntity> GetAllAssetByUserId(Int64 userId);
         bool AddAsset(AssetEntity obj);
         bool DeleteAsset(Int64 AssetId);
+        bool publishAsset(Int64 UserId, Int64 AssetId);
     }
 }

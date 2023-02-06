@@ -88,9 +88,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bookmark.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\dashboardStyle.css" />
+    <Content Include="Content\site.css" />
     <Content Include="Content\threeDot.css" />
-    <Content Include="Content\style.css" />
     <Content Include="Global.asax" />
     <Content Include="img\1.png" />
     <Content Include="img\10.png" />
@@ -132,22 +134,27 @@
     <Content Include="lib\waypoints\waypoints.min.js" />
     <Content Include="lib\wow\wow.js" />
     <Content Include="lib\wow\wow.min.js" />
-    <Content Include="Scripts\adminDashboard.js" />
     <Content Include="Scripts\BlogScript.js" />
     <Content Include="Scripts\CreatePostScript.js" />
+    <Content Include="Scripts\dashboardScript.js" />
+    <Content Include="Scripts\deletePostScript.js" />
     <Content Include="Scripts\fileValidationScript.js" />
     <Content Include="Scripts\fileValidationScriptWithParameter.js" />
+    <Content Include="Scripts\fnBookmarkPost.js" />
+    <Content Include="Scripts\fnRedirectNewTab.js" />
     <Content Include="Scripts\fnRedirectWithParameterURL.js" />
     <Content Include="Scripts\jquery-validate\jquery.validate.min.js" />
     <Content Include="Scripts\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\main.js" />
     <Content Include="Scripts\PageScript.js" />
     <Content Include="Scripts\threeDots.js" />
+    <Content Include="Scripts\updatePostScript.js" />
+    <Content Include="Upload\079f0041-8350-4fc6-b1cd-a66ca744eaf4.jpg" />
     <Content Include="Upload\139b1e8e-53c7-4830-bb7f-d5075d9af992.jpg" />
+    <Content Include="Upload\803f6682-64aa-4629-aeec-ca70dc190c21.jpg" />
     <Content Include="Upload\949ba0da-8547-4d25-b96d-2b7d3aa0c3ec.jpg" />
+    <Content Include="Upload\9b7ecfb9-f932-4486-af22-cb932c155e9d.jpg" />
     <Content Include="Upload\b0849525-3d83-4aae-82ae-e7e2b3477490.jpg" />
-    <Content Include="Upload\blog-1.jpg" />
-    <Content Include="Upload\e6562668-49d5-429c-b7d1-8f706014f6d5.jpg" />
     <Content Include="Upload\edd262df-638a-40ee-be1a-e735cbf76671.png" />
     <Content Include="Upload\NoImage.png" />
     <Content Include="Web.config" />
@@ -160,6 +167,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Controllers\PostController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -169,6 +177,7 @@
     <Compile Include="Models\CMSLoginViewModel.cs" />
     <Compile Include="Models\ContactViewModel.cs" />
     <Compile Include="Models\EditPostViewModal.cs" />
+    <Compile Include="Models\FileHelper.cs" />
     <Compile Include="Models\ForgetPasswordViewModel.cs" />
     <Compile Include="Models\MailHelper.cs" />
     <Compile Include="Models\PageViewModel.cs" />
@@ -283,8 +292,6 @@
     <Content Include="Views\Shared\PageNotFound.cshtml" />
     <Content Include="Views\Shared\_BlankPartialView.cshtml" />
     <Content Include="Views\Shared\_PostListPartial.cshtml" />
-    <Content Include="Views\Shared\_EditDeletePostBtnPartial.cshtml" />
-    <Content Include="Views\Shared\_DetailPostBtnPartial.cshtml" />
     <Content Include="Views\Post\DetailPost.cshtml" />
     <Content Include="Views\Post\EditPost.cshtml" />
     <Content Include="Views\Shared\_LatestPostView.cshtml" />
@@ -300,6 +307,11 @@
     <Content Include="Views\Shared\_PostPartial.cshtml" />
     <Content Include="Views\Post\Create.cshtml" />
     <Content Include="Views\Post\Update.cshtml" />
+    <Content Include="Views\Shared\_ModifyPostPartial.cshtml" />
+    <Content Include="Views\Shared\_BookmarkPostPartial.cshtml" />
+    <Content Include="Views\Shared\_UserLoginLayout.cshtml" />
+    <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\Blog\Blogs.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

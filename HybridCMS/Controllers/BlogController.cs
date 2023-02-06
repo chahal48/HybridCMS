@@ -17,6 +17,7 @@ namespace HybridCMS.Controllers
     {
         LoginEntity _User;
         AssetBll _assetBll = new AssetBll();
+        FileHelper _fileHelper = new FileHelper();
         public BlogController()
         {
             SessionHelper.InitializeSession();
@@ -39,18 +40,10 @@ namespace HybridCMS.Controllers
             {
                 if (ModelState.IsValid && _User.Id > 0)
                 {
-                    AssetEntity blogEntity = new AssetEntity();
-                    if (obj.Image != null && obj.Image.ContentLength > 0)
-                    {
-                        string mapPath = Server.MapPath("/Upload");
-                        Guid guid = Guid.NewGuid();
-                        string fileExtention = Path.GetExtension(obj.Image.FileName);
-                        string FullImageName = guid.ToString() + fileExtention;
-                        string fullPath = Path.Combine(mapPath, FullImageName);
-                        obj.Image.SaveAs(fullPath);
+                    string ImagedNameToSave = _fileHelper.SaveFile(obj.Image);
 
-                        obj.Picture = FullImageName;
-                    }
+                    AssetEntity blogEntity = new AssetEntity();                    
+
                     blogEntity = new AssetEntity()
                     {
                         UserId = _User.Id,
@@ -58,7 +51,7 @@ namespace HybridCMS.Controllers
                         AssetName = obj.BlogTitle,
                         AssetTypeId = AssetType.Blog,
                         Description = obj.Description,
-                        AssetPhoto = obj.Picture
+                        AssetPhoto = ImagedNameToSave
                     };
                     bool result = _assetBll.AddAsset(blogEntity);
                     if (result)
@@ -68,7 +61,7 @@ namespace HybridCMS.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("","Error adding blog.");
+                    ModelState.AddModelError("", "Error adding blog.");
                 }
             }
             catch { }
@@ -118,17 +111,7 @@ namespace HybridCMS.Controllers
                     }
                     else
                     {
-                        if (obj.Image != null && obj.Image.ContentLength > 0)
-                        {
-                            string mapPath = Server.MapPath("/Upload");
-                            Guid guid = Guid.NewGuid();
-                            string fileExtention = Path.GetExtension(obj.Image.FileName);
-                            string FullImageName = guid.ToString() + fileExtention;
-                            string fullPath = Path.Combine(mapPath, FullImageName);
-                            obj.Image.SaveAs(fullPath);
-
-                            obj.Picture = FullImageName;
-                        }
+                        string ImagedNameToSave = _fileHelper.SaveFile(obj.Image);
 
                         AssetEntity blogEntity = new AssetEntity();
                         blogEntity = new AssetEntity()
@@ -138,11 +121,16 @@ namespace HybridCMS.Controllers
                             AssetUrl = obj.URL,
                             AssetName = obj.BlogTitle,
                             Description = obj.Description,
-                            AssetPhoto = obj.Picture,
+                            AssetPhoto = ImagedNameToSave,
                         };
                         bool result = _assetBll.UpdateAsset(blogEntity);
                         if (result)
                         {
+                            if (!string.IsNullOrEmpty(ImagedNameToSave) && System.IO.File.Exists(Server.MapPath("/Upload/" + ImagedNameToSave)))
+                            {
+                                _fileHelper.DeleteFile(obj.Picture);
+                            }
+
                             TempData["SuccessMsg"] = "Blog updated successfully.";
                         }
                     }
@@ -185,7 +173,7 @@ namespace HybridCMS.Controllers
         [AcceptVerbs("Get", "Post")]
         public ActionResult IsBlogTitleValid([Bind(Prefix = "BlogTitle")] string BlogTitle)
         {
-            if(string.IsNullOrWhiteSpace(BlogTitle))
+            if (string.IsNullOrWhiteSpace(BlogTitle))
             {
                 return Json("Sorry, Blog title empty or contains blank space only.");
             }
@@ -194,6 +182,12 @@ namespace HybridCMS.Controllers
                 return Json("Sorry, Blog title must be between 5 and 50 characters long.");
             }
             return Json(true, JsonRequestBehavior.AllowGet);
+        }
+        [Route("Blogs")]
+        [AcceptVerbs("Get", "Post")]
+        public ActionResult Blogs()
+        {
+            return View();
         }
     }
 }

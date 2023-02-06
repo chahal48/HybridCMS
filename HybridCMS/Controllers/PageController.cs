@@ -15,6 +15,7 @@ namespace HybridCMS.Controllers
     {
         LoginEntity _User;
         AssetBll _assetBll = new AssetBll();
+        FileHelper _fileHelper = new FileHelper();
 
         public PageController()
         {
@@ -39,18 +40,10 @@ namespace HybridCMS.Controllers
             {
                 if (ModelState.IsValid && _User.Id > 0)
                 {
-                    AssetEntity pageEntity = new AssetEntity();
-                    if (obj.Image != null && obj.Image.ContentLength > 0)
-                    {
-                        string mapPath = Server.MapPath("/Upload");
-                        Guid guid = Guid.NewGuid();
-                        string fileExtention = Path.GetExtension(obj.Image.FileName);
-                        string FullImageName = guid.ToString() + fileExtention;
-                        string fullPath = Path.Combine(mapPath, FullImageName);
-                        obj.Image.SaveAs(fullPath);
+                    string ImagedNameToSave = _fileHelper.SaveFile(obj.Image);
 
-                        obj.Picture = FullImageName;
-                    }
+                    AssetEntity pageEntity = new AssetEntity();
+                    
                     pageEntity = new AssetEntity()
                     {
                         UserId = _User.Id,
@@ -58,7 +51,7 @@ namespace HybridCMS.Controllers
                         AssetName = obj.PageTitle,
                         AssetTypeId = AssetType.Page,
                         Description = obj.Description,
-                        AssetPhoto = obj.Picture
+                        AssetPhoto = ImagedNameToSave
                     };
                     bool result = _assetBll.AddAsset(pageEntity);
                     if (result)
@@ -118,31 +111,24 @@ namespace HybridCMS.Controllers
                     }
                     else
                     {
-                        if (obj.Image != null && obj.Image.ContentLength > 0)
-                        {
-                            string mapPath = Server.MapPath("/Upload");
-                            Guid guid = Guid.NewGuid();
-                            string fileExtention = Path.GetExtension(obj.Image.FileName);
-                            string FullImageName = guid.ToString() + fileExtention;
-                            string fullPath = Path.Combine(mapPath, FullImageName);
-                            obj.Image.SaveAs(fullPath);
+                        string ImagedNameToSave = _fileHelper.SaveFile(obj.Image);
 
-                            obj.Picture = FullImageName;
-                        }
-
-                        AssetEntity pageEntity = new AssetEntity();
-                        pageEntity = new AssetEntity()
+                        AssetEntity pageEntity = new AssetEntity()
                         {
                             AssetId = obj.AssetId,
                             UserId = _User.Id,
                             AssetUrl = obj.URL,
                             AssetName = obj.PageTitle,
                             Description = obj.Description,
-                            AssetPhoto = obj.Picture,
+                            AssetPhoto = ImagedNameToSave,
                         };
                         bool result = _assetBll.UpdateAsset(pageEntity);
                         if (result)
                         {
+                            if (!string.IsNullOrEmpty(ImagedNameToSave) && System.IO.File.Exists(Server.MapPath("/Upload/" + ImagedNameToSave)))
+                            {
+                                _fileHelper.DeleteFile(obj.Picture);
+                            }
                             TempData["SuccessMsg"] = "Page updated successfully.";
                         }
                     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Data.SqlTypes;
+using System.Security.Policy;
 
 namespace HybridCMSEntities
 {
@@ -18,8 +19,25 @@ namespace HybridCMSEntities
         public string AuthorUserName { get; set; }        
         public string Description { get; set; }
         public string AssetPhoto { get; set; }
-        [DisplayName("Total Post")]
+        [DisplayName("Posts")]
         public Int64 TotalPost { get; set; }
+        [DisplayName("Created")]
         public DateTime CreatedOn { get; set; }
+        [DisplayName("Published/Draft")]
+        public bool IsPublished { get; set; }
+        public string CreatedDateInString {
+            get
+            {
+                return String.Format("{0:ddd, d MMM, yyyy}", CreatedOn);
+            }
+        }
+        public DateTime PublishedOn { get; set;}
+        [DisplayName("Published")]
+        public string PublishedDateInString {
+            get
+            {
+                return String.Format("{0:ddd, d MMM, yyyy}", PublishedOn);
+            }
+        }
     }
 }

@@ -1,0 +1,24 @@
+﻿@model HybridCMSEntities.PostEntity
+
+<div id="three-dot-container" class="float-end">
+    <div id="three-dot-menu-wrap">
+        <input type="checkbox" class="toggler three-dot-checkbox" />
+        <div class="dots">
+            <div></div>
+        </div>
+        <div class="menu">
+            <div>
+                <ul>
+                    <li>
+                        <a onclick="fnRedirect('@Model.AssetUrl/Post/Update/@Model.PostId')"
+                           onmouseover="this.style.cursor='pointer'" class="link">Update</a>
+                    </li>
+                    <li>
+                        <a onclick="deletePost('@Model.AssetUrl','@Model.PostId')"
+                           onmouseover="this.style.cursor='pointer'" class="link">Delete</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

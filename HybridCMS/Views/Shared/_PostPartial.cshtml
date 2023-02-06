@@ -1,33 +1,20 @@
 ﻿@model HybridCMSEntities.PostEntity
 
 <div class="col-lg-7 col-md-6 wow fadeInUp close-three-dot-checkbox" data-wow-delay="0.1s">
-    <div class="bg-white h-100">
-        <div id="three-dot-container" class="float-end">
-            @*<input type="text" class="text" placeholder="Click on the dots" disabled>*@
-            <div id="three-dot-menu-wrap">
-                <input type="checkbox" class="toggler three-dot-checkbox" />
-                <div class="dots">
-                    <div></div>
-                </div>
-                <div class="menu">
-                    <div>
-                        <ul>
-                            <li><a href="" class="link">Update</a></li>
-                            <li><a href="" class="link">Delete</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="bg-white h-100" style="border-radius:8px;">
+        @{ 
+                Html.RenderAction("btnPostPartial", "Post", Model);
+        }
+        
         <div class="text-center p-4 p-xl-5">
             @if (!string.IsNullOrEmpty(Model.PostImage))
             {
-                <img class="img-fluid mb-4" style="min-height:200px; max-height:500px;" src="~/Upload/@Model.PostImage" alt="">
+                <img class="img-fluid mb-3" style="min-height:200px; max-height:500px;" src="~/Upload/@Model.PostImage" alt="">
             }
-            <h4 class="mb-3">
+            <h4 class="mb-2">
                 @Html.DisplayFor(model => model.PostHeading)
             </h4>
-            <p class="mb-4">
+            <p class="mb-2">
                 @Html.DisplayFor(model => model.PostDescription)
             </p>
         </div>

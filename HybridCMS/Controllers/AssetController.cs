@@ -38,6 +38,34 @@ namespace HybridCMS.Controllers
             }
             return PartialView("_AdminAssetListPartial", List);
         }
+        public JsonResult IsPublish(string AssetId)
+        {
+            try
+            {
+                if (assetBll.CheckValidUserIdandAssetId(_User.Id, AssetId))
+                {
+                    if (assetBll.publishAsset(UserId: _User.Id, AssetId: long.Parse(AssetId)))
+                    {
+                        var asset = assetBll.GetAssetByAssetId(long.Parse(AssetId));
+                        if (asset != null && asset.UserId == _User.Id && asset.AssetId == long.Parse(AssetId))
+                        {
+                            if (asset.IsPublished)
+                            {
+                                return Json(new { success = true, message = true });
+                            }
+                            else
+                            {
+                                return Json(new { success = true, message = false });
+                            }
+                        }
+                    }
+                }
+            }
+            catch { }
+            return Json(new { success = false, message = "Error" });
+        }
+
+
         //[AcceptVerbs("Get", "Post")]
         //[ChildActionOnly]
         //public ActionResult AddPostButtonPartialView(string AssetId)
@@ -78,16 +106,16 @@ namespace HybridCMS.Controllers
             catch { }
             return new ViewResult() { ViewName = "PageNotFound" };
         }
-        [AcceptVerbs("Get", "Post")]
-        [ChildActionOnly]
-        public ActionResult AssetBlogPartial(AssetEntity asset)
-        {
-            if (string.IsNullOrEmpty(asset.AssetPhoto) || !System.IO.File.Exists(Server.MapPath("/Upload/" + asset.AssetPhoto)))
-            {
-                asset.AssetPhoto = null;
-            }
-            return PartialView("_AssetBlogPartial",asset);
-        }
+        //[AcceptVerbs("Get", "Post")]
+        //[ChildActionOnly]
+        //public ActionResult AssetBlogPartial(AssetEntity asset)
+        //{
+        //    if (string.IsNullOrEmpty(asset.AssetPhoto) || !System.IO.File.Exists(Server.MapPath("/Upload/" + asset.AssetPhoto)))
+        //    {
+        //        asset.AssetPhoto = null;
+        //    }
+        //    return PartialView("_AssetBlogPartial",asset);
+        //}
         [AcceptVerbs("Get", "Post")]
         [ChildActionOnly]
         public ActionResult AssetPagePartial(AssetEntity asset)
@@ -125,7 +153,7 @@ namespace HybridCMS.Controllers
                 {
                     return RedirectToAction("Update", "Blog", new { AssetId = AssetId });
                 }
-                else if(asset.UserId == _User.Id && asset.AssetTypeId == AssetType.Page)
+                else if (asset.UserId == _User.Id && asset.AssetTypeId == AssetType.Page)
                 {
                     return RedirectToAction("Update", "Page", new { AssetId = AssetId });
                 }

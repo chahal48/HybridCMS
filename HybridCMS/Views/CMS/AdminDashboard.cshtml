@@ -4,6 +4,9 @@
     ViewBag.Title = DashboardName;
     Layout = "~/Views/Shared/_CMSLayout.cshtml";
 }
+@section styles{
+    <link href="~/Content/dashboardStyle.css" rel="stylesheet" />
+}
 
 <!-- Admin Dashboard Start -->
 <div class="container-xxl py-6" style="padding-bottom:0 !important;">
@@ -24,11 +27,5 @@
 @section scripts{
     <script src="~/Scripts/fnRedirectWithParameterURL.js"></script>
     <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
-    <script src="~/Scripts/adminDashboard.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#liAdminDashboard').addClass('active');
-            $('#liUserProfile').addClass('active');
-        });
-    </script>
+    <script src="~/Scripts/dashboardScript.js"></script>
 }

@@ -32,7 +32,10 @@ namespace HybridCMSDll.DataAccess
                             AssetTypeId = (AssetType)dr["AssetTypeId"],
                             AssetName = Convert.ToString(dr["Name"]),
                             AssetUrl = Convert.ToString(dr["URL"]),
-                            TotalPost = Convert.ToInt64(dr["PostCount"])
+                            TotalPost = Convert.ToInt64(dr["PostCount"]),
+                            CreatedOn = Convert.ToDateTime(dr["CreatedOn"]),
+                            IsPublished = Convert.ToBoolean(dr["IsPublished"]),
+                            PublishedOn = Convert.ToDateTime(dr["PublishedOn"])
                         });
                     }
                 }
@@ -62,7 +65,9 @@ namespace HybridCMSDll.DataAccess
                             AssetUrl = Convert.ToString(dr["URL"]),
                             Description = Convert.ToString(dr["Description"]),
                             AssetPhoto = Convert.ToString(dr["AssetPhoto"]),
-                            CreatedOn = Convert.ToDateTime(dr["CreatedOn"])
+                            CreatedOn = Convert.ToDateTime(dr["CreatedOn"]),
+                            IsPublished = Convert.ToBoolean(dr["IsPublished"]),
+                            PublishedOn = Convert.ToDateTime(dr["PublishedOn"])
                         };
                     }
                 }
@@ -123,7 +128,9 @@ namespace HybridCMSDll.DataAccess
                             AssetUrl = Convert.ToString(dr["URL"]),
                             Description = Convert.ToString(dr["Description"]),
                             AssetPhoto = Convert.ToString(dr["AssetPhoto"]),
-                            CreatedOn = Convert.ToDateTime(dr["CreatedOn"])
+                            CreatedOn = Convert.ToDateTime(dr["CreatedOn"]),
+                            PublishedOn = Convert.ToDateTime(dr["PublishedOn"]),
+                            IsPublished = Convert.ToBoolean(dr["IsPublished"])
                         };
                     }
                     return assetEntity;
@@ -234,6 +241,17 @@ namespace HybridCMSDll.DataAccess
                 }
             }
             return assetEntity;
+        }
+        public bool publishAsset(Int64 UserId, Int64 AssetId)
+        {
+            using (ADOExecution exec = new ADOExecution(GetConnectionString()))
+            {
+                int Result = exec.ExecuteNonQuery(CommandType.StoredProcedure, "usp_publishAsset",
+                    new SqlParameter("@UserId", UserId),
+                    new SqlParameter("@AssetId", AssetId));
+
+                return ReturnBool(Result);
+            }
         }
     }
 }

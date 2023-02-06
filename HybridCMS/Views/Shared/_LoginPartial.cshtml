@@ -5,16 +5,20 @@
     @if (Model.RoleId == 2)
     {
         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" id="liCreate">
-            <i class="fa fa-plus"></i>
-            Create
+            Manage
         </a>
         <div class="dropdown-menu m-0">
-            <a href="@Url.Action("Create", "Blog")" class="dropdown-item" id="liCreateBlog">Create Blog</a>
-            <a href="@Url.Action("Create", "Page")" class="dropdown-item" id="liCreatePage">Create Page</a>
+            <a href="@Url.Action("Create", "Blog")" target = "_blank" class="dropdown-item" id="liCreateBlog">Create Blog</a>
+            <a href="@Url.Action("Create", "Page")" target = "_blank" class="dropdown-item" id="liCreatePage">Create Page</a>
         </div>
     }
 </div>
-<a href="@Url.Action("ContactUs", "Home")" id="liContact" class="nav-item nav-link">Contact Us</a>
+@if (Model.RoleId == 2)
+{ 
+<a href="@Url.Action("AdminDashboard", "CMS")" id="liAdminDashboard" class="nav-item nav-link">
+    <i class="bi bi-terminal-fill"></i>&nbsp;Dashboard</a>
+}
+@*<a href="@Url.Action("ContactUs", "Home")" id="liContact" class="nav-item nav-link">Contact Us</a>*@
 <div class="nav-item dropdown">
     @if (!string.IsNullOrEmpty(Model.Name))
     {
@@ -23,10 +27,6 @@
             @Model.Name
         </a>
         <div class="dropdown-menu m-0">
-            @if (Model.RoleId == 2)
-            {
-                <a href="@Url.Action("AdminDashboard", "CMS")" class="dropdown-item" id="liAdminDashboard">Admin Dashboard</a>
-            }
             <a href="@Url.Action("ChangePassword", "CMS")" class="dropdown-item" id="liChangePassword">Change Password</a>
             <a href="@Url.Action("Logout", "CMS")" class="dropdown-item">Logout &nbsp;<strong class="bi bi-box-arrow-right"></strong> </a>
         </div>
@@ -34,5 +34,5 @@
 </div>
 @if (Model.Id <= 0)
 {
-    <a href="@Url.Action("Login", "CMS")" class="nav-item nav-link">Sign In&nbsp;<strong class="bi bi-box-arrow-in-left"></strong></a>
+    <a href="@Url.Action("Login", "User")" class="nav-item nav-link">Sign In&nbsp;<strong class="bi bi-box-arrow-in-left"></strong></a>
 }

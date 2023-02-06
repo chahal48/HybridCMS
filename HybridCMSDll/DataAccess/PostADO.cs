@@ -12,7 +12,7 @@ namespace HybridCMSDll.DataAccess
 {
     public partial class SQLPost
     {
-        public bool AddPost(PostEntity obj)
+        public bool CreatePost(PostEntity obj)
         {
             using (ADOExecution exec = new ADOExecution(GetConnectionString()))
             {
@@ -104,7 +104,7 @@ namespace HybridCMSDll.DataAccess
             }
             return postEntity;
         }
-        public bool EditPost(PostEntity obj)
+        public bool UpdatePost(PostEntity obj)
         {
             using (ADOExecution exec = new ADOExecution(GetConnectionString()))
             {
@@ -153,6 +153,40 @@ namespace HybridCMSDll.DataAccess
                 }
             }
             return list;
+        }
+        public BookmarkPostEntity CheckBookmarkOnPost(Int64 UserId,Int64 PostId)
+        {
+            BookmarkPostEntity obj = new BookmarkPostEntity();
+            using (ADOExecution exec = new ADOExecution(GetConnectionString()))
+            {
+                using (IDataReader dr = exec.ExecuteReader(CommandType.StoredProcedure, "usp_GetPostBookmarkByUserIdandPostId",
+                    new SqlParameter("@UserId", UserId),
+                    new SqlParameter("@PostId", PostId)
+                    ))
+                {
+                    while (dr.Read())
+                    {
+                        obj = new BookmarkPostEntity()
+                        {
+                            PostId = Convert.ToInt64(dr["PostId"]),
+                            UserId = Convert.ToInt64(dr["UserId"]),
+                            IsBookMarked = Convert.ToBoolean(dr["IsBookmarked"]),
+                        };
+                    }
+                }
+            }
+            return obj;
+        }
+        public bool setPostBookmark(Int64 UserId,Int64 PostId)
+        {
+            using (ADOExecution exec = new ADOExecution(GetConnectionString()))
+            {
+                int Result = exec.ExecuteNonQuery(CommandType.StoredProcedure, "usp_setPostBookmark",
+                    new SqlParameter("@UserId", UserId),
+                    new SqlParameter("@PostId", PostId));
+
+                return ReturnBool(Result);
+            }
         }
     }
 }
