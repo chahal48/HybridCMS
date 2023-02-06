@@ -17,7 +17,6 @@ namespace HybridCMS.Models
         [StringLength(50, MinimumLength = 5, ErrorMessage = "Heading character length should be in between 5 to 50.")]
         public string Heading { get; set; }
 
-        [Required(ErrorMessage = "Description is Required!!")]
         [MaxLength(500,ErrorMessage = "Description must be less than 500 characters.")]
         public string Description { get; set; }
         public string Photo { get; set; }

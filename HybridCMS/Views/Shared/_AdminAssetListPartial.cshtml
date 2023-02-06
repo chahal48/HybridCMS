@@ -7,6 +7,7 @@
         margin-left: 25px;
     }
 </style>
+
 <hr />
 <div class="container">
     <div class="category-filter">
@@ -23,13 +24,16 @@
                     @Html.DisplayNameFor(model => model.AssetName)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.AssetUrl)
+                    @Html.DisplayNameFor(model => model.CreatedOn)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.AssetTypeId)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.TotalPost)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PublishedDateInString)
                 </th>
                 <th class="text-center">Manage</th>
             </tr>
@@ -44,26 +48,33 @@
                         @Html.DisplayFor(modelItem => item.AssetName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.AssetUrl)
+                        @Html.DisplayFor(modelItem => item.CreatedDateInString)
                     </td>
                     <td>
                         @if (item.AssetTypeId.Equals(HybridCMSEntities.AssetType.Page))
                         {
-                            <span style="color:darkblue;"><b>@Html.DisplayFor(modelItem => item.AssetTypeId)</b></span>
+                            <span style="color: #F65005;"><b>@Html.DisplayFor(modelItem => item.AssetTypeId)</b></span>
                         }
                         else
                         {
-                            <span style="color:crimson;"><b>@Html.DisplayFor(modelItem => item.AssetTypeId)</b></span>
+                            <span style="color: #3CB815;"><b>@Html.DisplayFor(modelItem => item.AssetTypeId)</b></span>
                         }
                     </td>
                     <td>
-                        @if (item.TotalPost > 0)
+                        @if (item.TotalPost > 0 && item.AssetTypeId.Equals(HybridCMSEntities.AssetType.Page))
                         {
                             @Html.DisplayFor(modelItem => item.TotalPost)
                         }
                     </td>
-                    <td align="center" colspan="2">
-                        @Html.ActionLink(" ", "UpdateAsset", "Asset", new { AssetId = Convert.ToString(item.AssetId) }, new { @class = "btn btn-outline-primary rounded-pill bi bi-pencil-square" }) &nbsp;
+                    <td>
+                        @if (item.IsPublished)
+                        {
+                            @Html.DisplayFor(modelItem => item.PublishedDateInString)
+                        }
+                    </td>
+                    <td align="center" colspan="3">
+                        @Html.CheckBoxFor(modelItem => item.IsPublished, new { @class= "cbIsPublished", @onclick = string.Format("fnPublishAssets('{0}','{1}',this)", item.AssetId,item.IsPublished) })
+                        @Html.ActionLink(" ", "UpdateAsset", "Asset", new { AssetId = Convert.ToString(item.AssetId) }, new { @class = "btn btn-outline-primary rounded-pill bi bi-pencil-square", @target = "_blank" }) &nbsp;
                         <button onclick="fnRedirect('@item.AssetUrl')" class="btn btn-outline-info rounded-pill bi bi-eye-fill"></button> &nbsp;
                         @Html.ActionLink(" ", "DeleteAsset", "Asset", new { AssetId = Convert.ToString(item.AssetId) }, new { onclick = "return confirm('Are you sure you want to delete?');", @class = "btn btn-outline-secondary rounded-pill bi bi-trash-fill" })
                     </td>

@@ -20,13 +20,13 @@ namespace HybridCMSBll
         {
             return iPost.GetLatestPost();
         }
-        public bool AddPost(PostEntity obj)
+        public bool CreatePost(PostEntity obj)
         {
-            return iPost.AddPost(obj);
+            return iPost.CreatePost(obj);
         }
-        public bool EditPost(PostEntity obj)
+        public bool UpdatePost(PostEntity obj)
         {
-            return iPost.EditPost(obj);
+            return iPost.UpdatePost(obj);
         }
         public List<PostEntity> GetAllPostByAssetId(Int64 AssetId)
         {
@@ -43,6 +43,14 @@ namespace HybridCMSBll
         public bool DeletePost(Int64 PostId)
         {
             return iPost.DeletePost(PostId);
+        }
+        public BookmarkPostEntity CheckBookmarkOnPost(Int64 UserId, Int64 PostId)
+        {
+            return iPost.CheckBookmarkOnPost(UserId: UserId, PostId: PostId);
+        }
+        public bool setPostBookmark(Int64 UserId, Int64 PostId)
+        {
+            return iPost.setPostBookmark(UserId: UserId, PostId: PostId);
         }
     }
 }

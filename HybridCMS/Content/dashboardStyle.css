@@ -1,0 +1,28 @@
+﻿.cbIsPublished {
+    height: 40px;
+    width: 100px;
+    -webkit-appearance: none;
+    box-shadow: -2px -2px -2px rgba(255,255,255,0.5), 2px 2px 2px rgba(70,70,70,0.12);
+    position: relative;
+    padding: 6px 15px;
+    border-radius: 12px;
+    border: 2px solid #ececec;
+    outline: none;
+    cursor: pointer;
+}
+
+    .cbIsPublished:after {
+        content: "Archvied";
+        color: #F65005;
+        font-size: 15px;
+    }
+
+    .cbIsPublished:checked {
+        box-shadow: -2px -2px 3px rgba(255,255,255,0.5), 2px 2px 3px rgba(70,70,70,0.12), inset -2px -2px 3px rgba(255,255,255,0.5), inset 2px 2px 3px rgba(70,70,70,0.12);
+    }
+
+        .cbIsPublished:checked:after {
+            content: "Published";
+            color: #3CB815;
+            font-size: 15px;
+        }

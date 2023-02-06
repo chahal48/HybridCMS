@@ -57,5 +57,9 @@ namespace HybridCMSBll
         {
             return iAsset.GetAllAssetBySearch(Search);
         }
+        public bool publishAsset(Int64 UserId, Int64 AssetId)
+        {
+            return iAsset.publishAsset(UserId: UserId, AssetId: AssetId);
+        }
     }
 }

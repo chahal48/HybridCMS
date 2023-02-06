@@ -52,7 +52,7 @@ namespace HybridCMS.Controllers
             {
                 var cmsEntity = userBll.LoginCMS(EmailorUsername: model.EmailorUsername, Password: model.Password);
 
-                if (cmsEntity == null || cmsEntity.EmailId == null || cmsEntity.Id <= 0)
+                if (cmsEntity == null || cmsEntity.EmailId == null || cmsEntity.Id <= 0 || cmsEntity.RoleId == 3)
                 {
                     ModelState.AddModelError("", "Your email/username or password is incorrect.");
                 }
@@ -72,11 +72,7 @@ namespace HybridCMS.Controllers
                     }
                     else
                     {
-                        if (cmsEntity.RoleId == 2)
-                        {
-                            return RedirectToAction("AdminDashboard", "CMS");
-                        }
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("AdminDashboard", "CMS");
                     }
                 }
             }
@@ -88,6 +84,7 @@ namespace HybridCMS.Controllers
         {
             return PartialView("_LoginPartial", _User);
         }
+        [Route("ChangePassword")]
         public ActionResult ChangePassword()
         {
             if (_User.Id > 0)
@@ -97,6 +94,7 @@ namespace HybridCMS.Controllers
             return new ViewResult() { ViewName = "PageNotFound" };
         }
         [HttpPost]
+        [Route("ChangePassword")]
         [ValidateAntiForgeryToken]
         public ActionResult ChangePassword(CMSChangePasswordViewModel obj)
         {
@@ -117,6 +115,8 @@ namespace HybridCMS.Controllers
             }
             return View();
         }
+        [AcceptVerbs("Get", "Post")]
+        [Route("CMS")]
         public ActionResult AdminDashboard()
         {
             if (_User.Id > 0 && _User.RoleId == 2)
@@ -127,10 +127,10 @@ namespace HybridCMS.Controllers
             {
                 SessionHelper.ClearHybridCMS();
             }
-            return RedirectToAction("login");
+            return RedirectToAction("login","CMS");
         }
         [AcceptVerbs("Get", "Post")]
-        [Route("User/{Username}")]
+        [Route("Profile/{Username}")]
         public ActionResult UserProfile(string Username)
         {
             try
@@ -151,7 +151,7 @@ namespace HybridCMS.Controllers
         public ActionResult Logout()
         {
             SessionHelper.ClearHybridCMS();
-            return RedirectToAction("login");
+            return RedirectToAction("Index","Home");
         }
         public ActionResult RedirectFromLogin()
         {
@@ -240,8 +240,8 @@ namespace HybridCMS.Controllers
             {
                 if (userBll.ChangeUserPasswordByToken(Password: obj.NewPassword, TokenId: url))
                 {
-                    TempData["AlertMsg"] = "Password updated successfully.";
-                    return RedirectToAction("Login", "CMS");
+                    //TempData["AlertMsg"] = "Password updated successfully.";
+                    return RedirectToAction("Index", "Home");
                 }
             }
             return View(obj);

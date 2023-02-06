@@ -1,0 +1,5 @@
+﻿@model HybridCMSEntities.BookmarkPostEntity
+
+<div class="containerBookmark float-end">
+    @Html.CheckBoxFor(model => model.IsBookMarked, new { @onclick = string.Format("fnBookmarkPost('{0}','{1}','{2}','{3}',this)", Model.UserId, Model.PostId, Model.IsBookMarked, Model.AssetUrl) })
+</div>

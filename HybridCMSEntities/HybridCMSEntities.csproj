@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssetEntity.cs" />
+    <Compile Include="BookmarkPostEntity.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="LoginEntity.cs" />
     <Compile Include="PostEntity.cs" />

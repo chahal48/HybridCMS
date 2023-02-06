@@ -3,6 +3,8 @@ using HybridCMSBll;
 using HybridCMSEntities;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -18,6 +20,7 @@ namespace HybridCMS.Controllers
         PostBll postBll = new PostBll();
         AssetBll assetBll = new AssetBll();
         LoginEntity _User = new LoginEntity();
+        FileHelper _fileHelper = new FileHelper();
         public PostController()
         {
             SessionHelper.InitializeSession();
@@ -54,25 +57,16 @@ namespace HybridCMS.Controllers
                 {
                     if (assetBll.CheckValidUserIdandAssetId(_User.Id, Convert.ToString(obj.AssetId)))
                     {
-                        if (obj.Image != null && obj.Image.ContentLength > 0)
-                        {
-                            string mapPath = Server.MapPath("/Upload");
-                            Guid guid = Guid.NewGuid();
-                            string fileExtention = Path.GetExtension(obj.Image.FileName);
-                            string FullImageName = guid.ToString() + fileExtention;
-                            string fullPath = Path.Combine(mapPath, FullImageName);
-                            obj.Image.SaveAs(fullPath);
+                        string ImagedNameToSave = _fileHelper.SaveFile(obj.Image);
 
-                            obj.Photo = FullImageName;
-                        }
                         PostEntity postEntity = new PostEntity()
                         {
                             AssetId = obj.AssetId,
                             PostHeading = obj.Heading,
                             PostDescription = obj.Description,
-                            PostImage = obj.Photo
+                            PostImage = ImagedNameToSave
                         };
-                        bool result = postBll.AddPost(postEntity);
+                        bool result = postBll.CreatePost(postEntity);
                         if (result)
                         {
                             return Json(new { success = true, message = "Post created successfully." });
@@ -86,7 +80,7 @@ namespace HybridCMS.Controllers
 
         [AcceptVerbs("Get", "Post")]
         [Route("@{URL}/Post/Update/{PostId}")]
-        public ActionResult Update(string URL,string PostId)
+        public ActionResult Update(string URL, string PostId)
         {
             try
             {
@@ -97,19 +91,67 @@ namespace HybridCMS.Controllers
 
                     if (asset.AssetId > 0 && asset.UserId == _User.Id && asset.AssetTypeId == AssetType.Page)
                     {
-                        PostViewModel postViewModel = new PostViewModel();
-                        postViewModel.AssetId = asset.AssetId;
-                        postViewModel.AssetUrl = asset.AssetUrl;
-                        return View(postViewModel);
+                        PostEntity postEntity = new PostEntity();
+                        if (postBll.CheckValidUserIdandPostId(_User.Id, PostId))
+                        {
+                            if (long.Parse(PostId) > 0)
+                            {
+                                postEntity = postBll.GetPostByPostId(long.Parse(PostId));
+
+                                PostViewModel postViewModel = new PostViewModel()
+                                {
+                                    PostId = postEntity.PostId,
+                                    AssetId = postEntity.AssetId,
+                                    AssetUrl = postEntity.AssetUrl,
+                                    Heading = postEntity.PostHeading,
+                                    Description = postEntity.PostDescription,
+                                    Photo = postEntity.PostImage
+                                };
+                                if (string.IsNullOrEmpty(postViewModel.Photo) || !System.IO.File.Exists(Server.MapPath("/Upload/" + postViewModel.Photo)))
+                                {
+                                    postViewModel.Photo = null;
+                                }
+                                return View(postViewModel);
+                            }
+                        }
                     }
                 }
             }
             catch { }
             return new ViewResult() { ViewName = "PageNotFound" };
         }
+        public JsonResult PostUpdate(PostViewModel obj)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (postBll.CheckValidUserIdandPostId(_User.Id, Convert.ToString(obj.PostId)))
+                    {
+                        string ImagedNameToSave = _fileHelper.SaveFile(obj.Image);
 
-
-
+                        PostEntity postEntity = new PostEntity()
+                        {
+                            PostId = obj.PostId,
+                            PostHeading = obj.Heading,
+                            PostDescription = obj.Description,
+                            PostImage = ImagedNameToSave
+                        };
+                        bool result = postBll.UpdatePost(postEntity);
+                        if (result)
+                        {
+                            if (!string.IsNullOrEmpty(ImagedNameToSave) && System.IO.File.Exists(Server.MapPath("/Upload/" + ImagedNameToSave)))
+                            {
+                                _fileHelper.DeleteFile(obj.Photo);
+                            }
+                            return Json(new { success = true, message = "Post created successfully." });
+                        }
+                    }
+                }
+            }
+            catch { }
+            return Json(new { success = false, message = "Error" });
+        }
         [AcceptVerbs("Get", "Post")]
         [ChildActionOnly]
         public ActionResult PostListPartialView(Int64 AssetId)
@@ -122,7 +164,7 @@ namespace HybridCMS.Controllers
                 {
                     List = postBll.GetAllPostByAssetId(AssetId);
                 }
-                if(List.Count() > 0)
+                if (List.Count() > 0)
                 {
                     return PartialView("_PostListPartial", List);
                 }
@@ -149,126 +191,107 @@ namespace HybridCMS.Controllers
             catch { }
             return PartialView("_BlankPartialView");
         }
-
         [AcceptVerbs("Get", "Post")]
         [ChildActionOnly]
-        public ActionResult PostBtnPartialView(string PostId)
+        public ActionResult btnPostPartial(PostEntity obj)
         {
             PostEntity postEntity = new PostEntity();
 
-            if (postBll.CheckValidUserIdandPostId(_User.Id, PostId))
-            {
-                try
-                {
-                    if (long.Parse(PostId) > 0)
-                    {
-                        postEntity = postBll.GetPostByPostId(long.Parse(PostId));
-                    }
-                }
-                catch { }
-                return PartialView("_EditDeletePostBtnPartial", postEntity);
-            }
-            else
-            {
-                try
-                {
-                    if (long.Parse(PostId) > 0)
-                    {
-                        postEntity = postBll.GetPostByPostId(long.Parse(PostId));
-                    }
-                }
-                catch { }
-                return PartialView("_DetailPostBtnPartial", postEntity);
-            }
-        }
-        [HttpGet]
-        [Route("Post/EditPost/{PostId}")]
-        public ActionResult EditPost(string PostId)
-        {
-            if (postBll.CheckValidUserIdandPostId(_User.Id, PostId))
-            {
-                EditPostViewModal editPostView = new EditPostViewModal();
-                try
-                {
-                    var obj = postBll.GetPostByPostId(long.Parse(PostId));
-                    editPostView = new EditPostViewModal()
-                    {
-                        PostId = obj.PostId,
-                        Heading = obj.PostHeading,
-                        Description = obj.PostDescription,
-                        Photo = obj.PostImage
-                    };
-                }
-                catch { }
-                return View(editPostView);
-            }
-            return new ViewResult() { ViewName = "PageNotFound" };
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Route("Post/EditPost/{PostId}")]
-        public ActionResult EditPostMethod(string PostId, EditPostViewModal obj)
-        {
+            bool Result = false;
+
             try
             {
-                if (ModelState.IsValid && postBll.CheckValidUserIdandPostId(_User.Id, PostId))
-                {
-                    PostEntity postEntity = new PostEntity()
-                    {
-                        PostId = obj.PostId,
-                        PostHeading = obj.Heading,
-                        PostDescription = obj.Description,
-                        PostImage = obj.Photo
-                    };
-                    bool result = postBll.EditPost(postEntity);
-                    if (result)
-                    {
-                        TempData["SuccessMsg"] = "Post Updated successfully.";
-                    }
-                }
-                else
-                {
-                    TempData["ErrorMsg"] = "Error adding asset.";
-                }
+                Result = postBll.CheckValidUserIdandPostId(_User.Id, Convert.ToString(obj.PostId));
             }
             catch { }
 
-            return RedirectToAction("AdminDashboard", "CMS");
-        }
-        //[HttpGet]
-        //[Route("@{URL}/{PostId}")]
-        //public ActionResult DetailPost(string URL, string PostId)
-        //{
-        //    PostEntity postEntity = new PostEntity();
-        //    try
-        //    {
-        //        postEntity = postBll.GetPostByPostId(long.Parse(PostId));
-        //    }
-        //    catch { }
-        //    if (postEntity.PostId > 0)
-        //    {
-        //        return View(postEntity);
-        //    }
-        //    return new ViewResult() { ViewName = "PageNotFound" };
-        //}
-        [Route("Post/Delete/{PostId}")]
-        public ActionResult DeletePost(string PostId)
-        {
-            PostEntity postEntity = new PostEntity();
-            if (postBll.CheckValidUserIdandPostId(_User.Id, PostId))
+            if (Result)
             {
                 try
                 {
-                    postEntity = postBll.GetPostByPostId(long.Parse(PostId));
+                    if (obj.PostId > 0)
+                    {
+                        postEntity = postBll.GetPostByPostId(obj.PostId);
+                    }
                 }
                 catch { }
-                if (postBll.DeletePost(long.Parse(PostId)))
+                return PartialView("_ModifyPostPartial", postEntity);
+            }
+            else if(!Result)
+            {
+                BookmarkPostEntity bookmark = new BookmarkPostEntity();
+                try
                 {
-                    ViewBag.AlertMsg = "Asset deleted successfully";
-                    return RedirectToAction("AssetView", "Asset", new { URL = postEntity.AssetUrl });
+                    if(_User.Id > 0)
+                    {
+                        bookmark = postBll.CheckBookmarkOnPost(UserId: _User.Id, PostId: obj.PostId);
+                    }
+                }
+                catch { }
+                BookmarkPostEntity bookmarkPostEntity = new BookmarkPostEntity()
+                {
+                    UserId = _User.Id,
+                    PostId = obj.PostId,
+                    AssetUrl = obj.AssetUrl,
+                    IsBookMarked = bookmark.IsBookMarked
+                };
+                return PartialView("_BookmarkPostPartial", bookmarkPostEntity);
+            }
+            else
+            {
+                return PartialView("_BlankPartialView");
+            }
+        }
+
+        public JsonResult Delete(Int64 PostId)
+        {
+            PostEntity postEntity = new PostEntity();
+            if (postBll.CheckValidUserIdandPostId(_User.Id, Convert.ToString(PostId)))
+            {
+                try
+                {
+                    postEntity = postBll.GetPostByPostId(PostId);
+                }
+                catch { }
+                if (postBll.DeletePost(PostId))
+                {
+                    return Json(new { success = true, message = "Post deleted successfully." });
                 }
             }
-            return new ViewResult() { ViewName = "PageNotFound" };
+            return Json(new { success = false, message = "Error" });
+        }
+        public JsonResult Bookmark(string UserId, string PostId)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(UserId) && !string.IsNullOrEmpty(PostId) && long.TryParse(PostId, out long resultPostId) && long.TryParse(UserId, out long resultUserId))
+                {
+                    if (resultUserId > 0 && resultPostId > 0 && resultUserId == _User.Id)
+                    {
+                        if (postBll.setPostBookmark(UserId: resultUserId, PostId: resultPostId))
+                        {
+                            var bookmark = postBll.CheckBookmarkOnPost(UserId: _User.Id, PostId: resultPostId);
+                            if (bookmark != null && bookmark.UserId == resultUserId && bookmark.PostId == resultPostId) 
+                            {
+                                if (bookmark.IsBookMarked)
+                                {
+                                    return Json(new { success = true, message = true });
+                                }
+                                else
+                                {
+                                    return Json(new { success = true, message = false });
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        return Json(new { success = false, message = "login" });
+                    }
+                }
+            }
+            catch { }
+            return Json(new { success = false, message = "Error" });
         }
     }
 }

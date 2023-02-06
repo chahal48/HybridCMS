@@ -28,14 +28,7 @@ namespace HybridCMS.Models
         {
             get
             {
-                if (URL != null)
-                {
-                    return URL.ToString();
-                }
-                else
-                {
-                    return string.Empty;
-                }
+                return URL ?? string.Empty;
             }
         }
     }

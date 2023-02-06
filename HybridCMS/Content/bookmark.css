@@ -1,0 +1,68 @@
+﻿
+
+
+
+
+
+
+
+
+
+
+
+
+
+.containerBookmark {
+    height: 40px;
+    width: 40px;
+    background-color: none;
+    position: relative;
+    margin: auto;
+    top: 10px;
+    bottom: 0;
+    left: -10px;
+    right: 0;
+    border-radius: 4px;
+    display: grid;
+    place-items: center;
+}
+
+#IsBookMarked {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 30px;
+    border-right: 10px solid #b6f5a3;
+    border-bottom: 10px solid transparent;
+    position: relative;
+    left: 5px;
+    outline: none;
+    cursor: pointer;
+    border-top-right-radius: 4px;
+}
+
+    #IsBookMarked:before {
+        content: "";
+        position: absolute;
+        left: -9.875px;
+        height: 30px;
+        border-left: 10px solid #b6f5a3;
+        border-bottom: 10px solid transparent;
+        border-top-left-radius: 4px;
+    }
+
+    #IsBookMarked:checked {
+        border-right-color: #3CB815;
+        animation: scale 0.4s;
+        transition: 0.1s 0.3s border;
+    }
+
+@keyframes scale {
+    80% {
+        transform: scale(0.8);
+    }
+}
+
+#IsBookMarked:checked:before {
+    border-left-color: #3CB815;
+    transition: 0.1s 0.3s border;
+}
