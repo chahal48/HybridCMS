@@ -67,5 +67,83 @@ namespace HybridCMS.Controllers
             }
             return View();
         }
+        [HttpGet]
+        public ActionResult SignUp()
+        {
+            if (Request.Cookies["HybridCMS"] == null && _User.Id <= 0)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SignUp(SignUpViewModel obj)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    LoginEntity loginEntity = new LoginEntity()
+                    {
+                        Name = obj.Name,
+                        UserName = obj.Username,
+                        EmailId = obj.Email,
+                        Password = obj.Password
+                    };
+
+                    bool result = userBll.SignUp(loginEntity);
+                    if (result)
+                    {
+                        //return Content("<script>window.location.pathname = ''; alert('Congratulations, your account has been successfully created.');</script>");
+                        return RedirectToAction("Index", "Home");                        
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Somthing went wrong... Please try again.");
+                    }
+                }
+                catch { }
+            }
+            return View(obj);
+        }
+        // Unique field validation
+        [HttpPost]
+        public JsonResult IsEmailAvailable([Bind(Prefix = "Email")] string Email)
+        {
+            if (!string.IsNullOrEmpty(Email))
+            {
+                try
+                {
+                    bool result = userBll.CheckEmailAlreadyExists(Email);
+                    if (!result)
+                    {
+                        return Json(true, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                catch { }
+            }
+            return Json(JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult IsUsernameAvailable([Bind(Prefix = "Username")] string Username)
+        {
+            if (!string.IsNullOrEmpty(Username))
+            {
+                try
+                {
+                    bool result = userBll.CheckUserNameAlreadyExists(Username);
+                    if (!result)
+                    {
+                        return Json(true, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                catch { }
+            }
+            return Json(JsonRequestBehavior.AllowGet);
+        }
     }
 }

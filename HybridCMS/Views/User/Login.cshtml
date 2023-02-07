@@ -10,7 +10,8 @@
         <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
             <div class="card border-0 shadow my-5" style="border-radius:10px;">
                 <div class="card-body p-4 p-sm-5">
-                    <h5 class="card-title display-5 text-center mb-3 fw-light fs-5"><small class="fa fa-user text-body"></small>&nbsp;Sign In</h5>
+                    <h1 class="card-title fw-bold text-center text-primary m-0">Hybrid<span class="text-secondary">CMS</span></h1>
+                    <p class="text-center"><small class="fa fa-user text-body"></small>&nbsp;Sign In</p>
                     @using (Html.BeginForm())
                     {
                         @Html.AntiForgeryToken()
@@ -30,13 +31,16 @@
                             @Html.ValidationMessageFor(model => model.EmailorUsername, "", new { @class = "text-danger" })
                         </div>
 
-                        <div class="form-floating mb-3">
+                        <div class="form-floating">
                             @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Password" } })
                             @Html.LabelFor(model => model.Password)
                             @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                         </div>
+                        <div class="form-floating mb-3">
+                            @Html.ActionLink("Forgot Password?", "ForgotPassword", "CMS", new { }, new { @class = "form-label" })
+                        </div>
                         <div class="form-check mb-3">
-                            <div class="row mb-3">
+                            <div class="row">
                                 <div class="col-md-6">
                                     @Html.EditorFor(model => model.RemenberMe, new { htmlAttributes = new { @class = "form-check-input" } })
                                     @Html.LabelFor(model => model.RemenberMe)
@@ -47,9 +51,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-floating mb-3 ">
-                            @Html.ActionLink("Forgot Password?", "ForgotPassword", "CMS", new { }, new { @class = "form-label" })
-                            <input type="submit" value="Sign in" class="btn btn-primary btn-login text-uppercase fw-bold float-end" />
+                        <div class="form-floating">
+                            @Html.ActionLink("Create account", "SignUp", "User", new { }, new { @class = "form-label fw-bold" })
+                            <input type="submit" style="border-radius:7px;" value="Sign in" class="btn btn-primary btn-login text-uppercase fw-bold float-end" />
                         </div>
                     }
                 </div>

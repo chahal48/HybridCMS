@@ -184,6 +184,7 @@
     <Compile Include="Models\PostViewModel.cs" />
     <Compile Include="Models\ResetPasswordViewModel.cs" />
     <Compile Include="Models\SessionHelper.cs" />
+    <Compile Include="Models\SignUpViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -312,6 +313,7 @@
     <Content Include="Views\Shared\_UserLoginLayout.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\Blog\Blogs.cshtml" />
+    <Content Include="Views\User\SignUp.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

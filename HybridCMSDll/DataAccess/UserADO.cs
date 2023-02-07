@@ -136,6 +136,38 @@ namespace HybridCMSDll.DataAccess
                 return ReturnBool(Result);
             }
         }
+        public bool CheckEmailAlreadyExists(string Email)
+        {
+            int Result = 0;
+            using (ADOExecution exec = new ADOExecution(GetConnectionString()))
+            {
+                var obj = exec.ExecuteScalar(CommandType.StoredProcedure, "usp_CheckEmailAlreadyExists",
+                    new SqlParameter("@EmailAddress", Email));
+
+                if (obj != null)
+                {
+                    Result = Convert.ToInt32(obj);
+                }
+
+                return ReturnBool(Result);
+            }
+        }
+        public bool CheckUserNameAlreadyExists(string Username)
+        {
+            int Result = 0;
+            using (ADOExecution exec = new ADOExecution(GetConnectionString()))
+            {
+                var obj = exec.ExecuteScalar(CommandType.StoredProcedure, "usp_CheckUserNameAlreadyExists",
+                    new SqlParameter("@UserName", Username));
+
+                if (obj != null)
+                {
+                    Result = Convert.ToInt32(obj);
+                }
+
+                return ReturnBool(Result);
+            }
+        }
         public bool GenerateTokenForResetPassword(string EmailorUsername, string TokenId)
         {
             using (ADOExecution exec = new ADOExecution(GetConnectionString()))
@@ -179,6 +211,20 @@ namespace HybridCMSDll.DataAccess
                     }
                     return loginEntity;
                 }
+            }
+        }
+        public bool SignUp(LoginEntity obj)
+        {
+            using (ADOExecution exec = new ADOExecution(GetConnectionString()))
+            {
+                int Result = exec.ExecuteNonQuery(CommandType.StoredProcedure, "usp_AddUser",
+                    new SqlParameter("@Name", obj.Name),
+                    new SqlParameter("@UserName", obj.UserName),
+                    new SqlParameter("@EmailAddress", obj.EmailId),
+                    new SqlParameter("@Password", EncryptPassword(obj.Password))
+                    );
+
+                return ReturnBool(Result);
             }
         }
     }

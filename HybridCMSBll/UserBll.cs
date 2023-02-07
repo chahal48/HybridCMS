@@ -52,6 +52,18 @@ namespace HybridCMSBll
         {
             return iUser.UserDetails(Username);
         }
+        public bool CheckEmailAlreadyExists(string Email)
+        {
+            return iUser.CheckEmailAlreadyExists(Email);
+        }
+        public bool CheckUserNameAlreadyExists(string Username)
+        {
+            return iUser.CheckUserNameAlreadyExists(Username);
+        }
+        public bool SignUp(LoginEntity obj)
+        {
+            return iUser.SignUp(obj);
+        }
 
     }
 }

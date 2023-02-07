@@ -18,5 +18,8 @@ namespace HybridCMSDll.Interface
         bool GenerateTokenForResetPassword(string EmailorUsername, string TokenId);
         bool CheckValidToken(string Token);
         bool ChangeUserPasswordByToken(string Password, string TokenId);
+        bool CheckEmailAlreadyExists(string Email);
+        bool CheckUserNameAlreadyExists(string Username);
+        bool SignUp(LoginEntity obj);
     }
 }
