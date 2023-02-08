@@ -1,0 +1,77 @@
+﻿@model HybridCMSEntities.PostEntity
+@{
+    ViewBag.Title = "Post";
+    Layout = "~/Views/Shared/_CMSLayout.cshtml";
+}
+@section styles{
+    <link href="~/Content/threeDot.css" rel="stylesheet" />
+    <link href="~/Content/bookmark.css" rel="stylesheet" />
+}
+<!-- Post Start -->
+<div class="container-fluid bg-light bg-icon py-6 min-vh-100">
+    <div class="container">
+        <div class="section-header text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+            <div class="row col-lg-12 col-md-12">
+                <small class="me-3">
+                    <i class="fa fa-user text-primary me-2"></i>@Model.AuthorName &nbsp; <i class="fa fa-calendar text-primary me-2"></i>@Model.CreatedOn.ToString("ddd, dd MMM yyy")
+                </small>
+            </div>
+            <h4 class="display-6">@Model.AssetName</h4>
+        </div>
+        <div class="row g-4 justify-content-center">
+            <div class="col-lg-7 col-md-6 wow fadeInUp close-three-dot-checkbox" data-wow-delay="0.1s">
+                <div class="bg-white h-100" style="border-radius:8px;">
+                    @{
+                        Html.RenderAction("btnPostPartial", "Post", Model);
+                    }
+
+                    <div class="text-center p-4 p-xl-5">
+                        @if (!string.IsNullOrEmpty(Model.PostImage))
+                        {
+                            <img class="img-fluid mb-3" style="min-height:200px; max-height:500px;" src="~/Upload/@Model.PostImage" alt="">
+                        }
+                        <h4 class="mb-2">
+                            @Html.DisplayFor(model => model.PostHeading)
+                        </h4>
+                        <p class="mb-2">
+                            @Html.DisplayFor(model => model.PostDescription)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Post End -->
+@section scripts{
+    <script src="~/Scripts/threeDots.js"></script>
+    <script src="~/Scripts/fnRedirectWithParameterURL.js"></script>
+    <script src="~/Scripts/fnBookmarkPost.js"></script>
+<script>
+    function deletePost(assetUrl, postId, btn) {
+        const confirmText = "Are you sure you want to remove this from Saved Posts?";
+        if (confirm(confirmText)) {
+
+            $.ajax({
+                url: '/Post/Delete',
+                method: 'POST',
+                data: { PostId: postId },
+                success: function (res) {
+                    console.log(res);
+                    if (res.success) {
+                        alert('Post deleted successfully.');
+                        window.location.pathname = '';
+                    }
+                    else {
+                        alert('Somthing went wrong... Please try again.');
+                    }
+                },
+                error: function (error) {
+                    //console.log(error);
+                    alert('Somthing went wrong... Please try again.')
+                }
+            })
+        }
+    }
+    </script>
+}

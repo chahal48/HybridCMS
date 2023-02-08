@@ -188,5 +188,32 @@ namespace HybridCMSDll.DataAccess
                 return ReturnBool(Result);
             }
         }
+        public List<PostEntity> GetAllBookmarkedPostByUserId(Int64 UserId)
+        {
+            List<PostEntity> list = new List<PostEntity>();
+            using (ADOExecution exec = new ADOExecution(GetConnectionString()))
+            {
+                using (IDataReader dr = exec.ExecuteReader(CommandType.StoredProcedure, "usp_GetAllBookmarkedPostByUserId",
+                    new SqlParameter("@UserId", UserId)
+                    ))
+                {
+                    while (dr.Read())
+                    {
+                        list.Add(new PostEntity()
+                        {                            
+                            PostId = Convert.ToInt64(dr["PostId"]),
+                            AssetId = Convert.ToInt64(dr["AssetId"]),
+                            AssetUrl = Convert.ToString(dr["URL"]),
+                            PostHeading = Convert.ToString(dr["PostHeading"]),
+                            PostDescription = Convert.ToString(dr["PostDescription"]),
+                            AuthorPhoto = Convert.ToString(dr["AuthorPhoto"]),
+                            AuthorName = Convert.ToString(dr["AuthorName"]),
+                            CreatedOn = Convert.ToDateTime(dr["PostedDate"])
+                        });
+                    }
+                }
+            }
+            return list;
+        }
     }
 }

@@ -2,18 +2,18 @@
 
 <div class="col-lg-7 col-md-6 wow fadeInUp close-three-dot-checkbox" data-wow-delay="0.1s">
     <div class="bg-white h-100" style="border-radius:8px;">
-        @{ 
-                Html.RenderAction("btnPostPartial", "Post", Model);
+        @{
+            Html.RenderAction("btnPostPartial", "Post", Model);
         }
-        
+
         <div class="text-center p-4 p-xl-5">
             @if (!string.IsNullOrEmpty(Model.PostImage))
             {
                 <img class="img-fluid mb-3" style="min-height:200px; max-height:500px;" src="~/Upload/@Model.PostImage" alt="">
             }
-            <h4 class="mb-2">
-                @Html.DisplayFor(model => model.PostHeading)
-            </h4>
+            <a onclick="fnRedirect('@(Model.AssetUrl + "/Post/" + Model.PostId)')" class="d-block h4 lh-base mb-2" onmouseover="this.style.cursor='pointer'">
+                @Model.PostHeading
+            </a>
             <p class="mb-2">
                 @Html.DisplayFor(model => model.PostDescription)
             </p>

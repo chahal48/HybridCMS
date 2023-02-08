@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Web.Http.Results;
 
 namespace HybridCMS.Controllers
 {
@@ -217,12 +218,12 @@ namespace HybridCMS.Controllers
                 catch { }
                 return PartialView("_ModifyPostPartial", postEntity);
             }
-            else if(!Result)
+            else if (!Result && _User.RoleId == 3)
             {
                 BookmarkPostEntity bookmark = new BookmarkPostEntity();
                 try
                 {
-                    if(_User.Id > 0)
+                    if (_User.Id > 0)
                     {
                         bookmark = postBll.CheckBookmarkOnPost(UserId: _User.Id, PostId: obj.PostId);
                     }
@@ -271,7 +272,7 @@ namespace HybridCMS.Controllers
                         if (postBll.setPostBookmark(UserId: resultUserId, PostId: resultPostId))
                         {
                             var bookmark = postBll.CheckBookmarkOnPost(UserId: _User.Id, PostId: resultPostId);
-                            if (bookmark != null && bookmark.UserId == resultUserId && bookmark.PostId == resultPostId) 
+                            if (bookmark != null && bookmark.UserId == resultUserId && bookmark.PostId == resultPostId)
                             {
                                 if (bookmark.IsBookMarked)
                                 {
@@ -292,6 +293,70 @@ namespace HybridCMS.Controllers
             }
             catch { }
             return Json(new { success = false, message = "Error" });
+        }
+        [Route("SavedPosts")]
+        public ActionResult BookmarkedPost()
+        {
+            if (_User.Id > 0 && _User.RoleId == 3)
+            {
+                return View();
+            }
+            return new ViewResult() { ViewName = "PageNotFound" };
+        }
+        [AcceptVerbs("Get", "Post")]
+        [ChildActionOnly]
+        public ActionResult BookmarkedPostPartial()
+        {
+            try
+            {
+                List<PostEntity> posts = new List<PostEntity>();
+
+                posts = postBll.GetAllBookmarkedPostByUserId(_User.Id);
+
+                if (posts.Count > 0)
+                {
+                    return PartialView("_AllBookmarkedPostsPartial", posts);
+                }
+            }
+            catch { }
+            return PartialView("_NoPostFoundPartial");
+        }
+        [AcceptVerbs("Get", "Post")]
+        //[ChildActionOnly]
+        public ActionResult NoPostFoundPartial()
+        {
+            return PartialView("_NoPostFoundPartial");
+        }
+        [AcceptVerbs("Get", "Post")]
+        //[ChildActionOnly]
+        public ActionResult FoundPartial()
+        {
+            return PartialView("FoundPartial");
+        }
+        [Route("@{URL}/Post/{PostId}")]
+        public ActionResult Post(string URL, string PostId)
+        {
+            try
+            {
+                AssetEntity asset = new AssetEntity();
+                if (!string.IsNullOrEmpty(URL) && !string.IsNullOrEmpty(PostId))
+                {
+                    asset = assetBll.CheckValidURL(URL);
+
+                    if (asset.AssetId > 0 && asset.AssetTypeId == AssetType.Page)
+                    {
+                        PostEntity postEntity = new PostEntity();
+                        if (long.TryParse(PostId, out long resultPostId))
+                        {
+                            postEntity = postBll.GetPostByPostId(resultPostId);
+
+                            return View(postEntity);
+                        }
+                    }
+                }
+            }
+            catch { }
+            return new ViewResult() { ViewName = "PageNotFound" };
         }
     }
 }

@@ -52,5 +52,9 @@ namespace HybridCMSBll
         {
             return iPost.setPostBookmark(UserId: UserId, PostId: PostId);
         }
+        public List<PostEntity> GetAllBookmarkedPostByUserId(Int64 UserId)
+        {
+            return iPost.GetAllBookmarkedPostByUserId(UserId);
+        }
     }
 }
