@@ -18,5 +18,6 @@ namespace HybridCMSDll.Interface
         bool DeletePost(Int64 PostId);
         BookmarkPostEntity CheckBookmarkOnPost(Int64 UserId, Int64 PostId);
         bool setPostBookmark(Int64 UserId, Int64 PostId);
+        List<PostEntity> GetAllBookmarkedPostByUserId(Int64 UserId);
     }
 }

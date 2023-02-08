@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewBag.Title = "Saved Post";
+    Layout = "~/Views/Shared/_CMSLayout.cshtml";
+}
+@section styles{
+    <link href="~/Content/bookmark.css" rel="stylesheet" />
+}
+<div id="SavedPostMainDivId">
+    @{
+        Html.RenderAction("BookmarkedPostPartial", "Post");
+    }
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#liBookmarkedPost').addClass('active');
+        });
+    </script>
+    <script src="~/Scripts/fnRedirectWithParameterURL.js"></script>
+    <script>
+        function fnBookmarkPost(UserId, PostId, IsBookmarked, AssetUrl, cb) {
+            const lBookmarked = IsBookmarked.toLowerCase() == "true" ? true : false;
+
+
+            const confirmText = "Are you sure you want to remove this from Saved Posts?";
+            if (confirm(confirmText)) {
+                $.ajax({
+                    url: '/Post/Bookmark',
+                    method: 'POST',
+                    data: {
+                        UserId: UserId,
+                        PostId: PostId
+                    },
+                    success: function (res) {
+                        /*console.log(res);*/
+                        if (res.success) {
+                            //console.log("success");
+                            if (!res.message) {
+                                $(cb).prop("checked", res.message);
+                                $(cb).parent('.containerBookmark').parent('#liSavedPosts').remove();
+                                if (!$('#liSavedPosts').length) {
+                                    $("#SavedPostMainDivId").empty();
+                                    @*$('#SavedPostMainDivId').load('@Url.Action("NoPostFoundPartial", "Post")');*@
+
+                                    $.ajax({
+                                        url: '@Url.Action("NoPostFoundPartial", "Post")',
+                                        success: function (response) {
+                                            /*$("#SavedPostMainDivId").after(response);*/
+                                            $("#SavedPostMainDivId").append(response);
+                                        }
+                                    });
+                                    @*$.ajax({
+                                        url: '@Url.Action("FoundPartial", "Post")',
+                                        success: function (response) {
+                                            //$("#SavedPostMainDivId").after(response);
+                                            $("#SavedPostMainDivId").append(response);
+                                        }
+                                    });
+                                    $.ajax({
+                                        url: '@Url.Action("NoPostFoundPartial", "Post")',
+                                        success: function (response) {
+                                            //$("#SavedPostMainDivId").after(response);
+                                            $("#SavedPostMainDivId").append(response);
+                                        }
+                                    });*@
+                                }
+                            }
+                            else {
+                                $(cb).prop("checked", lBookmarked);
+                                alert('Somthing went wrong... Please try again.');
+                            }
+                        }
+                        else {
+                            if (res.message.toLowerCase() == "login") {
+                                $(cb).prop("checked", lBookmarked);
+                                window.location.pathname = "/User/Login/@@" + AssetUrl;
+                            }
+                            else {
+                                $(cb).prop("checked", lBookmarked);
+                                alert('Somthing went wrong... Please try again.');
+                            }
+                        }
+                    },
+                    error: function (error) {
+                        //console.log(error);
+                        $(cb).prop("checked", lBookmarked);
+                        alert('Somthing went wrong... Please try again.');
+                    }
+                })
+            }
+            else {
+                $(cb).prop("checked", lBookmarked);
+            }
+        }
+    </script>
+}
+
