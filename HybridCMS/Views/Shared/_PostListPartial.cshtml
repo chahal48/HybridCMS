@@ -1,8 +1,6 @@
 ﻿@model IEnumerable<HybridCMSEntities.PostEntity>
 
-<div class="row g-4 justify-content-center">
-    @foreach (var item in Model)
-    {
-        Html.RenderAction("PostPartial", "Post", item);
-    }
-</div>
+@foreach (var item in Model)
+{
+    Html.RenderAction("PostPartial", "Post", item);
+}

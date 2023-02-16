@@ -45,13 +45,19 @@
   <ItemGroup>
     <Compile Include="ADO\ADOExecution.cs" />
     <Compile Include="DataAccess\AssetADO.cs" />
+    <Compile Include="DataAccess\CommentADO.cs" />
+    <Compile Include="DataAccess\MasterDashboardADO.cs" />
     <Compile Include="DataAccess\PostADO.cs" />
     <Compile Include="DataAccess\SQLAsset.cs" />
+    <Compile Include="DataAccess\SQLComment.cs" />
+    <Compile Include="DataAccess\SQLMasterDashboard.cs" />
     <Compile Include="DataAccess\SQLPost.cs" />
     <Compile Include="DataAccess\UserADO.cs" />
     <Compile Include="DataAccess\SQLBase.cs" />
     <Compile Include="DataAccess\SQLUser.cs" />
     <Compile Include="Interface\IAsset.cs" />
+    <Compile Include="Interface\IComment.cs" />
+    <Compile Include="Interface\IMasterAdmin.cs" />
     <Compile Include="Interface\IPost.cs" />
     <Compile Include="Interface\IUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

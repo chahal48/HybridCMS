@@ -1,6 +1,6 @@
 ﻿@model HybridCMSEntities.LoginEntity
 @{
-    string DashboardName = Model.Name is null ? "Admin Dashboard" : (Model.Name + " Assets");
+    string DashboardName = Model.Name is null ? "Dashboard" : (Model.Name + " Assets");
     ViewBag.Title = DashboardName;
     Layout = "~/Views/Shared/_CMSLayout.cshtml";
 }
@@ -25,7 +25,7 @@
 </div>
 <!-- Admin Dashboard End -->
 @section scripts{
-    <script src="~/Scripts/fnRedirectWithParameterURL.js"></script>
+    <script src="~/Scripts/OpenLinkInNewTab.js"></script>
     <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
     <script src="~/Scripts/dashboardScript.js"></script>
 }

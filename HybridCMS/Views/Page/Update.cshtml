@@ -35,8 +35,8 @@
                                 @Html.HiddenFor(model => model.initialURL)
                             </div>
                             <div class="col-md-12 form-floating mb-2">
-                                <textarea class="form-control" placeholder="Description" id="Description" name="Description" maxlength="500" style="height: 100px; max-height: 280px;"></textarea>
-                                <label for="Description">Description</label>
+                                @Html.TextAreaFor(model => model.Description, new { @cols = "", @rows = "", @class = "form-control", @placeholder = "Description (Maximum 500 characters).", @maxlength = "500", @style = "height: 150px; max-height: 300px;" })
+                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-12 mb-3">

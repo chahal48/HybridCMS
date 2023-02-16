@@ -33,7 +33,7 @@ function updatePost(modelObj) {
             console.log(res);
             if (res.success) {
                 alert('Post updated successfully');
-                fnRedirect(AssetUrl);
+                window.location.pathname = "/@" + AssetUrl;
             }
             else {
                 alert('Somthing went wrong... Please try again.');

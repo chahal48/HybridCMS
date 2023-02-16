@@ -25,6 +25,7 @@ namespace HybridCMSEntities
         public DateTime CreatedOn { get; set; }
         [DisplayName("Published/Draft")]
         public bool IsPublished { get; set; }
+        public bool IsDeleted { get; set; }
         public string CreatedDateInString {
             get
             {

@@ -121,13 +121,27 @@ namespace HybridCMS.Controllers
         {
             if (_User.Id > 0 && _User.RoleId == 2)
             {
-                return View(_User);
+                return View("AdminDashboard", _User);
+            }
+            else if (_User.Id > 0 && _User.RoleId == 1)
+            {
+                try
+                {
+                    MasterDashboardBll master = new MasterDashboardBll();
+                    MasterEntity masterEntity = new MasterEntity();
+                    masterEntity = master.GetDataForMasterDashboard();
+
+                    return View("Dashboard", masterEntity);
+                }
+                catch { }
+                return new ViewResult() { ViewName = "PageNotFound" };
+
             }
             else
             {
                 SessionHelper.ClearHybridCMS();
             }
-            return RedirectToAction("login","CMS");
+            return RedirectToAction("login", "CMS");
         }
         [AcceptVerbs("Get", "Post")]
         [Route("Profile/{Username}")]
@@ -151,7 +165,7 @@ namespace HybridCMS.Controllers
         public ActionResult Logout()
         {
             SessionHelper.ClearHybridCMS();
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
         public ActionResult RedirectFromLogin()
         {

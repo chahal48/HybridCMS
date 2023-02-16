@@ -18,5 +18,6 @@ namespace HybridCMSEntities
 
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime CreatedOn { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }
