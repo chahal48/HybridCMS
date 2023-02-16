@@ -13,6 +13,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Http.Results;
+using System.Security.Policy;
 
 namespace HybridCMS.Controllers
 {
@@ -155,6 +156,25 @@ namespace HybridCMS.Controllers
         }
         [AcceptVerbs("Get", "Post")]
         [ChildActionOnly]
+        public ActionResult AddPostButtonPartial(string AssetUrl)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(AssetUrl))
+                {
+                    AssetEntity asset = new AssetEntity();
+                    asset = assetBll.CheckValidURL(AssetUrl);
+                    if (asset != null && !string.IsNullOrEmpty(asset.AssetUrl) && asset.UserId == _User.Id)
+                    {
+                        return PartialView("_AddPostButtonParital", asset);
+                    }
+                }
+            }
+            catch { }
+            return PartialView("_BlankPartialView");
+        }
+        [AcceptVerbs("Get", "Post")]
+        [ChildActionOnly]
         public ActionResult PostListPartialView(Int64 AssetId)
         {
             List<PostEntity> List = new List<PostEntity>();
@@ -218,7 +238,7 @@ namespace HybridCMS.Controllers
                 catch { }
                 return PartialView("_ModifyPostPartial", postEntity);
             }
-            else if (!Result && _User.RoleId == 3)
+            else if (!Result && _User.RoleId != 2 && _User.RoleId != 1)
             {
                 BookmarkPostEntity bookmark = new BookmarkPostEntity();
                 try
@@ -243,7 +263,6 @@ namespace HybridCMS.Controllers
                 return PartialView("_BlankPartialView");
             }
         }
-
         public JsonResult Delete(Int64 PostId)
         {
             PostEntity postEntity = new PostEntity();
@@ -322,16 +341,9 @@ namespace HybridCMS.Controllers
             return PartialView("_NoPostFoundPartial");
         }
         [AcceptVerbs("Get", "Post")]
-        //[ChildActionOnly]
         public ActionResult NoPostFoundPartial()
         {
             return PartialView("_NoPostFoundPartial");
-        }
-        [AcceptVerbs("Get", "Post")]
-        //[ChildActionOnly]
-        public ActionResult FoundPartial()
-        {
-            return PartialView("FoundPartial");
         }
         [Route("@{URL}/Post/{PostId}")]
         public ActionResult Post(string URL, string PostId)
@@ -349,8 +361,10 @@ namespace HybridCMS.Controllers
                         if (long.TryParse(PostId, out long resultPostId))
                         {
                             postEntity = postBll.GetPostByPostId(resultPostId);
-
-                            return View(postEntity);
+                            if (postEntity != null && postEntity.PostId > 0 && postEntity.PostId == resultPostId)
+                            {
+                                return View(postEntity);
+                            }
                         }
                     }
                 }

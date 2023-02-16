@@ -23,7 +23,7 @@
                                 @Html.ValidationMessageFor(model => model.Heading, "", new { @class = "text-danger" })
                             </div>
                             <div class="col-md-12 mb-2">
-                                @Html.TextAreaFor(model => model.Description, new {@cols="",@rows="",@class= "form-control", @placeholder = "Description (Maximum 500 characters).", @maxlength = "500", @style = "height: 300px; max-height: 300px;" })
+                                @Html.TextAreaFor(model => model.Description, new { @cols = "", @rows = "", @class = "form-control", @placeholder = "Description (Maximum 500 characters).", @maxlength = "500", @style = "height: 300px; max-height: 300px;" })
                                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -48,7 +48,7 @@
 </div>
 <!-- Update Post End -->
 @section scripts{
-    <script src="~/Scripts/fnRedirectWithParameterURL.js"></script>
+    <script src="~/Scripts/OpenLinkInNewTab.js"></script>
     <script src="~/Scripts/fileValidationScriptWithParameter.js"></script>
-    <script src="~/Scripts/updatePostScript.js"></script>
+    <script src="~/Scripts/updatePost.js"></script>
 }

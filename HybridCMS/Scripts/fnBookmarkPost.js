@@ -23,7 +23,7 @@
             else {
                 if (res.message.toLowerCase() == "login") {
                     $(cb).prop("checked", lBookmarked);
-                    window.location.pathname = "/User/Login/@@" + AssetUrl;
+                    window.location.pathname = "/User/Login/@" + AssetUrl;
                 }
                 else {
                     $(cb).prop("checked", lBookmarked);

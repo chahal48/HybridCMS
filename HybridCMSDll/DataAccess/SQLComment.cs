@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace HybridCMSDll.DataAccess
 {
-    public partial class SQLPost : SQLBase, IPost
+    public partial class SQLComment : SQLBase, IComment
     {
-        public SQLPost() : base() { }
+        public SQLComment() : base() { }
     }
 }

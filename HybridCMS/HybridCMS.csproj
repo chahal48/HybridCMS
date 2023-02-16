@@ -104,6 +104,7 @@
     <Content Include="Content\bookmark.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\dashboardStyle.css" />
+    <Content Include="Content\MasterDashboardStyle.css" />
     <Content Include="Content\site.css" />
     <Content Include="Content\threeDot.css" />
     <Content Include="Global.asax" />
@@ -148,22 +149,22 @@
     <Content Include="lib\wow\wow.js" />
     <Content Include="lib\wow\wow.min.js" />
     <Content Include="Scripts\BlogScript.js" />
-    <Content Include="Scripts\CreatePostScript.js" />
+    <Content Include="Scripts\createPost.js" />
     <Content Include="Scripts\dashboardScript.js" />
     <Content Include="Scripts\deletePostsScript.js" />
     <Content Include="Scripts\fileValidationScript.js" />
     <Content Include="Scripts\fileValidationScriptWithParameter.js" />
     <Content Include="Scripts\fnBookmarkPost.js" />
-    <Content Include="Scripts\fnRedirectNewTab.js" />
-    <Content Include="Scripts\fnRedirectWithParameterURL.js" />
     <Content Include="Scripts\jquery-validate\jquery.validate.min.js" />
     <Content Include="Scripts\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\main.js" />
+    <Content Include="Scripts\OpenLinkInNewTab.js" />
     <Content Include="Scripts\PageScript.js" />
     <Content Include="Scripts\threeDots.js" />
-    <Content Include="Scripts\updatePostScript.js" />
+    <Content Include="Scripts\updatePost.js" />
     <Content Include="Upload\079f0041-8350-4fc6-b1cd-a66ca744eaf4.jpg" />
     <Content Include="Upload\139b1e8e-53c7-4830-bb7f-d5075d9af992.jpg" />
+    <Content Include="Upload\517dd13b-af1c-4b3a-99b4-45e62ea53625.png" />
     <Content Include="Upload\803f6682-64aa-4629-aeec-ca70dc190c21.jpg" />
     <Content Include="Upload\949ba0da-8547-4d25-b96d-2b7d3aa0c3ec.jpg" />
     <Content Include="Upload\9b7ecfb9-f932-4486-af22-cb932c155e9d.jpg" />
@@ -175,10 +176,12 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AdminMasterController.cs" />
     <Compile Include="Controllers\AssetController.cs" />
     <Compile Include="Controllers\BlogController.cs" />
     <Compile Include="Controllers\CMSController.cs" />
     <Compile Include="Controllers\CMSPostsController.cs" />
+    <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Controllers\PostController.cs" />
@@ -194,8 +197,10 @@
     <Compile Include="Models\EditPostViewModal.cs" />
     <Compile Include="Models\FileHelper.cs" />
     <Compile Include="Models\ForgetPasswordViewModel.cs" />
+    <Compile Include="Models\LazyLoadCommentList.cs" />
     <Compile Include="Models\MailHelper.cs" />
     <Compile Include="Models\PageViewModel.cs" />
+    <Compile Include="Models\PostCommentViewModel.cs" />
     <Compile Include="Models\PostViewModel.cs" />
     <Compile Include="Models\ResetPasswordViewModel.cs" />
     <Compile Include="Models\SessionHelper.cs" />
@@ -333,6 +338,16 @@
     <Content Include="Views\Shared\_AllBookmarkedPostsPartial.cshtml" />
     <Content Include="Views\Shared\_NoPostFoundPartial.cshtml" />
     <Content Include="Views\Post\Post.cshtml" />
+    <Content Include="Views\Shared\_AddPostButtonParital.cshtml" />
+    <Content Include="Views\Shared\_AddPostCommentPartial.cshtml" />
+    <Content Include="Views\Shared\CommentsListPartial.cshtml" />
+    <Content Include="Views\Shared\_btnDeletePostCommentPartial.cshtml" />
+    <Content Include="Views\CMS\Dashboard.cshtml" />
+    <Content Include="Views\Shared\_Master_AssetListPartial.cshtml" />
+    <Content Include="Views\Shared\_Master_UsersPartial.cshtml" />
+    <Content Include="Views\Shared\_MasterDashboardPartial.cshtml" />
+    <Content Include="Views\Shared\_Master_PostListPartial.cshtml" />
+    <Content Include="Views\Shared\_Master_CommentListPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -342,6 +357,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\AdminMaster\" />
+    <Folder Include="Views\Comment\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HybridCMSBll\HybridCMSBll.csproj">

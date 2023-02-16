@@ -18,7 +18,7 @@
             $('#liBookmarkedPost').addClass('active');
         });
     </script>
-    <script src="~/Scripts/fnRedirectWithParameterURL.js"></script>
+    <script src="~/Scripts/OpenLinkInNewTab.js"></script>
     <script>
         function fnBookmarkPost(UserId, PostId, IsBookmarked, AssetUrl, cb) {
             const lBookmarked = IsBookmarked.toLowerCase() == "true" ? true : false;
@@ -73,14 +73,8 @@
                             }
                         }
                         else {
-                            if (res.message.toLowerCase() == "login") {
-                                $(cb).prop("checked", lBookmarked);
-                                window.location.pathname = "/User/Login/@@" + AssetUrl;
-                            }
-                            else {
-                                $(cb).prop("checked", lBookmarked);
-                                alert('Somthing went wrong... Please try again.');
-                            }
+                            $(cb).prop("checked", lBookmarked);
+                            alert('Somthing went wrong... Please try again.');
                         }
                     },
                     error: function (error) {

@@ -13,7 +13,7 @@
         </div>
     }
 </div>
-@if (Model.RoleId == 2)
+@if (Model.RoleId == 2 || Model.RoleId == 1)
 { 
 <a href="@Url.Action("AdminDashboard", "CMS")" id="liAdminDashboard" class="nav-item nav-link">
     <i class="bi bi-terminal-fill"></i>&nbsp;Dashboard</a>

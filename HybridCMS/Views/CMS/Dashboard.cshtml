@@ -1,0 +1,224 @@
+﻿@model HybridCMSEntities.MasterEntity
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_CMSLayout.cshtml";
+}
+@section styles{
+    <link href="~/Content/MasterDashboardStyle.css" rel="stylesheet" />
+}
+<!-- Admin Dashboard Start -->
+<div class="container-xxl py-6" style="padding-bottom:0 !important;">
+    <div class="container">
+        <div class="section-header text-center mx-auto mb-3" style="max-width: 500px;">
+            <h1 class="display-5">Master</h1>
+        </div>
+        <div class="row g-5 justify-content-center">
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <a class="form-floating mb-2 liDashboardMenu active" onclick="GetDataController(1)" onmouseover="this.style.cursor='pointer'">
+                        <div class="bg-light p-4" style="border-radius:10px;">
+                            <div class="text-lg-end">
+                                <strong class="display-6 bi bi-people-fill float-lg-start"></strong>
+                                <strong>@Model.TotalUser</strong>
+                            </div>
+                            <div class="text-muted float-end border-top">
+                                <small>Total Users</small>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <a class="form-floating mb-2 liDashboardMenu" onclick="GetDataController(2)" onmouseover="this.style.cursor='pointer'">
+                        <div class="bg-light p-4" style="border-radius:10px;">
+                            <div class="text-lg-end">
+                                <strong class="display-6 bi bi-card-heading float-lg-start"></strong>
+                                <strong>@Model.TotalAsset</strong>
+                            </div>
+                            <div class="text-muted float-end border-top">
+                                <small>Total Assets</small>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <a class="form-floating mb-2 liDashboardMenu" onclick="GetDataController(3)" onmouseover="this.style.cursor='pointer'">
+                        <div class="bg-light p-4" style="border-radius:10px;">
+                            <div class="text-lg-end">
+                                <strong class="display-6 bi bi-file-earmark-image float-lg-start"></strong>
+                                <strong>@Model.TotalPost</strong>
+                            </div>
+                            <div class="text-muted float-end border-top">
+                                <small>Total Posts</small>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <a class="form-floating mb-2 liDashboardMenu" onclick="GetDataController(4)" onmouseover="this.style.cursor='pointer'">
+                        <div class="bg-light p-4" style="border-radius:10px;">
+                            <div class="text-lg-end">
+                                <strong class="display-6 bi bi-chat-left-dots float-lg-start"></strong>
+                                <strong>@Model.TotalComment</strong>
+                            </div>
+                            <div class="text-muted float-end border-top">
+                                <small>Total Comments</small>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div id="loadTableData">
+            @{
+                Html.RenderAction("MasterDashboardLoadFirst", "AdminMaster");
+            }
+        </div>
+    </div>
+</div>
+<!-- Admin Dashboard End -->
+
+@section scripts{
+    <script>
+        function ConvertToDateFromJson(ValueInput) {
+            var value = new Date
+                (
+                    parseInt(ValueInput.replace(/(^.*\()|([+-].*$)/g, ''))
+                );
+            var dat =
+                value.getDate() +
+                "/" +
+                value.getMonth() +
+                1 +
+                "/" +
+                value.getFullYear();
+            return dat;
+        }
+        function ConvertToDate(IsPublished, ValueInput) {
+            if (IsPublished) {
+                var value = new Date
+                    (
+                        parseInt(ValueInput.replace(/(^.*\()|([+-].*$)/g, ''))
+                    );
+                var dat =
+                    value.getDate() +
+                    "/" +
+                    value.getMonth() +
+                    1 +
+                    "/" +
+                    value.getFullYear();
+                return dat;
+            }
+            else {
+                return "";
+            }
+        }
+    </script>
+    <script>
+        function GetDataController(tableId) {
+            if (($("#usersTablecontainer").length && tableId == 1) || ($("#assetsTablecontainer").length && tableId == 2) || ($("#postsTablecontainer").length && tableId == 3) || ($("#commentsTablecontainer").length && tableId == 4)) {
+            }
+            else {
+                $.ajax({
+                url: '@Url.Action("TableDataPartial", "AdminMaster")',
+                method: 'POST',
+                data: { LoadTableId: tableId },
+                success: function (res) {
+                    /*console.log(res);*/
+                    if (res) {
+                        $("#loadTableData").empty();
+                        $("#loadTableData").append(res);
+                        LoadTableDataRepeat();
+                    }
+                },
+                error: function (e) {
+                    $("#loadTableData").empty();
+                },
+                timeout: 3000 //3 second timeout
+            })
+            }
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#liAdminDashboard').addClass('active');
+
+            $(".liDashboardMenu").click(function () {
+                $(".liDashboardMenu.active").removeClass("active");
+
+                $(this).addClass("active");
+            });
+
+
+
+            function fnIsDeleted(id,type, IsDeleted, cb) {
+                const lDeleted = IsDeleted.toLowerCase() == "true" ? true : false;
+
+                let confirmCommonText = "Are you sure you want to disable this";
+                let urlToDisable = "";
+
+                if (type == "user") {
+                    confirmCommonText = confirmCommonText + "User?";
+                    urlToDisable = '@Url.Action("disableUser", "AdminMaster")';
+                }
+                else if (type == "asset") {
+                    confirmCommonText = confirmCommonText + "Asset?";
+                    urlToDisable = '@Url.Action("disableAsset", "AdminMaster")';
+                }
+                else if (type == "post") {
+                    confirmCommonText = confirmCommonText + "Post?";
+                    urlToDisable = '@Url.Action("disablePost", "AdminMaster")';
+                }
+                else if (type == "comment") {
+                    confirmCommonText = confirmCommonText + "Comment?";
+                    urlToDisable = '@Url.Action("disableComment", "AdminMaster")';
+                }
+
+
+                if (confirm(confirmCommonText) && urlToDisable.trim().length > 0) {
+
+                    $.ajax({
+                        url: urlToDisable,
+                        method: 'POST',
+                        data: {
+                            AssetId: AssetId,
+
+                        },
+                        success: function (res) {
+                            /*console.log(res);*/
+                            if (res.success) {
+                                //console.log("success");
+                                if (res.message) {
+                                    $(cb).prop("checked", res.message);
+                                    alert('Deleted successfully.');
+                                }
+                                else if (!res.message) {
+                                    $(cb).prop("checked", res.message);
+                                    alert('Asset is reverted to archived successfully.');
+                                }
+                                else {
+                                    $(cb).prop("checked", lDeleted);
+                                    alert('Somthing went wrong... Please try again.');
+                                }
+                            }
+                            else {
+                                $(cb).prop("checked", lDeleted);
+                                alert('Somthing went wrong... Please try again.');
+                            }
+                        },
+                        error: function (error) {
+                            //console.log(error);
+                            $(cb).prop("checked", lDeleted);
+                            alert('Somthing went wrong... Please try again.');
+                        }
+                    })
+                }
+                else {
+                    $(cb).prop("checked", lDeleted);
+                    alert('Somthing went wrong... Please try again.');
+                }
+
+            }
+        });
+    </script>
+}

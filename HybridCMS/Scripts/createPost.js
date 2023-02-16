@@ -28,17 +28,17 @@ function createPost(modelObj) {
         contentType: false,
         processData: false,
         success: function (res) {
-            console.log(res);
+            //console.log(res);
             if (res.success) {
                 alert('Post created successfully');
-                fnRedirect(AssetUrl);
+                window.location.pathname = "/@" + AssetUrl;
             }
             else {
                 alert('Somthing went wrong... Please try again.');
             }
         },
         error: function (error) {
-            console.log(error);
+            //console.log(error);
             alert('Somthing went wrong... Please try again.')
         }
     })

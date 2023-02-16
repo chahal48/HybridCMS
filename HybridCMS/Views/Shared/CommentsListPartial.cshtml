@@ -1,0 +1,26 @@
+﻿@model IEnumerable<HybridCMSEntities.CommentEntity>
+
+@foreach (var item in Model)
+{
+    <div class="form-floating mb-2" id="liSavedComments">
+        <div class="bg-light p-4" style="border-radius:10px;">
+
+            <h6 class="text-md-start mb-2">
+                @item.Comment
+            </h6>
+            <div class="text-muted float-end border-top">
+                <small class="me-3">
+                    <i class="fa fa-user text-primary me-2"></i>@item.Name
+                </small>
+                <small class="me-3">
+                    <i class="fa fa-calendar text-primary me-2"></i>@item.CreatedOn.ToString("ddd, dd MMM yyy")
+                </small>
+                <small>
+                    @{
+                        Html.RenderAction("btnDeletePostCommentPartial", "Comment", item);
+                    }
+                </small>
+            </div>
+        </div>
+    </div>
+}

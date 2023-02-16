@@ -1,0 +1,42 @@
+﻿select.form-select {
+    display: inline;
+    width: 200px;
+    margin-left: 25px;
+}
+
+.liDashboardMenu {
+    color: #3CB815;
+}
+
+    .liDashboardMenu.active {
+        color: #F65005;
+    }
+
+.cbIsDeleted {
+    height: 40px;
+    width: 100px;
+    -webkit-appearance: none;
+    box-shadow: -2px -2px -2px rgba(255,255,255,0.5), 2px 2px 2px rgba(70,70,70,0.12);
+    position: relative;
+    padding: 6px 15px;
+    border-radius: 12px;
+    border: 2px solid #ececec;
+    outline: none;
+    cursor: pointer;
+}
+
+    .cbIsDeleted:after {
+        content: "Archvied";
+        color: #F65005;
+        font-size: 15px;
+    }
+
+    .cbIsDeleted:checked {
+        box-shadow: -2px -2px 3px rgba(255,255,255,0.5), 2px 2px 3px rgba(70,70,70,0.12), inset -2px -2px 3px rgba(255,255,255,0.5), inset 2px 2px 3px rgba(70,70,70,0.12);
+    }
+
+        .cbIsDeleted:checked:after {
+            content: "Published";
+            color: #3CB815;
+            font-size: 15px;
+        }
