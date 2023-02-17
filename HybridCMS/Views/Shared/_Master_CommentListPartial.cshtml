@@ -1,60 +1,57 @@
-﻿<div class="row g-5 justify-content-center">
-    <div class="col-lg-12 col-md-12">
-        <div id="commentsTablecontainer" style="display:none;">
-            <table class="display compact" id="commentTable">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th style='width: 45%'>Comment</th>
-                        <th>Author</th>
-                        <th>Deleted</th>
-                        <th>Created</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-    </div>
+﻿
+<div id="commentsTablecontainer" style="display:none;">
+    <table class="display compact" id="commentTable">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th style='width: 45%'>Comment</th>
+                <th>Author</th>
+                <th>Deleted</th>
+                <th>Created</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 </div>
 
 <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
 <script>
-        function LoadTableDataRepeat() {
-            $.ajax({
-                type: 'POST',
-                url: '/AdminMaster/GetAllComments',
-                timeout: 1000, //1 second timeout
-                success: function (data) {
-                    if (data) {
-                        var items = '';
-                        $.each(data, function (i, item) {
-                            var rows = "<tr>"
-                                + "<td>" + item.CommentId + "</td>"
-                                + "<td style='width: 45%'>" + item.Comment + "</td>"
-                                + "<td>" + item.Name + "</td>"
-                                + (item.IsDeleted ? "<td style='color: #F65005'>" : "<td style='color: #3CB815'>") + item.IsDeleted + "</td>"
-                                + "<td>" + ConvertToDateFromJson(item.CreatedOn) + "</td>"
-                                + "</tr>";
-                            $('#commentTable tbody').append(rows);
-                        });
+    function LoadTableDataRepeat() {
+        $.ajax({
+            type: 'POST',
+            url: '/AdminMaster/GetAllComments',
+            timeout: 3000, //1 second timeout
+            success: function (data) {
+                if (data) {
+                    var items = '';
+                    $.each(data, function (i, item) {
+                        var rows = "<tr>"
+                            + "<td>" + item.CommentId + "</td>"
+                            + "<td style='width: 45%'>" + item.Comment + "</td>"
+                            + "<td>" + item.Name + "</td>"
+                            + (item.IsDeleted ? "<td style='color: #F65005'>" : "<td style='color: #3CB815'>") + item.IsDeleted + "</td>"
+                            + "<td>" + ConvertToDateFromJson(item.CreatedOn) + "</td>"
+                            + "</tr>";
+                        $('#commentTable tbody').append(rows);
+                    });
 
-                        $("#commentTable").dataTable({
-                            "processing": true, // for show progress bar
-                            "serverSide": false, // for process server side
-                            "filter": true, // this is for disable filter (search box)
-                            retrieve: true,
-                            /*"searching": true,*/
-                            order: [],
-                            pageLength: 5,
-                            lengthMenu: [[5, 15, 30, -1], [5, 15, 30, 'All']]
-                        });
-                        var table = $('#commentTable').DataTable();
-                        table.draw();
+                    $("#commentTable").dataTable({
+                        "processing": true, // for show progress bar
+                        "serverSide": false, // for process server side
+                        "filter": true, // this is for disable filter (search box)
+                        retrieve: true,
+                        /*"searching": true,*/
+                        order: [],
+                        pageLength: 5,
+                        lengthMenu: [[5, 15, 30, -1], [5, 15, 30, 'All']]
+                    });
+                    var table = $('#commentTable').DataTable();
+                    table.draw();
 
-                        $("#commentsTablecontainer").show();
-                    }
+                    $("#commentsTablecontainer").show();
                 }
-            })
+            }
+        })
     }
 </script>
