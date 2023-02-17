@@ -1,33 +1,30 @@
-﻿<div class="row g-5 justify-content-center">
-    <div class="col-lg-12 col-md-12">
-        <div id="usersTablecontainer" style="display:none;">
-            <div class="category-filter">
-                <select id="usersTableFilter" class="form-select">
-                    <option value="">Show All</option>
-                    <option value="Admin">Admin</option>
-                    <option value="User">User</option>
-                </select>
-            </div>
-            <table class="display compact" id="usersTable">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Role</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Deleted</th>
-                        <th>Created</th>
-                        <th>Assets</th>
-                        <th>Published</th>
-                        <th>Posts</th>
-                        <th>Comments</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
+﻿
+<div id="usersTablecontainer" style="display:none;">
+    <div class="category-filter">
+        <select id="usersTableFilter" class="form-select">
+            <option value="">Show All</option>
+            <option value="Admin">Admin</option>
+            <option value="User">User</option>
+        </select>
     </div>
+    <table class="display compact" id="usersTable">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Role</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Deleted</th>
+                <th>Created</th>
+                <th>Assets</th>
+                <th>Published</th>
+                <th>Posts</th>
+                <th>Comments</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 </div>
 
 <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
@@ -36,7 +33,7 @@
         $.ajax({
             type: 'POST',
             url: '/AdminMaster/GetAllUsers',
-            timeout: 1000, //1 second timeout
+            timeout: 3000, //1 second timeout
             success: function (data) {
                 if (data) {
                     var items = '';
@@ -86,7 +83,7 @@
                     });
                     table.draw();
                     $("#usersTablecontainer").show();
-                }                
+                }
             }
         })
     }
