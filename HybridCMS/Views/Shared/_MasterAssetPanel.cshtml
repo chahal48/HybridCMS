@@ -1,0 +1,109 @@
+﻿<div class="category-filter">
+    <select id="assetsTableFilter" class="form-select">
+        <option value="">Show All</option>
+        <option value="Page">Page</option>
+        <option value="Blog">Blog</option>
+    </select>
+</div>
+<table class="display compact" id="assetsPanelTable">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Type</th>
+            <th>Asset Name</th>
+            <th>Author</th>
+            <th>Deleted</th>
+            <th>Published</th>
+            <th>Created</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+<script>
+    function BindTableData() {
+        let assetsPanelTableVariable = $("#assetsPanelTable").dataTable({
+            ajax: {
+                url: "/AdminMaster/GetAllAssets",
+                dataSrc: ""
+            },
+            pageLength: 5,
+            lengthMenu: [[5, 15, 30, -1], [5, 15, 30, 'All']],
+            order: [],
+            retrieve: true,
+            columns: [
+                {
+                    data: "AssetId"
+                },
+                {
+                    data: "AssetTypeId",
+                    render: function (data, type, asset) {
+                        return ((asset.AssetTypeId == 1) ? "Page" : "Blog");
+                    }
+                },
+                {
+                    data: "AssetName"
+                },
+                {
+                    data: "AuthorName"
+                },
+                {
+                    data: "IsDeleted",
+                    render: function (data, type, asset) {
+                        return ((asset.IsDeleted ? "<span style='color: #F65005'>" : "<span style='color: #3CB815'>") + asset.IsDeleted + "</span>");
+                    }
+                },
+                {
+                    data: "IsPublished",
+                    render: function (data, type, asset) {
+                        return (asset.IsPublished ? ConvertToDateFromJson(asset.PublishedOn) : "");
+                    }
+                },
+                {
+                    data: "CreatedOn",
+                    render: function (data, type, asset) {
+                        return ConvertToDateFromJson(asset.CreatedOn);
+                    }
+                }
+            ]
+            //,
+            //// checkbox search
+            //initComplete: function () {
+            //    let roleIndex = 1;
+            //    $.fn.dataTable.ext.search.push(
+            //        function (settings, data, dataIndex) {
+            //            // Detail grid
+            //            if (settings.nTable.id === 'assetsPanelTable') {
+            //                let selectedItem = $('#assetsTableFilter').val()
+            //                let role = data[roleIndex];
+            //                if ((selectedItem === "") || (role.includes(selectedItem))) {
+            //                    return true;
+            //                }
+            //                return false;
+            //            }
+            //            return true; // it wasnot the staging data table. Don't filter/limit.
+            //        }
+            //    );
+            //}
+        });
+        let table = $('#assetsPanelTable').DataTable();
+        $("#assetsPanelTable_filter.dataTables_filter").append($("#assetsTableFilter"));
+        /*$("#filterTable_filter.dataTables_filter").append($("#btnCreateBlog"));*/
+        let roleIndex = 1;
+        $.fn.dataTable.ext.search.push(
+            function (settings, data, dataIndex) {
+                let selectedItem = $('#assetsTableFilter').val()
+                let role = data[roleIndex];
+                if (selectedItem === "" || role.includes(selectedItem)) {
+                    return true;
+                }
+                return false;
+            }
+        );
+        $("#assetsTableFilter").change(function (e) {
+            table.draw();
+        });
+        table.draw();
+    }
+</script>

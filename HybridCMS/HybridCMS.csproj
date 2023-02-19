@@ -343,11 +343,11 @@
     <Content Include="Views\Shared\CommentsListPartial.cshtml" />
     <Content Include="Views\Shared\_btnDeletePostCommentPartial.cshtml" />
     <Content Include="Views\CMS\Dashboard.cshtml" />
-    <Content Include="Views\Shared\_Master_AssetListPartial.cshtml" />
-    <Content Include="Views\Shared\_Master_UsersPartial.cshtml" />
-    <Content Include="Views\Shared\_MasterDashboardPartial.cshtml" />
-    <Content Include="Views\Shared\_Master_PostListPartial.cshtml" />
-    <Content Include="Views\Shared\_Master_CommentListPartial.cshtml" />
+    <Content Include="Views\Shared\_MasterPostPanel.cshtml" />
+    <Content Include="Views\Shared\_MasterUserPanel.cshtml" />
+    <Content Include="Views\Shared\_MasterAssetPanel.cshtml" />
+    <Content Include="Views\Shared\_MasterCommentPanel.cshtml" />
+    <Content Include="Views\Shared\_MasterDashboardPanel.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
