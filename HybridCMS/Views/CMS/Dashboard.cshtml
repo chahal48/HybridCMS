@@ -5,6 +5,7 @@
 }
 @section styles{
     <link href="~/Content/MasterDashboardStyle.css" rel="stylesheet" />
+    <link href="~/lib/datatables/css/jquery.dataTables.min.css" rel="stylesheet" />
 }
 <!-- Admin Dashboard Start -->
 <div class="container-xxl py-6" style="padding-bottom:0 !important;">
@@ -73,7 +74,7 @@
             <div class="col-lg-12 col-md-12">
                 <div id="loadTableData" class="bg-light p-4" style="border-radius:10px;">
                     @{
-                        Html.RenderAction("MasterDashboardLoadFirst", "AdminMaster");
+                        Html.RenderPartial("_MasterDashboardPanel");
                     }
                 </div>
             </div>
@@ -83,6 +84,7 @@
 <!-- Admin Dashboard End -->
 
 @section scripts{
+
     <script>
         function ConvertToDateFromJson(ValueInput) {
             var value = new Date
@@ -92,35 +94,15 @@
             var dat =
                 value.getDate() +
                 "/" +
-                value.getMonth() +
-                1 +
+                (value.getMonth() + 1) +
                 "/" +
                 value.getFullYear();
             return dat;
         }
-        function ConvertToDate(IsPublished, ValueInput) {
-            if (IsPublished) {
-                var value = new Date
-                    (
-                        parseInt(ValueInput.replace(/(^.*\()|([+-].*$)/g, ''))
-                    );
-                var dat =
-                    value.getDate() +
-                    "/" +
-                    value.getMonth() +
-                    1 +
-                    "/" +
-                    value.getFullYear();
-                return dat;
-            }
-            else {
-                return "";
-            }
-        }
     </script>
     <script>
         function GetDataController(tableId) {
-            if (($("#usersTablecontainer").length && tableId == 1) || ($("#assetsTablecontainer").length && tableId == 2) || ($("#postsTablecontainer").length && tableId == 3) || ($("#commentsTablecontainer").length && tableId == 4)) {
+            if (($("#usersPanelTable").length && tableId == 1) || ($("#assetsPanelTable").length && tableId == 2) || ($("#postsPanelTable").length && tableId == 3) || ($("#commentsPanelTable").length && tableId == 4)) {
             }
             else {
                 $.ajax({
@@ -129,16 +111,14 @@
                 data: { LoadTableId: tableId },
                 success: function (res) {
                     /*console.log(res);*/
-                    if (res) {
-                        $("#loadTableData").empty();
-                        $("#loadTableData").append(res);
-                        LoadTableDataRepeat();
+                    if (!$.trim(res)) {
+                        
                     }
-                },
-                error: function (e) {
-                    $("#loadTableData").empty();
-                },
-                timeout: 5000 //3 second timeout
+                    else {
+                        $('#loadTableData').html(res);
+                        BindTableData();
+                    }
+                }
             })
             }
         }
@@ -152,9 +132,7 @@
 
                 $(this).addClass("active");
             });
-
-
-
+            @*
             function fnIsDeleted(id,type, IsDeleted, cb) {
                 const lDeleted = IsDeleted.toLowerCase() == "true" ? true : false;
 
@@ -223,6 +201,7 @@
                 }
 
             }
+            *@
         });
     </script>
 }

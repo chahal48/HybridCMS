@@ -43,19 +43,19 @@ namespace HybridCMS.Controllers
             {
                 if(LoadTableId == 1)
                 {
-                    return PartialView("_Master_UsersPartial");
+                    return PartialView("_MasterUserPanel");
                 }
                 else if(LoadTableId == 2)
                 {
-                    return PartialView("_Master_AssetListPartial");
+                    return PartialView("_MasterAssetPanel");
                 }
                 else if(LoadTableId == 3)
                 {
-                    return PartialView("_Master_PostListPartial");
+                    return PartialView("_MasterPostPanel");
                 }
                 else if (LoadTableId == 4)
                 {
-                    return PartialView("_Master_CommentListPartial");
+                    return PartialView("_MasterCommentPanel");
                 }
             }
             return PartialView("_BlankPartialView");
