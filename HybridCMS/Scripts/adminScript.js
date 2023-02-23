@@ -2,8 +2,8 @@
     $("#filterTable").dataTable({
         "searching": true,
         order: [],
-        pageLength: 10,
-        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, 'All']],
+        pageLength: 5,
+        lengthMenu: [[5, 15, 30, -1], [5, 15, 30, 'All']],
         "columns": [
             null,
             null,

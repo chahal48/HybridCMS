@@ -148,9 +148,9 @@
     <Content Include="lib\waypoints\waypoints.min.js" />
     <Content Include="lib\wow\wow.js" />
     <Content Include="lib\wow\wow.min.js" />
+    <Content Include="Scripts\adminScript.js" />
     <Content Include="Scripts\BlogScript.js" />
     <Content Include="Scripts\createPost.js" />
-    <Content Include="Scripts\dashboardScript.js" />
     <Content Include="Scripts\deletePostsScript.js" />
     <Content Include="Scripts\fileValidationScript.js" />
     <Content Include="Scripts\fileValidationScriptWithParameter.js" />
