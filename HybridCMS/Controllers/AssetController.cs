@@ -64,30 +64,6 @@ namespace HybridCMS.Controllers
             catch { }
             return Json(new { success = false, message = "Error" });
         }
-
-
-        //[AcceptVerbs("Get", "Post")]
-        //[ChildActionOnly]
-        //public ActionResult AddPostButtonPartialView(string AssetId)
-        //{
-        //    if (assetBll.CheckValidUserIdandAssetId(_User.Id, AssetId))
-        //    {
-        //        return PartialView("_AddPostBtnPartial");
-        //    }
-        //    return PartialView("_BlankPartialView");
-        //}
-        //[AcceptVerbs("Get", "Post")]
-        //[ChildActionOnly]
-        //public ActionResult PartialAddPostView(string AssetId)
-        //{
-        //    if (assetBll.CheckValidUserIdandAssetId(_User.Id, AssetId))
-        //    {
-        //        AddPostViewModal obj = new AddPostViewModal();
-        //        obj.AssetId = long.Parse(AssetId);
-        //        return PartialView("_AddPostPartial", obj);
-        //    }
-        //    return PartialView("_BlankPartialView");
-        //}
         #endregion
 
         [AcceptVerbs("Get", "Post")]

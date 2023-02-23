@@ -1,4 +1,18 @@
-﻿
+﻿<div class="button-filter">
+    <input id="cbIsSelected" type="checkbox" class="cbSelected">
+</div>
+<div class="button-filter">
+    <button type="button" id="disableBtn"
+            class="disableAndEnableBtn disable-button-filter" style="display:none;">
+        Disable
+    </button>
+</div>
+<div class="button-filter">
+    <button type="button" id="enableBtn"
+            class="disableAndEnableBtn enable-button-filter" style="display:none;">
+        Enable
+    </button>
+</div>
 <div class="category-filter">
     <select id="usersTableFilter" class="form-select">
         <option value="">Show All</option>
@@ -79,6 +93,9 @@
     });
     let table = $('#usersPanelTable').DataTable();
     $("#usersPanelTable_filter.dataTables_filter").append($("#usersTableFilter"));
+    $("#usersPanelTable_filter.dataTables_filter").append($("#enableBtn"));
+    $("#usersPanelTable_filter.dataTables_filter").append($("#disableBtn"));
+    $("#usersPanelTable_filter.dataTables_filter").append($("#cbIsSelected"));
     /*$("#filterTable_filter.dataTables_filter").append($("#btnCreateBlog"));*/
     let roleIndex = 1;
     $.fn.dataTable.ext.search.push(
@@ -95,4 +112,27 @@
         table.draw();
     });
     table.draw();
+    $('#usersPanelTable tbody').on('click', 'tr', function () {
+        $(this).toggleClass('selected');
+        cbSelectedProp(table.rows('.selected').data().length, table.rows().count());
+    });
+
+    $('#cbIsSelected').click(function (event) {  //on click
+        this.checked ? (table.$('tr').addClass('selected')) : (table.$('tr').removeClass('selected'));
+        cbSelectedClickProp(table.rows('.selected').data().length);
+    });
+    $('#disableBtn').click(function (event) {  //on click
+        runDisableOrEnable(true);
+    });
+    $('#enableBtn').click(function (event) {  //on click
+        runDisableOrEnable(false);
+    });
+
+    function runDisableOrEnable(IsDiable) {
+        let selectedItems = new Array();
+        $.each(table.rows('.selected').data(), function (i, item) {
+            selectedItems.push(item.UserId);
+        });
+        IsDiable ? DisableUser(selectedItems) : EnableUser(selectedItems);
+    }
 </script>

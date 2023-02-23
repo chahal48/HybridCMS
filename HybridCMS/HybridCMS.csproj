@@ -104,7 +104,7 @@
     <Content Include="Content\bookmark.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\dashboardStyle.css" />
-    <Content Include="Content\MasterDashboardStyle.css" />
+    <Content Include="Content\MasterStyle.css" />
     <Content Include="Content\site.css" />
     <Content Include="Content\threeDot.css" />
     <Content Include="Global.asax" />
@@ -158,6 +158,7 @@
     <Content Include="Scripts\jquery-validate\jquery.validate.min.js" />
     <Content Include="Scripts\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\main.js" />
+    <Content Include="Scripts\masterScript.js" />
     <Content Include="Scripts\OpenLinkInNewTab.js" />
     <Content Include="Scripts\PageScript.js" />
     <Content Include="Scripts\threeDots.js" />

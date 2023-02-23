@@ -142,5 +142,85 @@ namespace HybridCMSDll.DataAccess
             }
             return List;
         }
+        public bool MasterDisableUser(Int64 UserId)
+        {
+            using (ADOExecution exec = new ADOExecution(GetConnectionString()))
+            {
+                int Result = exec.ExecuteNonQuery(CommandType.StoredProcedure, "usp_MasterDisableUser",
+                    new SqlParameter("@UserId", UserId));
+
+                return ReturnBool(Result);
+            }
+        }
+        public bool MasterEnableUser(Int64 UserId)
+        {
+            using (ADOExecution exec = new ADOExecution(GetConnectionString()))
+            {
+                int Result = exec.ExecuteNonQuery(CommandType.StoredProcedure, "usp_MasterEnableUser",
+                    new SqlParameter("@UserId", UserId));
+
+                return ReturnBool(Result);
+            }
+        }
+        public bool MasterDisableAsset(Int64 AssetId)
+        {
+            using (ADOExecution exec = new ADOExecution(GetConnectionString()))
+            {
+                int Result = exec.ExecuteNonQuery(CommandType.StoredProcedure, "usp_MasterDisableAsset",
+                    new SqlParameter("@AssetId", AssetId));
+
+                return ReturnBool(Result);
+            }
+        }
+        public bool MasterEnableAsset(Int64 AssetId)
+        {
+            using (ADOExecution exec = new ADOExecution(GetConnectionString()))
+            {
+                int Result = exec.ExecuteNonQuery(CommandType.StoredProcedure, "usp_MasterEnableAsset",
+                    new SqlParameter("@AssetId", AssetId));
+
+                return ReturnBool(Result);
+            }
+        }
+        public bool MasterDisablePost(Int64 PostId)
+        {
+            using (ADOExecution exec = new ADOExecution(GetConnectionString()))
+            {
+                int Result = exec.ExecuteNonQuery(CommandType.StoredProcedure, "usp_MasterDisablePost",
+                    new SqlParameter("@PostId", PostId));
+
+                return ReturnBool(Result);
+            }
+        }
+        public bool MasterEnablePost(Int64 PostId)
+        {
+            using (ADOExecution exec = new ADOExecution(GetConnectionString()))
+            {
+                int Result = exec.ExecuteNonQuery(CommandType.StoredProcedure, "usp_MasterEnablePost",
+                    new SqlParameter("@PostId", PostId));
+
+                return ReturnBool(Result);
+            }
+        }
+        public bool MasterDisableComment(Int64 CommentId)
+        {
+            using (ADOExecution exec = new ADOExecution(GetConnectionString()))
+            {
+                int Result = exec.ExecuteNonQuery(CommandType.StoredProcedure, "usp_MasterDisableComment",
+                    new SqlParameter("@CommentId", CommentId));
+
+                return ReturnBool(Result);
+            }
+        }
+        public bool MasterEnableComment(Int64 CommentId)
+        {
+            using (ADOExecution exec = new ADOExecution(GetConnectionString()))
+            {
+                int Result = exec.ExecuteNonQuery(CommandType.StoredProcedure, "usp_MasterEnableComment",
+                    new SqlParameter("@CommentId", CommentId));
+
+                return ReturnBool(Result);
+            }
+        }
     }
 }
