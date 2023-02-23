@@ -4,15 +4,13 @@
     Layout = "~/Views/Shared/_CMSLayout.cshtml";
 }
 @section styles{
-    <link href="~/Content/MasterDashboardStyle.css" rel="stylesheet" />
     <link href="~/lib/datatables/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Content/MasterStyle.css" rel="stylesheet" />
 }
 <!-- Admin Dashboard Start -->
 <div class="container-xxl py-6" style="padding-bottom:0 !important;">
     <div class="container">
-        <div class="section-header text-center mx-auto mb-3" style="max-width: 500px;">
-            <h1 class="display-5">Master</h1>
-        </div>
+        <div class="section-header text-center mx-auto mb-5" style="max-width: 500px;"></div>
         <div class="row g-5 justify-content-center">
             <div class="row g-4">
                 <div class="col-lg-3 col-md-6">
@@ -84,45 +82,7 @@
 <!-- Admin Dashboard End -->
 
 @section scripts{
-
-    <script>
-        function ConvertToDateFromJson(ValueInput) {
-            var value = new Date
-                (
-                    parseInt(ValueInput.replace(/(^.*\()|([+-].*$)/g, ''))
-                );
-            var dat =
-                value.getDate() +
-                "/" +
-                (value.getMonth() + 1) +
-                "/" +
-                value.getFullYear();
-            return dat;
-        }
-    </script>
-    <script>
-        function GetDataController(tableId) {
-            if (($("#usersPanelTable").length && tableId == 1) || ($("#assetsPanelTable").length && tableId == 2) || ($("#postsPanelTable").length && tableId == 3) || ($("#commentsPanelTable").length && tableId == 4)) {
-            }
-            else {
-                $.ajax({
-                url: '@Url.Action("TableDataPartial", "AdminMaster")',
-                method: 'POST',
-                data: { LoadTableId: tableId },
-                success: function (res) {
-                    /*console.log(res);*/
-                    if (!$.trim(res)) {
-                        
-                    }
-                    else {
-                        $('#loadTableData').html(res);
-                        BindTableData();
-                    }
-                }
-            })
-            }
-        }
-    </script>
+    <script src="~/Scripts/masterScript.js"></script>
     <script>
         $(document).ready(function () {
             $('#liAdminDashboard').addClass('active');
@@ -132,76 +92,6 @@
 
                 $(this).addClass("active");
             });
-            @*
-            function fnIsDeleted(id,type, IsDeleted, cb) {
-                const lDeleted = IsDeleted.toLowerCase() == "true" ? true : false;
-
-                let confirmCommonText = "Are you sure you want to disable this";
-                let urlToDisable = "";
-
-                if (type == "user") {
-                    confirmCommonText = confirmCommonText + "User?";
-                    urlToDisable = '@Url.Action("disableUser", "AdminMaster")';
-                }
-                else if (type == "asset") {
-                    confirmCommonText = confirmCommonText + "Asset?";
-                    urlToDisable = '@Url.Action("disableAsset", "AdminMaster")';
-                }
-                else if (type == "post") {
-                    confirmCommonText = confirmCommonText + "Post?";
-                    urlToDisable = '@Url.Action("disablePost", "AdminMaster")';
-                }
-                else if (type == "comment") {
-                    confirmCommonText = confirmCommonText + "Comment?";
-                    urlToDisable = '@Url.Action("disableComment", "AdminMaster")';
-                }
-
-
-                if (confirm(confirmCommonText) && urlToDisable.trim().length > 0) {
-
-                    $.ajax({
-                        url: urlToDisable,
-                        method: 'POST',
-                        data: {
-                            AssetId: AssetId,
-
-                        },
-                        success: function (res) {
-                            /*console.log(res);*/
-                            if (res.success) {
-                                //console.log("success");
-                                if (res.message) {
-                                    $(cb).prop("checked", res.message);
-                                    alert('Deleted successfully.');
-                                }
-                                else if (!res.message) {
-                                    $(cb).prop("checked", res.message);
-                                    alert('Asset is reverted to archived successfully.');
-                                }
-                                else {
-                                    $(cb).prop("checked", lDeleted);
-                                    alert('Somthing went wrong... Please try again.');
-                                }
-                            }
-                            else {
-                                $(cb).prop("checked", lDeleted);
-                                alert('Somthing went wrong... Please try again.');
-                            }
-                        },
-                        error: function (error) {
-                            //console.log(error);
-                            $(cb).prop("checked", lDeleted);
-                            alert('Somthing went wrong... Please try again.');
-                        }
-                    })
-                }
-                else {
-                    $(cb).prop("checked", lDeleted);
-                    alert('Somthing went wrong... Please try again.');
-                }
-
-            }
-            *@
         });
     </script>
 }

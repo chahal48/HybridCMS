@@ -1,0 +1,82 @@
+﻿select.form-select {
+    display: inline;
+    width: 120px;
+    margin-left: 20px;
+}
+
+.liDashboardMenu {
+    color: #3CB815;
+}
+
+    .liDashboardMenu.active {
+        color: #F65005;
+    }
+
+.disableAndEnableBtn {
+    display: inline;
+    width: 90px;
+    height: 38px;
+    margin-left: 15px;
+    font-size: 18px;
+    -webkit-appearance: none;
+    position: relative;
+    background-color: #FFF;
+}
+
+.disable-button-filter {
+    border: 0.5px solid #F65005;
+    color: #F65005;
+}
+
+.enable-button-filter {
+    border: 0.5px solid #3CB815;
+    color: #3CB815;
+}
+
+.disable-button-filter:hover {
+    background-color: #F65005;
+    color: #FFF;
+}
+
+.enable-button-filter:hover {
+    background-color: #3CB815;
+    color: #FFF;
+}
+
+.cbSelected {
+    height: 38px;
+    width: 120px;
+    margin-left: 25px;
+    -webkit-appearance: none;
+    position: relative;
+    border: 0.5px solid #3CB815;
+    cursor: pointer;
+    background-color: #FFF;
+}
+
+    .cbSelected:hover {
+        background-color: #3CB815;
+    }
+
+    .cbSelected:after {
+        content: "Select All";
+        color: #3CB815;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: inherit;
+    }
+
+    .cbSelected:hover:after {
+        color: #FFF;
+    }
+
+    .cbSelected:checked:after {
+        content: "Deselect All";
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: inherit;
+    }

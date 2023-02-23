@@ -5,6 +5,21 @@
         <option value="Blog">Blog</option>
     </select>
 </div>
+<div class="button-filter">
+    <input id="cbIsSelected" type="checkbox" class="cbSelected">
+</div>
+<div class="button-filter">
+    <button type="button" id="disableBtn"
+            class="disableAndEnableBtn disable-button-filter" style="display:none;">
+        Disable
+    </button>
+</div>
+<div class="button-filter">
+    <button type="button" id="enableBtn"
+            class="disableAndEnableBtn enable-button-filter" style="display:none;">
+        Enable
+    </button>
+</div>
 <table class="display compact" id="assetsPanelTable">
     <thead>
         <tr>
@@ -67,29 +82,12 @@
                     }
                 }
             ]
-            //,
-            //// checkbox search
-            //initComplete: function () {
-            //    let roleIndex = 1;
-            //    $.fn.dataTable.ext.search.push(
-            //        function (settings, data, dataIndex) {
-            //            // Detail grid
-            //            if (settings.nTable.id === 'assetsPanelTable') {
-            //                let selectedItem = $('#assetsTableFilter').val()
-            //                let role = data[roleIndex];
-            //                if ((selectedItem === "") || (role.includes(selectedItem))) {
-            //                    return true;
-            //                }
-            //                return false;
-            //            }
-            //            return true; // it wasnot the staging data table. Don't filter/limit.
-            //        }
-            //    );
-            //}
         });
         let table = $('#assetsPanelTable').DataTable();
         $("#assetsPanelTable_filter.dataTables_filter").append($("#assetsTableFilter"));
-        /*$("#filterTable_filter.dataTables_filter").append($("#btnCreateBlog"));*/
+        $("#assetsPanelTable_filter.dataTables_filter").append($("#enableBtn"));
+        $("#assetsPanelTable_filter.dataTables_filter").append($("#disableBtn"));
+        $("#assetsPanelTable_filter.dataTables_filter").append($("#cbIsSelected"));
         let roleIndex = 1;
         $.fn.dataTable.ext.search.push(
             function (settings, data, dataIndex) {
@@ -105,5 +103,29 @@
             table.draw();
         });
         table.draw();
+
+        $('#assetsPanelTable tbody').on('click', 'tr', function () {
+            $(this).toggleClass('selected');
+            cbSelectedProp(table.rows('.selected').data().length, table.rows().count());
+        });
+
+        $('#cbIsSelected').click(function (event) {  //on click
+            this.checked ? (table.$('tr').addClass('selected')) : (table.$('tr').removeClass('selected'));
+            cbSelectedClickProp(table.rows('.selected').data().length);
+        });
+        $('#disableBtn').click(function (event) {  //on click
+            runDisableOrEnable(true);
+        });
+        $('#enableBtn').click(function (event) {  //on click
+            runDisableOrEnable(false);
+        });
+
+        function runDisableOrEnable(IsDiable) {
+            let selectedItems = new Array();
+            $.each(table.rows('.selected').data(), function (i, item) {
+                selectedItems.push(item.AssetId);
+            });
+            IsDiable ? DisableAsset(selectedItems) : EnableAsset(selectedItems);
+        }
     }
 </script>

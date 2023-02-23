@@ -36,5 +36,38 @@ namespace HybridCMSBll
         {
             return iMaster.GetAllCommentForMaster();
         }
+        public bool MasterDisableUser(Int64 UserId)
+        {
+            return iMaster.MasterDisableUser(UserId);
+        }
+        public bool MasterEnableUser(Int64 UserId)
+        {
+            return iMaster.MasterEnableUser(UserId);
+        }
+        public bool MasterDisableAsset(Int64 AssetId)
+        {
+            return iMaster.MasterDisableAsset(AssetId);
+        }
+        public bool MasterEnableAsset(Int64 AssetId)
+        {
+            return iMaster.MasterEnableAsset(AssetId);
+        }
+        public bool MasterDisablePost(Int64 PostId)
+        {
+            return iMaster.MasterDisablePost(PostId);
+        }
+        public bool MasterEnablePost(Int64 PostId)
+        {
+            return iMaster.MasterEnablePost(PostId);
+        }
+        public bool MasterDisableComment(Int64 CommentId)
+        {
+            return iMaster.MasterDisableComment(CommentId);
+        }
+        public bool MasterEnableComment(Int64 CommentId)
+        {
+            return iMaster.MasterEnableComment(CommentId);
+        }
+
     }
 }
